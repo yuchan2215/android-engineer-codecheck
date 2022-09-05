@@ -38,7 +38,7 @@ android {
         jvmTarget = "11"
     }
     buildFeatures {
-        viewBinding = true
+        dataBinding = true
     }
     sourceSets {
         val kotlinAdditionalSourceSets = project.file("src/main/kotlin")
@@ -49,6 +49,7 @@ android {
 dependencies {
     val lifecycleVersion = "2.5.1"
     val navigationVersion = "2.5.1"
+    val okHttpVersion = "4.10.0"
 
     implementation("androidx.core:core-ktx:1.8.0")
     implementation("androidx.appcompat:appcompat:1.5.0")
@@ -74,6 +75,16 @@ dependencies {
 
     // Kotlin serialization
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.4.0")
+
+    // Retrofit
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+
+    // Retrofit Logging
+    implementation("com.squareup.okhttp3:okhttp:$okHttpVersion")
+    implementation("com.squareup.okhttp3:logging-interceptor:$okHttpVersion")
+
+    // Retrofit Kotlin Serialization Converter
+    implementation("com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:0.8.0")
 }
 
 ktlint {

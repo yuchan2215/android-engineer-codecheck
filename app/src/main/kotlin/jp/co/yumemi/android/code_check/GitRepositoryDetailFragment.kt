@@ -20,15 +20,12 @@ class GitRepositoryDetailFragment : Fragment(R.layout.git_repository_detail_frag
 
     private val args: GitRepositoryDetailFragmentArgs by navArgs()
 
-    private var _binding: GitRepositoryDetailFragmentBinding? = null
-    private val binding get() = this._binding!!
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         Log.d("検索した日時", lastSearchDate.toString())
 
-        _binding = GitRepositoryDetailFragmentBinding.bind(view)
+        val binding = GitRepositoryDetailFragmentBinding.bind(view)
 
         val item = args.repository
 

@@ -18,4 +18,5 @@
         <item quantity="one">%d open issue</item>
         <item quantity="other">%d open issues</item>
     </plurals>
+    <string name="error_title">An error has occurred</string>
 </resources>

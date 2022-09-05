@@ -49,6 +49,9 @@ class SearchFragment : Fragment(R.layout.search_fragment) {
             adapter.submitList(it.body.repositories)
         }
 
+        binding.viewModel = viewModel
+        binding.lifecycleOwner = viewLifecycleOwner
+
         binding.searchInputText
             .setOnEditorActionListener { editText, action, _ ->
                 if (action != EditorInfo.IME_ACTION_SEARCH)

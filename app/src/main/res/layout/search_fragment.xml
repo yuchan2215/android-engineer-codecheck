@@ -74,7 +74,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:indeterminate="true"
-            android:visibility="@{viewModel.requestStatus.isShowLoading}"
+            animateVisibility="@{viewModel.requestStatus.isShowLoading()}"
             app:layout_constraintTop_toTopOf="@id/recyclerView"
             tools:visibility="visible"
             android:id="@+id/linear_progress" />

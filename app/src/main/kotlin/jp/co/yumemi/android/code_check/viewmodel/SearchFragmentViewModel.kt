@@ -9,9 +9,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.map
 import androidx.lifecycle.viewModelScope
 import java.util.Date
+import jp.co.yumemi.android.code_check.R
 import jp.co.yumemi.android.code_check.model.github.repositories.SearchGitRepoResponse
 import jp.co.yumemi.android.code_check.model.status.RequestStatus
 import jp.co.yumemi.android.code_check.repository.GitHubApiRepository
+import jp.co.yumemi.android.code_check.util.QuantityStringUtil
 import jp.co.yumemi.android.code_check.view.activity.TopActivity
 import jp.co.yumemi.android.code_check.view.fragment.SearchFragment
 import kotlinx.coroutines.launch
@@ -29,6 +31,11 @@ class SearchFragmentViewModel : ViewModel() {
     val errorText: LiveData<String> = requestStatus.map {
         if (it !is RequestStatus.OnError) ""
         else it.error.errorDescription
+    }
+
+    val repositoryCount: LiveData<String> = requestStatus.map {
+        if (it !is RequestStatus.OnSuccess) ""
+        else QuantityStringUtil.getString(R.plurals.repository_counts, it.body.totalCount)
     }
 
     /**

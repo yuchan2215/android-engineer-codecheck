@@ -11,5 +11,6 @@ import kotlinx.serialization.json.Json
  */
 @Serializable
 data class SearchGitRepoResponse(
+    @SerialName("total_count") val totalCount: Int,
     @SerialName("items") val repositories: List<GitRepository>
 )

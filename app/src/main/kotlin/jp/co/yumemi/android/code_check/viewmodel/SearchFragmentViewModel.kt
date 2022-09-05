@@ -70,6 +70,10 @@ class SearchFragmentViewModel : ViewModel() {
         }
     }
 
+    val isShowError = requestStatus.map {
+        val isShow = it is RequestStatus.OnError
+        return@map VisibilityUtil.booleanToVisibility(isShow)
+    }
     val errorText: LiveData<String> = requestStatus.map {
         if (it !is RequestStatus.OnError) ""
         else {

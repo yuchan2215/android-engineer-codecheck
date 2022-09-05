@@ -84,6 +84,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="@{viewModel.errorText}"
+            android:visibility="@{viewModel.isShowError}"
             tools:text="@string/error_display"
             android:textColor="?attr/colorError"
             android:id="@+id/error_text"

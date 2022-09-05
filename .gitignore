@@ -91,3 +91,6 @@ lint/tmp/
 
 # Android Profiling
 *.hprof
+
+# SaveActions
+.idea/saveactions_settings.xml

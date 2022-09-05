@@ -9,40 +9,42 @@ import io.ktor.client.call.*
 import io.ktor.client.engine.android.*
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
+import java.util.*
 import jp.co.yumemi.android.code_check.TopActivity.Companion.lastSearchDate
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.async
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.*
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
-import java.util.*
 
 /**
- * TwoFragment で使う
+ * [SearchFragment]で利用されるViewModel。
  */
-class OneViewModel : ViewModel() {
+class SearchFragmentViewModel : ViewModel() {
 
-    // 検索結果
-    fun searchResults(inputText: String): List<item> = runBlocking {
+    /**
+     * GitHubのAPIを叩き、リポジトリ一覧を取得する。
+     * @param inputText 検索したいテキスト。
+     * @return 検索結果のリスト。
+     */
+    fun searchResults(inputText: String): List<GitRepository> = runBlocking {
         val client = HttpClient(Android)
 
-        return@runBlocking GlobalScope.async {
-            val response: HttpResponse = client?.get("https://api.github.com/search/repositories") {
+        return@runBlocking withContext(Dispatchers.IO) {
+            val response: HttpResponse = client.get("https://api.github.com/search/repositories") {
                 header("Accept", "application/vnd.github.v3+json")
                 parameter("q", inputText)
             }!!
 
             val responseString = response.receive<String>()
 
-            val json = Json{ ignoreUnknownKeys = true }
+            val json = Json { ignoreUnknownKeys = true }
             val searchResponse = json.decodeFromString<SearchGitRepoResponse>(responseString)
 
             lastSearchDate = Date()
 
-            return@async searchResponse.repositories
-        }.await()
+            return@withContext searchResponse.repositories
+        }
     }
 }
 
@@ -53,7 +55,7 @@ class OneViewModel : ViewModel() {
  */
 @Serializable
 data class SearchGitRepoResponse(
-    @SerialName("items") val repositories: List<item>
+    @SerialName("items") val repositories: List<GitRepository>
 )
 
 /**
@@ -72,7 +74,7 @@ data class GitOwner(
  * ドキュメント&スキーマ：https://docs.github.com/ja/rest/search#search-repositories
  */
 @Serializable
-data class item(
+data class GitRepository(
     @SerialName("name") val name: String,
     @SerialName("owner") val owner: GitOwner?,
     @SerialName("language") val language: String?,

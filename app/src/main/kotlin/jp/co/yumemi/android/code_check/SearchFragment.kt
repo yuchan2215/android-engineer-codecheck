@@ -3,13 +3,16 @@
  */
 package jp.co.yumemi.android.code_check
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputMethodManager
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -24,18 +27,27 @@ import jp.co.yumemi.android.code_check.databinding.SearchFragmentBinding
  * リストのアイテムがタップされたら[GitRepositoryDetailFragment]へ推移する。
  */
 class SearchFragment : Fragment(R.layout.search_fragment) {
+    private val viewModel by viewModels<SearchFragmentViewModel>()
+
+    private var _binding: SearchFragmentBinding? = null
+    private val binding get() = _binding!!
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val binding = SearchFragmentBinding.bind(view)
-
-        val viewModel = SearchFragmentViewModel()
+        _binding = SearchFragmentBinding.bind(view)
 
         val adapter = object : GitRepositoryListAdapter() {
             override fun itemClick(item: GitRepository) {
                 gotoRepositoryFragment(item)
             }
+        }
+
+        // 結果が更新されたらリストを更新する。
+        viewModel.searchResults.observe(viewLifecycleOwner) {
+            if (it == null) return@observe
+
+            adapter.submitList(it)
         }
 
         binding.searchInputText
@@ -44,8 +56,10 @@ class SearchFragment : Fragment(R.layout.search_fragment) {
                     return@setOnEditorActionListener false
 
                 val text = editText.text.toString()
-                val searchResults = viewModel.searchResults(text)
-                adapter.submitList(searchResults)
+                viewModel.fetchResults(text)
+
+                hideKeyboard()
+                clearFocus()
 
                 return@setOnEditorActionListener true
             }
@@ -63,10 +77,27 @@ class SearchFragment : Fragment(R.layout.search_fragment) {
         }
     }
 
+    private fun clearFocus() {
+        binding.constraintLayout.requestFocus()
+    }
+
+    private fun hideKeyboard() {
+        requireActivity().currentFocus?.let { view ->
+            val manager = requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE)
+            manager as InputMethodManager
+            manager.hideSoftInputFromWindow(view.windowToken, 0)
+        }
+    }
+
     fun gotoRepositoryFragment(item: GitRepository) {
         val action = SearchFragmentDirections
             .openRepositoryDetail(repository = item)
         findNavController().navigate(action)
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }
 

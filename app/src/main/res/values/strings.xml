@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">Android Engineer CodeCheck</string>
     <string name="searchInputText_hint">GitHub のリポジトリを検索できるよー</string>
+    <string name="github_repository_image_description">GitHub Repository Owner Image</string>
     <plurals name="github_stars">
         <item quantity="one">%d star</item>
         <item quantity="other">%d stars</item>

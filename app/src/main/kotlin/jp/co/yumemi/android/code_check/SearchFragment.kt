@@ -59,6 +59,7 @@ class SearchFragment : Fragment(R.layout.search_fragment) {
                 viewModel.fetchResults(text)
 
                 hideKeyboard()
+                clearFocus()
 
                 return@setOnEditorActionListener true
             }
@@ -74,6 +75,10 @@ class SearchFragment : Fragment(R.layout.search_fragment) {
 
             it.adapter = adapter
         }
+    }
+
+    private fun clearFocus() {
+        binding.constraintLayout.requestFocus()
     }
 
     private fun hideKeyboard() {

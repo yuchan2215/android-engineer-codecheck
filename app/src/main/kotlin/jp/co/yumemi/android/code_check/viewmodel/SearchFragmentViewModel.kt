@@ -11,6 +11,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.map
 import androidx.lifecycle.viewModelScope
 import java.util.Date
+import jp.co.yumemi.android.code_check.CodeCheckApplication
 import jp.co.yumemi.android.code_check.R
 import jp.co.yumemi.android.code_check.model.github.repositories.GitRepository
 import jp.co.yumemi.android.code_check.model.github.repositories.SearchGitRepoResponse
@@ -71,7 +72,18 @@ class SearchFragmentViewModel : ViewModel() {
 
     val errorText: LiveData<String> = requestStatus.map {
         if (it !is RequestStatus.OnError) ""
-        else it.error.errorDescription
+        else {
+            val repositoryName = it.fetchQuery.query
+            val errorTitle = CodeCheckApplication.instance.getString(R.string.error_title)
+            val errorDescription = it.error.errorDescription
+
+            CodeCheckApplication.instance.getString(
+                R.string.error_display,
+                errorTitle,
+                repositoryName,
+                errorDescription
+            )
+        }
     }
 
     /**

@@ -3,11 +3,13 @@
  */
 package jp.co.yumemi.android.code_check
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputMethodManager
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -53,6 +55,8 @@ class SearchFragment : Fragment(R.layout.search_fragment) {
                 val text = editText.text.toString()
                 viewModel.fetchResults(text)
 
+                hideKeyboard()
+
                 return@setOnEditorActionListener true
             }
 
@@ -66,6 +70,14 @@ class SearchFragment : Fragment(R.layout.search_fragment) {
             it.addItemDecoration(dividerItemDecoration)
 
             it.adapter = adapter
+        }
+    }
+
+    private fun hideKeyboard() {
+        requireActivity().currentFocus?.let { view ->
+            val manager = requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE)
+            manager as InputMethodManager
+            manager.hideSoftInputFromWindow(view.windowToken, 0)
         }
     }
 

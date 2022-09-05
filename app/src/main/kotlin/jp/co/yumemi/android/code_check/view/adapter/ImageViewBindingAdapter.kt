@@ -7,6 +7,9 @@ import coil.load
 object ImageViewBindingAdapter {
     @BindingAdapter("imageUrl")
     @JvmStatic
+    /**
+     * 画像をxmlから読み込む際に利用する。
+     */
     fun ImageView.loadImage(imageUrl: String) {
         this.load(imageUrl)
     }

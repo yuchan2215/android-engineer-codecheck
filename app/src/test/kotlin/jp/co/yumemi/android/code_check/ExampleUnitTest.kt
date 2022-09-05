@@ -1,8 +1,7 @@
 package jp.co.yumemi.android.code_check
 
+import org.junit.Assert.assertEquals
 import org.junit.Test
-
-import org.junit.Assert.*
 
 /**
  * Example local unit test, which will execute on the development machine (host).
@@ -14,4 +13,5 @@ class ExampleUnitTest {
     fun addition_isCorrect() {
         assertEquals(4, 2 + 2)
     }
+    //TODO 学習不足で何もやっていません。一人前のAndroidエンジニアになるためには書かなくてはいけない
 }

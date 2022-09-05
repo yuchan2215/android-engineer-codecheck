@@ -13,6 +13,7 @@ import jp.co.yumemi.android.code_check.model.github.repositories.SearchGitRepoRe
 import jp.co.yumemi.android.code_check.model.status.RequestStatus
 import jp.co.yumemi.android.code_check.repository.GitHubApiRepository
 import jp.co.yumemi.android.code_check.view.activity.TopActivity
+import jp.co.yumemi.android.code_check.view.fragment.SearchFragment
 import kotlinx.coroutines.launch
 
 /**
@@ -31,7 +32,8 @@ class SearchFragmentViewModel : ViewModel() {
     }
 
     /**
-     * GitHubのAPIを叩き、リポジトリ一覧を取得して[_searchResults]の値を更新する。
+     * GitHubのAPIを叩き、リポジトリ一覧を取得して[_requestStatus]の値を更新する。
+     * 読み込むまでは[RequestStatus.OnLoading]にする。
      * @param inputText 検索したいテキスト。
      */
     fun fetchResults(inputText: String) {

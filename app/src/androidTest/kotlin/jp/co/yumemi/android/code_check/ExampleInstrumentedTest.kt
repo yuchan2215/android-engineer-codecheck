@@ -1,12 +1,10 @@
 package jp.co.yumemi.android.code_check
 
-import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4
-
+import androidx.test.platform.app.InstrumentationRegistry
+import org.junit.Assert.assertEquals
 import org.junit.Test
 import org.junit.runner.RunWith
-
-import org.junit.Assert.*
 
 /**
  * Instrumented test, which will execute on an Android device.
@@ -21,4 +19,5 @@ class ExampleInstrumentedTest {
         val appContext = InstrumentationRegistry.getInstrumentation().targetContext
         assertEquals("jp.co.yumemi.android.codecheck", appContext.packageName)
     }
+    //TODO 学習不足で何もやっていません。一人前のAndroidエンジニアになるためには書かなくてはいけない
 }

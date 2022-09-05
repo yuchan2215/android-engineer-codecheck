@@ -8,10 +8,15 @@ import jp.co.yumemi.android.code_check.constant.HTTPResponseCode
 import okhttp3.ResponseBody
 import retrofit2.Response
 
-/**エラーステータス*/
+/**
+ * 基本的には[RequestStatus]の[RequestStatus.OnError]のフィールドとして所有される。
+ * @param errorDescription エラーが発生した時に、ユーザーに表示されるエラーの説明
+ */
 sealed class ErrorStatus(val errorDescription: String) {
 
-    /**[Throwable]を所持する[ErrorStatus]*/
+    /**
+     * Retrofitがエラーレスポンスすら返さない時（ネットワークエラー）等に利用する。
+     */
     data class ThrowableError(val throwable: Throwable) : ErrorStatus(
         if (throwable is UnknownHostException)
             getString(R.string.unknown_host_exception_error_description)
@@ -20,27 +25,39 @@ sealed class ErrorStatus(val errorDescription: String) {
     )
 
     // HTTPResponseCodeにて定義されたHTTPエラー一覧
-    /**拒否エラー*/
+    /**
+     * APIのレート制限等に達するとこのエラーになる。
+     */
     object ForbiddenError : ErrorStatus(
         getString(R.string.forbidden_error_description)
     )
 
-    /**バリデーションエラー*/
+    /**
+     * 0文字でAPIを叩くなど、不正な文字列で叩くとこのエラーになる。
+     */
     object ValidationError : ErrorStatus(
         getString(R.string.validation_error_description)
     )
 
-    /**サービスが提供されないエラー*/
+    /**
+     * おそらくGitHubのサーバーが不安定または障害のある時に発生する。
+     */
     object ServiceUnavailableError : ErrorStatus(
         getString(R.string.service_unavailable_error_description)
     )
 
-    /**データが更新されていないことを示すエラー*/
+    /**
+     * データが更新されていないことを示すエラー。
+     * 何回かAPIを叩いたが、これが帰ってくることはあまり無さそう。
+     */
     object NotModifiedError : ErrorStatus(
         getString(R.string.not_modified_error_description)
     )
 
-    /**その他のエラー*/
+    /**
+     * その他のエラー。
+     * [HTTPResponseCode]にて定義されていないエラーの時に利用される。
+     */
     data class OtherResponseError(val errorBody: ResponseBody?, val errorCode: Int) : ErrorStatus(
         "${errorBody?.toString()}\n" +
             getString(R.string.response_code_prefix) +

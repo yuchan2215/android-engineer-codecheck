@@ -44,8 +44,7 @@
                 android:layout_marginTop="16dp"
                 tools:text="JetBrains/kotlin"
                 android:text="@{viewModel.repository.name}"
-                android:textColor="@color/black"
-                android:textSize="18sp"
+                android:textAppearance="?attr/textAppearanceTitleLarge"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/ownerIconView" />
@@ -65,8 +64,7 @@
                 android:layout_marginTop="8dp"
                 tools:text="Written in Kotlin"
                 android:text="@{viewModel.repository.language}"
-                android:textColor="@color/black"
-                android:textSize="14sp"
+                android:textAppearance="?attr/textAppearanceBodyMedium"
                 app:layout_constraintTop_toBottomOf="@id/nameView"
                 tools:ignore="MissingConstraints" />
 
@@ -79,8 +77,7 @@
                 tools:text="38530 stars"
                 android:text="@{viewModel.starsText}"
                 android:textAlignment="textEnd"
-                android:textColor="@color/black"
-                android:textSize="12sp"
+                android:textAppearance="?attr/textAppearanceBodyMedium"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="@id/centerGuid"
                 app:layout_constraintTop_toBottomOf="@id/nameView" />
@@ -94,8 +91,7 @@
                 tools:text="38530 watchers"
                 android:text="@{viewModel.watchersText}"
                 android:textAlignment="textEnd"
-                android:textColor="@color/black"
-                android:textSize="12sp"
+                android:textAppearance="?attr/textAppearanceBodyMedium"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="@id/centerGuid"
                 app:layout_constraintTop_toBottomOf="@id/starsView" />
@@ -109,8 +105,7 @@
                 tools:text="4675 forks"
                 android:text="@{viewModel.forksText}"
                 android:textAlignment="textEnd"
-                android:textColor="@color/black"
-                android:textSize="12sp"
+                android:textAppearance="?attr/textAppearanceBodyMedium"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintLeft_toLeftOf="@id/centerGuid"
                 app:layout_constraintTop_toBottomOf="@id/watchersView" />
@@ -124,8 +119,7 @@
                 tools:text="131 open issues"
                 android:text="@{viewModel.issuesText}"
                 android:textAlignment="textEnd"
-                android:textColor="@color/black"
-                android:textSize="12sp"
+                android:textAppearance="?attr/textAppearanceBodyMedium"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="@id/centerGuid"
                 app:layout_constraintTop_toBottomOf="@id/forksView" />

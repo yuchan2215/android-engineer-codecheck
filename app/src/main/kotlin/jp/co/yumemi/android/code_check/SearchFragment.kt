@@ -27,8 +27,8 @@ class SearchFragment: Fragment(R.layout.search_fragment){
         val layoutManager= LinearLayoutManager(requireContext())
         val dividerItemDecoration=
             DividerItemDecoration(requireContext(), layoutManager.orientation)
-        val adapter= CustomAdapter(object : CustomAdapter.OnItemClickListener{
-            override fun itemClick(item: item){
+        val adapter= GitRepositoryListAdapter(object : GitRepositoryListAdapter.OnItemClickListener{
+            override fun itemClick(item: GitRepository){
                 gotoRepositoryFragment(item)
             }
         })
@@ -53,7 +53,7 @@ class SearchFragment: Fragment(R.layout.search_fragment){
         }
     }
 
-    fun gotoRepositoryFragment(item: item)
+    fun gotoRepositoryFragment(item: GitRepository)
     {
         val action= SearchFragmentDirections
             .actionRepositoriesFragmentToRepositoryFragment(item= item)
@@ -61,27 +61,27 @@ class SearchFragment: Fragment(R.layout.search_fragment){
     }
 }
 
-val diff_util= object: DiffUtil.ItemCallback<item>(){
-    override fun areItemsTheSame(oldItem: item, newItem: item): Boolean
+val diff_util= object: DiffUtil.ItemCallback<GitRepository>(){
+    override fun areItemsTheSame(oldItem: GitRepository, newItem: GitRepository): Boolean
     {
         return oldItem.name== newItem.name
     }
 
-    override fun areContentsTheSame(oldItem: item, newItem: item): Boolean
+    override fun areContentsTheSame(oldItem: GitRepository, newItem: GitRepository): Boolean
     {
         return oldItem== newItem
     }
 
 }
 
-class CustomAdapter(
+class GitRepositoryListAdapter(
     private val itemClickListener: OnItemClickListener,
-) : ListAdapter<item, CustomAdapter.ViewHolder>(diff_util){
+) : ListAdapter<GitRepository, GitRepositoryListAdapter.ViewHolder>(diff_util){
 
     class ViewHolder(view: View): RecyclerView.ViewHolder(view)
 
     interface OnItemClickListener{
-    	fun itemClick(item: item)
+    	fun itemClick(item: GitRepository)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder

@@ -25,7 +25,7 @@ import java.util.*
 class SearchFragmentViewModel : ViewModel() {
 
     // 検索結果
-    fun searchResults(inputText: String): List<item> = runBlocking {
+    fun searchResults(inputText: String): List<GitRepository> = runBlocking {
         val client = HttpClient(Android)
 
         return@runBlocking GlobalScope.async {
@@ -53,7 +53,7 @@ class SearchFragmentViewModel : ViewModel() {
  */
 @Serializable
 data class SearchGitRepoResponse(
-    @SerialName("items") val repositories: List<item>
+    @SerialName("items") val repositories: List<GitRepository>
 )
 
 /**
@@ -72,7 +72,7 @@ data class GitOwner(
  * ドキュメント&スキーマ：https://docs.github.com/ja/rest/search#search-repositories
  */
 @Serializable
-data class item(
+data class GitRepository(
     @SerialName("name") val name: String,
     @SerialName("owner") val owner: GitOwner?,
     @SerialName("language") val language: String?,

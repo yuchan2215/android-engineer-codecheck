@@ -22,7 +22,7 @@
         tools:layout="@layout/git_repository_detail_fragment">
         <argument
             android:name="item"
-            app:argType="jp.co.yumemi.android.code_check.item" />
+            app:argType="jp.co.yumemi.android.code_check.GitRepository" />
     </fragment>
 
 </navigation>

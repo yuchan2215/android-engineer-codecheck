@@ -25,10 +25,8 @@ import kotlinx.coroutines.launch
  */
 class SearchFragmentViewModel : ViewModel() {
 
-    private val _requestStatus: MutableLiveData<RequestStatus<SearchGitRepoResponse>> =
+    private val requestStatus: MutableLiveData<RequestStatus<SearchGitRepoResponse>> =
         MutableLiveData(RequestStatus.Nothing())
-
-    val requestStatus: LiveData<RequestStatus<SearchGitRepoResponse>> = _requestStatus
 
     private val _repositoryList: MutableLiveData<List<GitRepository>> = MutableLiveData(null)
     val repositoryList: LiveData<List<GitRepository>> = _repositoryList
@@ -55,7 +53,7 @@ class SearchFragmentViewModel : ViewModel() {
      * @param newFetchQuery 検索クエリ
      */
     fun fetchResults(newFetchQuery: FetchQuery) {
-        _requestStatus.value = RequestStatus.OnLoading()
+        requestStatus.value = RequestStatus.OnLoading()
         viewModelScope.launch {
             TopActivity.lastSearchDate = Date()
 
@@ -64,7 +62,7 @@ class SearchFragmentViewModel : ViewModel() {
             // 次のページを読み込むか？
             val isNextPage = lastQuery != null && lastQuery.isNextFetch(newFetchQuery)
             // ステータスを更新
-            _requestStatus.value = GitHubApiRepository.getRepositories(newFetchQuery)
+            requestStatus.value = GitHubApiRepository.getRepositories(newFetchQuery)
 
             // 失敗したなら空にする
             if (requestStatus.value !is RequestStatus.OnSuccess) {

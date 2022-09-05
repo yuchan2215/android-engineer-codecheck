@@ -9,6 +9,7 @@ import java.util.*
 class TopActivity : AppCompatActivity(R.layout.activity_top) {
 
     companion object {
+        /**GitHubリポジトリを最後に検索した日時*/
         var lastSearchDate: Date? = null
     }
 }

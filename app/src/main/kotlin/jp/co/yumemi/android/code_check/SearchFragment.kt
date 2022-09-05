@@ -14,6 +14,11 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.*
 import jp.co.yumemi.android.code_check.databinding.SearchFragmentBinding
 
+/**
+ * GitHubリポジトリを検索するフラグメント。
+ * 検索結果をリストに表示する。
+ * リストのアイテムがタップされたら[GitRepositoryDetailFragment]へ推移する。
+ */
 class SearchFragment: Fragment(R.layout.search_fragment){
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?)
@@ -61,8 +66,9 @@ class SearchFragment: Fragment(R.layout.search_fragment){
     }
 }
 
-
-
+/**
+ * GitHubリポジトリをリスト表示する時のアダプタ。
+ */
 class GitRepositoryListAdapter(
     private val itemClickListener: OnItemClickListener,
 ) : ListAdapter<GitRepository, GitRepositoryListAdapter.ViewHolder>(DIFF_UTIL){

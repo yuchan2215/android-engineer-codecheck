@@ -12,6 +12,10 @@ import coil.load
 import jp.co.yumemi.android.code_check.TopActivity.Companion.lastSearchDate
 import jp.co.yumemi.android.code_check.databinding.GitRepositoryDetailFragmentBinding
 
+/**
+ * GitHubリポジトリの詳細を表示するフラグメント
+ * 表示する内容は[GitRepositoryDetailFragmentArgs]から渡される。
+ */
 class GitRepositoryDetailFragment : Fragment(R.layout.git_repository_detail_fragment) {
 
     private val args: GitRepositoryDetailFragmentArgs by navArgs()

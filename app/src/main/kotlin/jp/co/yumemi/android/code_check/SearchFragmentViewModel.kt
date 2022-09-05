@@ -19,11 +19,15 @@ import kotlinx.serialization.json.Json
 import java.util.*
 
 /**
- * TwoFragment で使う
+ * [SearchFragment]で利用されるViewModel。
  */
 class SearchFragmentViewModel : ViewModel() {
 
-    // 検索結果
+    /**
+     * GitHubのAPIを叩き、リポジトリ一覧を取得する。
+     * @param inputText 検索したいテキスト。
+     * @return 検索結果のリスト。
+     */
     fun searchResults(inputText: String): List<GitRepository> = runBlocking {
         val client = HttpClient(Android)
 

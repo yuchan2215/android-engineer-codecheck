@@ -12,9 +12,9 @@ import coil.load
 import jp.co.yumemi.android.code_check.TopActivity.Companion.lastSearchDate
 import jp.co.yumemi.android.code_check.databinding.GitRepositoryDetailFragmentBinding
 
-class TwoFragment : Fragment(R.layout.git_repository_detail_fragment) {
+class GitRepositoryDetailFragment : Fragment(R.layout.git_repository_detail_fragment) {
 
-    private val args: TwoFragmentArgs by navArgs()
+    private val args: GitRepositoryDetailFragmentArgs by navArgs()
 
     private var _binding: GitRepositoryDetailFragmentBinding? = null
     private val binding get() = this._binding!!

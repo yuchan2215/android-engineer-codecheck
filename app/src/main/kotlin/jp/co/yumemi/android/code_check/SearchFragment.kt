@@ -14,7 +14,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.*
 import jp.co.yumemi.android.code_check.databinding.SearchFragmentBinding
 
-class OneFragment: Fragment(R.layout.search_fragment){
+class SearchFragment: Fragment(R.layout.search_fragment){
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?)
     {
@@ -22,7 +22,7 @@ class OneFragment: Fragment(R.layout.search_fragment){
 
         val binding= SearchFragmentBinding.bind(view)
 
-        val viewModel= OneViewModel()
+        val viewModel= SearchFragmentViewModel()
 
         val layoutManager= LinearLayoutManager(requireContext())
         val dividerItemDecoration=
@@ -55,7 +55,7 @@ class OneFragment: Fragment(R.layout.search_fragment){
 
     fun gotoRepositoryFragment(item: item)
     {
-        val action= OneFragmentDirections
+        val action= SearchFragmentDirections
             .actionRepositoriesFragmentToRepositoryFragment(item= item)
         findNavController().navigate(action)
     }

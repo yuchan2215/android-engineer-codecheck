@@ -3,7 +3,6 @@
  */
 package jp.co.yumemi.android.code_check
 
-import android.content.Context
 import androidx.lifecycle.ViewModel
 import io.ktor.client.*
 import io.ktor.client.call.*
@@ -23,9 +22,7 @@ import java.util.*
 /**
  * TwoFragment で使う
  */
-class OneViewModel(
-    val context: Context
-) : ViewModel() {
+class OneViewModel : ViewModel() {
 
     // 検索結果
     fun searchResults(inputText: String): List<item> = runBlocking {

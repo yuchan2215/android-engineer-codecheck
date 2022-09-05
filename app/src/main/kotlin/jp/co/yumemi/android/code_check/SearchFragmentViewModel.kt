@@ -14,13 +14,13 @@ import io.ktor.client.request.get
 import io.ktor.client.request.header
 import io.ktor.client.request.parameter
 import io.ktor.client.statement.HttpResponse
+import java.util.Date
 import jp.co.yumemi.android.code_check.TopActivity.Companion.lastSearchDate
 import kotlinx.coroutines.launch
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
-import java.util.Date
 
 /**
  * [SearchFragment]で利用されるViewModel。
@@ -36,22 +36,26 @@ class SearchFragmentViewModel : ViewModel() {
      */
     fun fetchResults(inputText: String) {
         viewModelScope.launch {
-            val client = HttpClient(Android)
+            try { // TODO アーキテクチャ導入時、利用者にエラーを伝えるようにする
+                val client = HttpClient(Android)
 
-            val response: HttpResponse =
-                client.get("https://api.github.com/search/repositories") {
-                    header("Accept", "application/vnd.github.v3+json")
-                    parameter("q", inputText)
-                }!!
+                val response: HttpResponse =
+                    client.get("https://api.github.com/search/repositories") {
+                        header("Accept", "application/vnd.github.v3+json")
+                        parameter("q", inputText)
+                    }!!
 
-            val responseString = response.receive<String>()
+                val responseString = response.receive<String>()
 
-            val json = Json { ignoreUnknownKeys = true }
-            val searchResponse = json.decodeFromString<SearchGitRepoResponse>(responseString)
+                val json = Json { ignoreUnknownKeys = true }
+                val searchResponse = json.decodeFromString<SearchGitRepoResponse>(responseString)
 
-            lastSearchDate = Date()
+                lastSearchDate = Date()
 
-            _searchResults.value = searchResponse.repositories
+                _searchResults.value = searchResponse.repositories
+            } catch (_: Throwable) {
+                _searchResults.value = null
+            }
         }
     }
 }

@@ -4,7 +4,9 @@
 package jp.co.yumemi.android.code_check.viewmodel
 
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.map
 import androidx.lifecycle.viewModelScope
@@ -16,6 +18,7 @@ import jp.co.yumemi.android.code_check.model.status.FetchQuery
 import jp.co.yumemi.android.code_check.model.status.RequestStatus
 import jp.co.yumemi.android.code_check.repository.GitHubApiRepository
 import jp.co.yumemi.android.code_check.util.QuantityStringUtil
+import jp.co.yumemi.android.code_check.util.VisibilityUtil
 import jp.co.yumemi.android.code_check.view.activity.TopActivity
 import jp.co.yumemi.android.code_check.view.fragment.SearchFragment
 import kotlinx.coroutines.launch
@@ -30,6 +33,20 @@ class SearchFragmentViewModel : ViewModel() {
 
     private val _repositoryList: MutableLiveData<List<GitRepository>> = MutableLiveData(null)
     val repositoryList: LiveData<List<GitRepository>> = _repositoryList
+
+    val isShowCount by lazy {
+        MediatorLiveData<Int>().apply {
+            val observer = Observer<Any?> {
+                val additionLoading = isAdditionLoading.value ?: false
+                val statusSuccess = requestStatus.value is RequestStatus.OnSuccess
+                val isShow = additionLoading || statusSuccess
+                this.value = VisibilityUtil.booleanToVisibility(isShow)
+            }
+            observer.onChanged(null)
+            addSource(additionLoading, observer)
+            addSource(requestStatus, observer)
+        }
+    }
 
     /**追加のページを読み込んでいるかどうか*/
     val additionLoading: MutableLiveData<Boolean> = MutableLiveData(false)

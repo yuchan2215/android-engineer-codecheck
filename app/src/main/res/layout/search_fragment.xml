@@ -72,6 +72,7 @@
             android:id="@+id/count_view"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:visibility="@{viewModel.isShowCount}"
             tools:text="3件"
             android:text="@{viewModel.repositoryCount}"
             app:layout_constraintStart_toStartOf="parent"

@@ -29,10 +29,13 @@ import jp.co.yumemi.android.code_check.databinding.SearchFragmentBinding
 class SearchFragment : Fragment(R.layout.search_fragment) {
     private val viewModel by viewModels<SearchFragmentViewModel>()
 
+    private var _binding: SearchFragmentBinding? = null
+    private val binding get() = _binding!!
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val binding = SearchFragmentBinding.bind(view)
+        _binding = SearchFragmentBinding.bind(view)
 
         val adapter = object : GitRepositoryListAdapter() {
             override fun itemClick(item: GitRepository) {
@@ -85,6 +88,11 @@ class SearchFragment : Fragment(R.layout.search_fragment) {
         val action = SearchFragmentDirections
             .openRepositoryDetail(repository = item)
         findNavController().navigate(action)
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }
 

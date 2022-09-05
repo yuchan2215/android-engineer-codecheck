@@ -29,11 +29,11 @@ class SearchFragment: Fragment(R.layout.search_fragment){
 
         val viewModel= SearchFragmentViewModel()
 
-        val adapter= GitRepositoryListAdapter(object : GitRepositoryListAdapter.OnItemClickListener{
-            override fun itemClick(item: GitRepository){
+        val adapter= object : GitRepositoryListAdapter() {
+            override fun itemClick(item: GitRepository) {
                 gotoRepositoryFragment(item)
             }
-        })
+        }
 
         binding.searchInputText
             .setOnEditorActionListener{ editText, action, _ ->
@@ -55,7 +55,7 @@ class SearchFragment: Fragment(R.layout.search_fragment){
                 DividerItemDecoration(requireContext(), layoutManager.orientation)
             it.layoutManager= layoutManager
             it.addItemDecoration(dividerItemDecoration)
-            
+
             it.adapter= adapter
         }
     }
@@ -71,15 +71,12 @@ class SearchFragment: Fragment(R.layout.search_fragment){
 /**
  * GitHubリポジトリをリスト表示する時のアダプタ。
  */
-class GitRepositoryListAdapter(
-    private val itemClickListener: OnItemClickListener,
-) : ListAdapter<GitRepository, GitRepositoryListAdapter.ViewHolder>(DIFF_UTIL){
+abstract class GitRepositoryListAdapter
+    : ListAdapter<GitRepository, GitRepositoryListAdapter.ViewHolder>(DIFF_UTIL){
 
     class ViewHolder(view: View): RecyclerView.ViewHolder(view)
 
-    interface OnItemClickListener{
-    	fun itemClick(item: GitRepository)
-    }
+    abstract fun itemClick(item: GitRepository)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder
     {
@@ -95,7 +92,7 @@ class GitRepositoryListAdapter(
             item.name
 
     	holder.itemView.setOnClickListener{
-     		itemClickListener.itemClick(item)
+     		itemClick(item)
     	}
     }
 

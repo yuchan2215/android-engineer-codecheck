@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import jp.co.yumemi.android.code_check.R
 import jp.co.yumemi.android.code_check.databinding.SearchFragmentBinding
 import jp.co.yumemi.android.code_check.model.github.repositories.GitRepository
+import jp.co.yumemi.android.code_check.model.status.RequestStatus
 import jp.co.yumemi.android.code_check.view.adapter.GitRepositoryListAdapter
 import jp.co.yumemi.android.code_check.viewmodel.SearchFragmentViewModel
 
@@ -42,10 +43,10 @@ class SearchFragment : Fragment(R.layout.search_fragment) {
         }
 
         // 結果が更新されたらリストを更新する。
-        viewModel.searchResults.observe(viewLifecycleOwner) {
-            if (it == null) return@observe
+        viewModel.requestStatus.observe(viewLifecycleOwner) {
+            if (it !is RequestStatus.OnSuccess) return@observe
 
-            adapter.submitList(it)
+            adapter.submitList(it.body.repositories)
         }
 
         binding.searchInputText

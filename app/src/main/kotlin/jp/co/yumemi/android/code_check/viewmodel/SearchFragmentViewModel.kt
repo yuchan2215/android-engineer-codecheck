@@ -55,6 +55,20 @@ class SearchFragmentViewModel : ViewModel() {
         }
     }
 
+    val isShowLoading by lazy {
+        MediatorLiveData<Int>().apply {
+            val observer = Observer<Any?> {
+                val additionLoading = isAdditionLoading.value ?: false
+                val statusLoading = requestStatus.value is RequestStatus.OnLoading
+                val isShow = additionLoading || statusLoading
+                this.value = VisibilityUtil.booleanToVisibility(isShow)
+            }
+            observer.onChanged(null)
+            addSource(isAdditionLoading, observer)
+            addSource(requestStatus, observer)
+        }
+    }
+
     val errorText: LiveData<String> = requestStatus.map {
         if (it !is RequestStatus.OnError) ""
         else it.error.errorDescription

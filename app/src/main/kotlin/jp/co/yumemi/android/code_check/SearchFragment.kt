@@ -40,15 +40,14 @@ class SearchFragment: Fragment(R.layout.search_fragment){
 
         binding.searchInputText
             .setOnEditorActionListener{ editText, action, _ ->
-                if (action== EditorInfo.IME_ACTION_SEARCH){
-                    editText.text.toString().let {
-                        viewModel.searchResults(it).apply{
-                            adapter.submitList(this)
-                        }
-                    }
-                    return@setOnEditorActionListener true
-                }
-                return@setOnEditorActionListener false
+                if (action != EditorInfo.IME_ACTION_SEARCH)
+                    return@setOnEditorActionListener false
+
+                val text = editText.text.toString()
+                val searchResults = viewModel.searchResults(text)
+                adapter.submitList(searchResults)
+                    
+                return@setOnEditorActionListener true
             }
 
         binding.recyclerView.also{

@@ -4,19 +4,18 @@
 package jp.co.yumemi.android.code_check
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import io.ktor.client.*
 import io.ktor.client.call.*
 import io.ktor.client.engine.android.*
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
+import java.util.*
 import jp.co.yumemi.android.code_check.TopActivity.Companion.lastSearchDate
 import kotlinx.coroutines.*
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
-import java.util.*
 
 /**
  * [SearchFragment]で利用されるViewModel。
@@ -39,7 +38,7 @@ class SearchFragmentViewModel : ViewModel() {
 
             val responseString = response.receive<String>()
 
-            val json = Json{ ignoreUnknownKeys = true }
+            val json = Json { ignoreUnknownKeys = true }
             val searchResponse = json.decodeFromString<SearchGitRepoResponse>(responseString)
 
             lastSearchDate = Date()

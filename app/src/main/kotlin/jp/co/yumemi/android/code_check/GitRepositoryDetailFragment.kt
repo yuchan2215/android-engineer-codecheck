@@ -32,7 +32,7 @@ class GitRepositoryDetailFragment : Fragment(R.layout.git_repository_detail_frag
 
         val item = args.repository
 
-        binding.apply{
+        binding.apply {
             ownerIconView.load(item.owner?.avatarUrl)
             nameView.text = item.name
             languageView.text = item.language

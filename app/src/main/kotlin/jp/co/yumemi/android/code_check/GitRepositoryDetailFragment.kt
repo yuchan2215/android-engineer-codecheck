@@ -33,13 +33,38 @@ class GitRepositoryDetailFragment : Fragment(R.layout.git_repository_detail_frag
         val item = args.repository
 
         binding.apply {
+            val starsText =
+                resources.getQuantityString(
+                    R.plurals.github_stars,
+                    item.stargazersCount,
+                    item.stargazersCount
+                )
+            val watchersText =
+                resources.getQuantityString(
+                    R.plurals.github_watchers,
+                    item.watchersCount,
+                    item.watchersCount
+                )
+            val forksText =
+                resources.getQuantityString(
+                    R.plurals.github_forks,
+                    item.forksCount,
+                    item.forksCount
+                )
+            val openIssuesText =
+                resources.getQuantityString(
+                    R.plurals.github_open_issues,
+                    item.openIssuesCount,
+                    item.openIssuesCount
+                )
+
             ownerIconView.load(item.owner?.avatarUrl)
             nameView.text = item.name
             languageView.text = item.language
-            starsView.text = "${item.stargazersCount} stars"
-            watchersView.text = "${item.watchersCount} watchers"
-            forksView.text = "${item.forksCount} forks"
-            openIssuesView.text = "${item.openIssuesCount} open issues"
+            starsView.text = starsText
+            watchersView.text = watchersText
+            forksView.text = forksText
+            openIssuesView.text = openIssuesText
         }
     }
 }

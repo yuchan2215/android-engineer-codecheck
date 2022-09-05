@@ -1,4 +1,20 @@
 <resources>
     <string name="app_name">Android Engineer CodeCheck</string>
     <string name="searchInputText_hint">GitHub のリポジトリを検索できるよー</string>
+    <plurals name="github_stars">
+        <item quantity="one">%d star</item>
+        <item quantity="other">%d stars</item>
+    </plurals>
+    <plurals name="github_watchers">
+        <item quantity="one">%d watcher</item>
+        <item quantity="other">%d watchers</item>
+    </plurals>
+    <plurals name="github_forks">
+        <item quantity="one">%d fork</item>
+        <item quantity="other">%d forks</item>
+    </plurals>
+    <plurals name="github_open_issues">
+        <item quantity="one">%d open issue</item>
+        <item quantity="other">%d open issues</item>
+    </plurals>
 </resources>

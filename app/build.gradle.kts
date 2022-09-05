@@ -38,7 +38,7 @@ android {
         jvmTarget = "11"
     }
     buildFeatures {
-        viewBinding = true
+        dataBinding = true
     }
     sourceSets {
         val kotlinAdditionalSourceSets = project.file("src/main/kotlin")

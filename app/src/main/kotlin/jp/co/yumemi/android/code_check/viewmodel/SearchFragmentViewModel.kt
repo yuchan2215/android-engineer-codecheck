@@ -56,10 +56,7 @@ class SearchFragmentViewModel : ViewModel() {
         else it.error.errorDescription
     }
 
-    val repositoryCount: LiveData<String> = requestStatus.map {
-        if (it !is RequestStatus.OnSuccess) ""
-        else QuantityStringUtil.getString(R.plurals.repository_counts, it.body.totalCount)
-    }
+    val repositoryCount = MutableLiveData("")
 
     private val _lastFetchQuery: MutableLiveData<FetchQuery?> = MutableLiveData(null)
     val lastFetchQuery: LiveData<FetchQuery?> = _lastFetchQuery
@@ -86,9 +83,15 @@ class SearchFragmentViewModel : ViewModel() {
                 _lastFetchQuery.value = null
                 _repositoryList.value = listOf()
                 additionLoading.value = false
+                repositoryCount.value = ""
                 return@launch
             }
             val successResult = requestStatus.value as RequestStatus.OnSuccess
+            repositoryCount.value =
+                QuantityStringUtil.getString(
+                    R.plurals.repository_counts,
+                    successResult.body.totalCount
+                )
 
             if (isNextPage) { // 次のページを読み込むなら
                 // 成功したならリストに値を足す

@@ -5,6 +5,7 @@ plugins {
     id("kotlin-parcelize")
     id("androidx.navigation.safeargs.kotlin")
     id("kotlinx-serialization")
+    id("org.jlleitschuh.gradle.ktlint")
 }
 
 android {
@@ -39,6 +40,10 @@ android {
     buildFeatures {
         viewBinding = true
     }
+    sourceSets {
+        val kotlinAdditionalSourceSets = project.file("src/main/kotlin")
+        findByName("main")?.java?.srcDirs(kotlinAdditionalSourceSets)
+    }
 }
 
 dependencies {
@@ -69,4 +74,9 @@ dependencies {
 
     //Kotlin serialization
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.4.0")
+}
+
+ktlint{
+    android.set(true)
+    disabledRules.set(setOf("no-wildcard-imports"))
 }

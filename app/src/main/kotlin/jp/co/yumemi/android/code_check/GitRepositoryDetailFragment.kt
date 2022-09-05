@@ -29,13 +29,13 @@ class GitRepositoryDetailFragment : Fragment(R.layout.git_repository_detail_frag
         val item = args.repository
 
         binding.apply{
-            ownerIconView.load(item.owner?.avatarUrl);
-            nameView.text = item.name;
-            languageView.text = item.language;
-            starsView.text = "${item.stargazersCount} stars";
-            watchersView.text = "${item.watchersCount} watchers";
-            forksView.text = "${item.forksCount} forks";
-            openIssuesView.text = "${item.openIssuesCount} open issues";
+            ownerIconView.load(item.owner?.avatarUrl)
+            nameView.text = item.name
+            languageView.text = item.language
+            starsView.text = "${item.stargazersCount} stars"
+            watchersView.text = "${item.watchersCount} watchers"
+            forksView.text = "${item.forksCount} forks"
+            openIssuesView.text = "${item.openIssuesCount} open issues"
         }
     }
 }

@@ -28,12 +28,14 @@ class TwoFragment : Fragment(R.layout.git_repository_detail_fragment) {
 
         val item = args.item
 
-        binding.ownerIconView.load(item.owner?.avatarUrl);
-        binding.nameView.text = item.name;
-        binding.languageView.text = item.language;
-        binding.starsView.text = "${item.stargazersCount} stars";
-        binding.watchersView.text = "${item.watchersCount} watchers";
-        binding.forksView.text = "${item.forksCount} forks";
-        binding.openIssuesView.text = "${item.openIssuesCount} open issues";
+        binding.apply{
+            ownerIconView.load(item.owner?.avatarUrl);
+            nameView.text = item.name;
+            languageView.text = item.language;
+            starsView.text = "${item.stargazersCount} stars";
+            watchersView.text = "${item.watchersCount} watchers";
+            forksView.text = "${item.forksCount} forks";
+            openIssuesView.text = "${item.openIssuesCount} open issues";
+        }
     }
 }

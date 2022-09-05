@@ -19,4 +19,10 @@
         <item quantity="other">%d open issues</item>
     </plurals>
     <string name="error_title">An error has occurred</string>
+    <string name="unknown_host_exception_error_description">Host resolution failed.\nPlease check your network connection</string>
+    <string name="forbidden_error_description">Access denied.\nTry again after a while.</string>
+    <string name="validation_error_description">The search text is incorrect. Please review.</string>
+    <string name="service_unavailable_error_description">The service is not provided by GitHub.</string>
+    <string name="not_modified_error_description">It has not been updated since the previous one.</string>
+    <string name="response_code_prefix">Response Code: </string>
 </resources>

@@ -4,7 +4,6 @@
 package jp.co.yumemi.android.code_check
 
 import android.content.Context
-import android.os.Parcelable
 import androidx.lifecycle.ViewModel
 import io.ktor.client.*
 import io.ktor.client.call.*
@@ -15,8 +14,10 @@ import jp.co.yumemi.android.code_check.TopActivity.Companion.lastSearchDate
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.runBlocking
-import kotlinx.parcelize.Parcelize
-import org.json.JSONObject
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
+import kotlinx.serialization.decodeFromString
+import kotlinx.serialization.json.Json
 import java.util.*
 
 /**
@@ -36,52 +37,50 @@ class OneViewModel(
                 parameter("q", inputText)
             }!!
 
-            val jsonBody = JSONObject(response.receive<String>())
+            val responseString = response.receive<String>()
 
-            val jsonItems = jsonBody.optJSONArray("items")!!
-
-            val items = mutableListOf<item>()
-
-            /**
-             * アイテムの個数分ループする
-             */
-            for (i in 0 until jsonItems.length()) {
-                val jsonItem = jsonItems.optJSONObject(i)!!
-                val name = jsonItem.optString("full_name")
-                val ownerIconUrl = jsonItem.optJSONObject("owner")!!.optString("avatar_url")
-                val language = jsonItem.optString("language")
-                val stargazersCount = jsonItem.optLong("stargazers_count")
-                val watchersCount = jsonItem.optLong("watchers_count")
-                val forksCount = jsonItem.optLong("forks_conut")
-                val openIssuesCount = jsonItem.optLong("open_issues_count")
-
-                items.add(
-                    item(
-                        name = name,
-                        ownerIconUrl = ownerIconUrl,
-                        language = context.getString(R.string.written_language, language),
-                        stargazersCount = stargazersCount,
-                        watchersCount = watchersCount,
-                        forksCount = forksCount,
-                        openIssuesCount = openIssuesCount
-                    )
-                )
-            }
+            val json = Json{ ignoreUnknownKeys = true }
+            val searchResponse = json.decodeFromString<SearchGitRepoResponse>(responseString)
 
             lastSearchDate = Date()
 
-            return@async items.toList()
+            return@async searchResponse.repositories
         }.await()
     }
 }
 
-@Parcelize
+/**
+ * https://api.github.com/search/repositories を叩いた時のレスポンス。
+ * [Json]のignoreUnknownKeysをtrueにしているため、利用する値のみ定義している。
+ * ドキュメント&スキーマ：https://docs.github.com/ja/rest/search#search-repositories
+ */
+@Serializable
+data class SearchGitRepoResponse(
+    @SerialName("items") val repositories: List<item>
+)
+
+/**
+ * https://api.github.com/search/repositories を叩いた時の repositories -> owner に含まれる要素。
+ * [Json]のignoreUnknownKeysをtrueにしているため、利用する値のみ定義している。
+ * ドキュメント&スキーマ：https://docs.github.com/ja/rest/search#search-repositories
+ */
+@Serializable
+data class GitOwner(
+    @SerialName("avatar_url") val avatarUrl: String
+)
+
+/**
+ * https://api.github.com/search/repositories を叩いた時の repositories に含まれる要素。
+ * [Json]のignoreUnknownKeysをtrueにしているため、利用する値のみ定義している。
+ * ドキュメント&スキーマ：https://docs.github.com/ja/rest/search#search-repositories
+ */
+@Serializable
 data class item(
-    val name: String,
-    val ownerIconUrl: String,
-    val language: String,
-    val stargazersCount: Long,
-    val watchersCount: Long,
-    val forksCount: Long,
-    val openIssuesCount: Long,
-) : Parcelable
+    @SerialName("name") val name: String,
+    @SerialName("owner") val owner: GitOwner?,
+    @SerialName("language") val language: String?,
+    @SerialName("stargazers_count") val stargazersCount: Int,
+    @SerialName("watchers_count") val watchersCount: Int,
+    @SerialName("forks_count") val forksCount: Int,
+    @SerialName("open_issues_count") val openIssuesCount: Int
+) : java.io.Serializable

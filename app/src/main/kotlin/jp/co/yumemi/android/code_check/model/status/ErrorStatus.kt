@@ -44,5 +44,10 @@ sealed class ErrorStatus {
         fun fromThrowable(throwable: Throwable): ThrowableError {
             return ThrowableError(throwable)
         }
+
+        /**リソースから[String]を取得します。*/
+        private fun getString(@StringRes resId: Int): String {
+            return CodeCheckApplication.instance.getString(resId)
+        }
     }
 }

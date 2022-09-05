@@ -91,12 +91,9 @@ class SearchFragmentViewModel : ViewModel() {
             // ステータスを更新
             requestStatus.value = GitHubApiRepository.getRepositories(newFetchQuery)
 
-            // 失敗したなら空にする
+            // 失敗したなら早期リターン
             if (requestStatus.value !is RequestStatus.OnSuccess) {
-                _lastFetchQuery.value = null
-                _repositoryList.value = listOf()
                 isAdditionLoading.value = false
-                repositoryCountText.value = ""
                 return@launch
             }
 

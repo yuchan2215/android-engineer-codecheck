@@ -6,6 +6,7 @@ package jp.co.yumemi.android.code_check
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import io.ktor.client.HttpClient
 import io.ktor.client.call.receive
 import io.ktor.client.engine.android.Android
@@ -14,9 +15,7 @@ import io.ktor.client.request.header
 import io.ktor.client.request.parameter
 import io.ktor.client.statement.HttpResponse
 import jp.co.yumemi.android.code_check.TopActivity.Companion.lastSearchDate
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.runBlocking
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.launch
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.decodeFromString
@@ -36,25 +35,23 @@ class SearchFragmentViewModel : ViewModel() {
      * @param inputText 検索したいテキスト。
      */
     fun fetchResults(inputText: String) {
-        _searchResults.value = runBlocking {
+        viewModelScope.launch {
             val client = HttpClient(Android)
 
-            return@runBlocking withContext(Dispatchers.IO) {
-                val response: HttpResponse =
-                    client.get("https://api.github.com/search/repositories") {
-                        header("Accept", "application/vnd.github.v3+json")
-                        parameter("q", inputText)
-                    }!!
+            val response: HttpResponse =
+                client.get("https://api.github.com/search/repositories") {
+                    header("Accept", "application/vnd.github.v3+json")
+                    parameter("q", inputText)
+                }!!
 
-                val responseString = response.receive<String>()
+            val responseString = response.receive<String>()
 
-                val json = Json { ignoreUnknownKeys = true }
-                val searchResponse = json.decodeFromString<SearchGitRepoResponse>(responseString)
+            val json = Json { ignoreUnknownKeys = true }
+            val searchResponse = json.decodeFromString<SearchGitRepoResponse>(responseString)
 
-                lastSearchDate = Date()
+            lastSearchDate = Date()
 
-                return@withContext searchResponse.repositories
-            }
+            _searchResults.value = searchResponse.repositories
         }
     }
 }

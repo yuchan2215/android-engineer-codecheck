@@ -12,15 +12,15 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.*
-import jp.co.yumemi.android.code_check.databinding.FragmentOneBinding
+import jp.co.yumemi.android.code_check.databinding.SearchFragmentBinding
 
-class OneFragment: Fragment(R.layout.fragment_one){
+class OneFragment: Fragment(R.layout.search_fragment){
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?)
     {
         super.onViewCreated(view, savedInstanceState)
 
-        val _binding= FragmentOneBinding.bind(view)
+        val _binding= SearchFragmentBinding.bind(view)
 
         val _viewModel= OneViewModel()
 
@@ -87,7 +87,7 @@ class CustomAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder
     {
     	val _view= LayoutInflater.from(parent.context)
-            .inflate(R.layout.layout_item, parent, false)
+            .inflate(R.layout.git_repository_list_item_layout, parent, false)
     	return ViewHolder(_view)
     }
 

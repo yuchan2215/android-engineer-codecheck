@@ -9,7 +9,7 @@
         android:id="@+id/oneFragment"
         android:name="jp.co.yumemi.android.code_check.OneFragment"
         android:label="@string/app_name"
-        tools:layout="@layout/fragment_one">
+        tools:layout="@layout/search_fragment">
         <action
             android:id="@+id/action_repositoriesFragment_to_repositoryFragment"
             app:destination="@id/twoFragment" />
@@ -19,7 +19,7 @@
         android:id="@+id/twoFragment"
         android:name="jp.co.yumemi.android.code_check.TwoFragment"
         android:label="@string/app_name"
-        tools:layout="@layout/fragment_two">
+        tools:layout="@layout/git_repository_detail_fragment">
         <argument
             android:name="item"
             app:argType="jp.co.yumemi.android.code_check.item" />

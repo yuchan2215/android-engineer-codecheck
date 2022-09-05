@@ -2,14 +2,11 @@ package jp.co.yumemi.android.code_check.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import jp.co.yumemi.android.code_check.CodeCheckApplication
 import jp.co.yumemi.android.code_check.R
 import jp.co.yumemi.android.code_check.model.github.repositories.GitRepository
 import jp.co.yumemi.android.code_check.util.QuantityStringUtil
 
 class GitRepositoryDetailFragmentViewModel(val repository: GitRepository) : ViewModel() {
-
-    private val resources = CodeCheckApplication.instance.resources
 
     val ownerImageUrl = repository.owner?.avatarUrl ?: ""
 

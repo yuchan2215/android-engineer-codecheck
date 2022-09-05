@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -24,13 +25,12 @@ import jp.co.yumemi.android.code_check.databinding.SearchFragmentBinding
  * リストのアイテムがタップされたら[GitRepositoryDetailFragment]へ推移する。
  */
 class SearchFragment : Fragment(R.layout.search_fragment) {
+    private val viewModel by viewModels<SearchFragmentViewModel>()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         val binding = SearchFragmentBinding.bind(view)
-
-        val viewModel = SearchFragmentViewModel()
 
         val adapter = object : GitRepositoryListAdapter() {
             override fun itemClick(item: GitRepository) {

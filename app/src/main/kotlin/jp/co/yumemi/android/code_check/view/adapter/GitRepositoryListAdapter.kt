@@ -1,13 +1,11 @@
 package jp.co.yumemi.android.code_check.view.adapter
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import jp.co.yumemi.android.code_check.R
+import jp.co.yumemi.android.code_check.databinding.GitRepositoryListItemLayoutBinding
 import jp.co.yumemi.android.code_check.model.github.repositories.GitRepository
 
 /**
@@ -15,25 +13,31 @@ import jp.co.yumemi.android.code_check.model.github.repositories.GitRepository
  */
 abstract class GitRepositoryListAdapter :
     ListAdapter<GitRepository, GitRepositoryListAdapter.ViewHolder>(DIFF_UTIL) {
-
-    class ViewHolder(view: View) : RecyclerView.ViewHolder(view)
-
     abstract fun itemClick(item: GitRepository)
 
+    class ViewHolder(private val binding: GitRepositoryListItemLayoutBinding) :
+        RecyclerView.ViewHolder(binding.root) {
+        fun bind(repository: GitRepository) {
+            binding.repositoryNameView.text = repository.name
+        }
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.git_repository_list_item_layout, parent, false)
+        val view = GitRepositoryListItemLayoutBinding.inflate(
+            LayoutInflater.from(parent.context),
+            parent,
+            false
+        )
         return ViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = getItem(position)
-        holder.itemView.findViewById<TextView>(R.id.repositoryNameView).text =
-            item.name
 
         holder.itemView.setOnClickListener {
             itemClick(item)
         }
+        holder.bind(item)
     }
 
     companion object {

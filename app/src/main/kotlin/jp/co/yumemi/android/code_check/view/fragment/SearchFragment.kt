@@ -85,7 +85,7 @@ class SearchFragment : Fragment(R.layout.search_fragment) {
             val firstPosition = manager.findFirstVisibleItemPosition()
 
             // 何度もリクエストしないようにロード中は何もしない。
-            if (viewModel.additionLoading.value == true) {
+            if (viewModel.isAdditionLoading.value == true) {
                 return
             }
             // 上方向のスクロールは処理しない。
@@ -104,10 +104,10 @@ class SearchFragment : Fragment(R.layout.search_fragment) {
                 lastFetch = Date()
 
                 // API 問い合わせ中は true となる。
-                viewModel.additionLoading.value = true
+                viewModel.isAdditionLoading.value = true
                 lifecycleScope.launch {
                     val lastFetch = viewModel.lastFetchQuery.value ?: run {
-                        viewModel.additionLoading.value = false
+                        viewModel.isAdditionLoading.value = false
                         return@launch
                     }
                     val nextFetch = lastFetch.copy(loadPage = lastFetch.loadPage + 1)

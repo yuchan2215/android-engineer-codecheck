@@ -34,7 +34,14 @@ class SearchFragmentViewModel : ViewModel() {
     private val _repositoryList: MutableLiveData<List<GitRepository>> = MutableLiveData(null)
     val repositoryList: LiveData<List<GitRepository>> = _repositoryList
 
-    val isShowCount by lazy {
+    val isAdditionLoading: MutableLiveData<Boolean> = MutableLiveData(false)
+
+    val repositoryCountText = MutableLiveData("")
+
+    private val _lastFetchQuery: MutableLiveData<FetchQuery?> = MutableLiveData(null)
+    val lastFetchQuery: LiveData<FetchQuery?> = _lastFetchQuery
+
+    val isShowRepositoryCount by lazy {
         MediatorLiveData<Int>().apply {
             val observer = Observer<Any?> {
                 val additionLoading = isAdditionLoading.value ?: false
@@ -43,23 +50,15 @@ class SearchFragmentViewModel : ViewModel() {
                 this.value = VisibilityUtil.booleanToVisibility(isShow)
             }
             observer.onChanged(null)
-            addSource(additionLoading, observer)
+            addSource(isAdditionLoading, observer)
             addSource(requestStatus, observer)
         }
     }
-
-    /**追加のページを読み込んでいるかどうか*/
-    val additionLoading: MutableLiveData<Boolean> = MutableLiveData(false)
 
     val errorText: LiveData<String> = requestStatus.map {
         if (it !is RequestStatus.OnError) ""
         else it.error.errorDescription
     }
-
-    val repositoryCount = MutableLiveData("")
-
-    private val _lastFetchQuery: MutableLiveData<FetchQuery?> = MutableLiveData(null)
-    val lastFetchQuery: LiveData<FetchQuery?> = _lastFetchQuery
 
     /**
      * GitHubのAPIを叩き、リポジトリ一覧を取得して[_requestStatus]の値を更新する。
@@ -74,7 +73,7 @@ class SearchFragmentViewModel : ViewModel() {
             // 最後のクエリ
             val lastQuery = lastFetchQuery.value
             // 次のページを読み込むか？
-            val isNextPage = lastQuery != null && lastQuery.isNextFetch(newFetchQuery)
+            val isLoadNextPage = lastQuery != null && lastQuery.isNextFetch(newFetchQuery)
             // ステータスを更新
             requestStatus.value = GitHubApiRepository.getRepositories(newFetchQuery)
 
@@ -82,30 +81,34 @@ class SearchFragmentViewModel : ViewModel() {
             if (requestStatus.value !is RequestStatus.OnSuccess) {
                 _lastFetchQuery.value = null
                 _repositoryList.value = listOf()
-                additionLoading.value = false
-                repositoryCount.value = ""
+                isAdditionLoading.value = false
+                repositoryCountText.value = ""
                 return@launch
             }
-            val successResult = requestStatus.value as RequestStatus.OnSuccess
-            repositoryCount.value =
-                QuantityStringUtil.getString(
-                    R.plurals.repository_counts,
-                    successResult.body.totalCount
-                )
 
-            if (isNextPage) { // 次のページを読み込むなら
-                // 成功したならリストに値を足す
+            val successResult = requestStatus.value as RequestStatus.OnSuccess
+
+            /**
+             * もし次のページを読み込むなら、既存のリストに追加する。
+             * そうでないなら、読み込んだ値はそのまま代入する。
+             */
+            if (isLoadNextPage) {
                 val oldList = _repositoryList.value ?: listOf()
                 val newList = oldList.toMutableList().apply {
                     addAll(successResult.body.repositories)
                 }
                 _repositoryList.value = newList
-            } else { // 新規のページを読み込むなら
+            } else {
                 _repositoryList.value = successResult.body.repositories
             }
             // 状態を変更
             _lastFetchQuery.value = newFetchQuery
-            additionLoading.value = false
+            isAdditionLoading.value = false
+            repositoryCountText.value =
+                QuantityStringUtil.getString(
+                    R.plurals.repository_counts,
+                    successResult.body.totalCount
+                )
         }
     }
 }

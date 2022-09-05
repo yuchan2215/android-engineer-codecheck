@@ -49,22 +49,25 @@ class SearchFragment : Fragment(R.layout.search_fragment) {
         return@OnEditorActionListener true
     }
 
+    /**
+     * [GitRepositoryListAdapter]を実装する。
+     * クリックすると[gotoRepositoryFragment]を呼び出す。
+     */
+    private val repositoryListAdapter = object : GitRepositoryListAdapter() {
+        override fun itemClick(item: GitRepository) {
+            gotoRepositoryFragment(item)
+        }
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         _binding = SearchFragmentBinding.bind(view)
 
-        val adapter = object : GitRepositoryListAdapter() {
-            override fun itemClick(item: GitRepository) {
-                gotoRepositoryFragment(item)
-            }
-        }
-
         // 結果が更新されたらリストを更新する。
         viewModel.requestStatus.observe(viewLifecycleOwner) {
             if (it !is RequestStatus.OnSuccess) return@observe
-
-            adapter.submitList(it.body.repositories)
+            repositoryListAdapter.submitList(it.body.repositories)
         }
 
         binding.viewModel = viewModel
@@ -82,7 +85,7 @@ class SearchFragment : Fragment(R.layout.search_fragment) {
             it.layoutManager = layoutManager
             it.addItemDecoration(dividerItemDecoration)
 
-            it.adapter = adapter
+            it.adapter = repositoryListAdapter
         }
     }
 

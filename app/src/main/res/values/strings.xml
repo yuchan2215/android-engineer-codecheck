@@ -29,4 +29,5 @@
         <item quantity="one">%d repository</item>
         <item quantity="other">%d repositories</item>
     </plurals>
+    <string name="error_display">%s(%s): %s</string>
 </resources>

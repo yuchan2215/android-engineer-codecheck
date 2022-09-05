@@ -26,7 +26,7 @@ class GitRepositoryDetailFragment : Fragment(R.layout.git_repository_detail_frag
 
         _binding = GitRepositoryDetailFragmentBinding.bind(view)
 
-        val item = args.item
+        val item = args.repository
 
         binding.apply{
             ownerIconView.load(item.owner?.avatarUrl);

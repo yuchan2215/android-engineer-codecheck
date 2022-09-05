@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
+import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -31,6 +32,23 @@ class SearchFragment : Fragment(R.layout.search_fragment) {
     private var _binding: SearchFragmentBinding? = null
     private val binding get() = _binding!!
 
+    /**
+     * 検索した際に呼び出されるリスナー。
+     * [viewModel]に値を渡し、キーボードを閉じてフォーカスを外す。
+     */
+    private val editorActionListener = TextView.OnEditorActionListener { editText, actionId, _ ->
+        if (actionId != EditorInfo.IME_ACTION_SEARCH)
+            return@OnEditorActionListener false
+
+        val text = editText.text.toString()
+        viewModel.fetchResults(text)
+
+        hideKeyboard()
+        clearFocus()
+
+        return@OnEditorActionListener true
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -52,19 +70,8 @@ class SearchFragment : Fragment(R.layout.search_fragment) {
         binding.viewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
 
-        binding.searchInputText
-            .setOnEditorActionListener { editText, action, _ ->
-                if (action != EditorInfo.IME_ACTION_SEARCH)
-                    return@setOnEditorActionListener false
-
-                val text = editText.text.toString()
-                viewModel.fetchResults(text)
-
-                hideKeyboard()
-                clearFocus()
-
-                return@setOnEditorActionListener true
-            }
+        // 検索時のアクション
+        binding.searchInputText.setOnEditorActionListener(editorActionListener)
 
         binding.recyclerView.also {
 

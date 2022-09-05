@@ -64,6 +64,7 @@
             android:id="@+id/recyclerView"
             android:layout_width="0dp"
             android:layout_height="0dp"
+            android:visibility="@{viewModel.requestStatus.isShowResult}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -73,9 +74,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:indeterminate="true"
+            android:visibility="@{viewModel.requestStatus.isShowLoading}"
             app:layout_constraintTop_toTopOf="@id/recyclerView"
             tools:visibility="visible"
-            android:visibility="gone"
             android:id="@+id/linear_progress" />
 
         <TextView
@@ -105,7 +106,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             tools:visibility="visible"
-            android:visibility="gone" />
+            android:visibility="@{viewModel.requestStatus.isShowError}" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

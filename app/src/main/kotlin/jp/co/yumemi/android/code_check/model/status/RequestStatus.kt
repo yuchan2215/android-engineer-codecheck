@@ -11,12 +11,12 @@ sealed class RequestStatus<T>(
 ) {
     /**成功していてBodyがある*/
     data class OnSuccess<T>(val body: T) : RequestStatus<T>(
-        isShowResult = View.INVISIBLE
+        isShowResult = View.VISIBLE
     )
 
     /**失敗していて[ErrorStatus]がある*/
     data class OnError<T>(val error: ErrorStatus) : RequestStatus<T>(
-        isShowError = View.INVISIBLE
+        isShowError = View.VISIBLE
     )
 
     /**読み込み中である*/

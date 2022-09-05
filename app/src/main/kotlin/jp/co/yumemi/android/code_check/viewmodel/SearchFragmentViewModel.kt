@@ -6,6 +6,7 @@ package jp.co.yumemi.android.code_check.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.map
 import androidx.lifecycle.viewModelScope
 import java.util.Date
 import jp.co.yumemi.android.code_check.model.github.repositories.SearchGitRepoResponse
@@ -23,6 +24,11 @@ class SearchFragmentViewModel : ViewModel() {
         MutableLiveData(RequestStatus.Nothing())
 
     val requestStatus: LiveData<RequestStatus<SearchGitRepoResponse>> = _requestStatus
+
+    val errorText: LiveData<String> = requestStatus.map {
+        if (it !is RequestStatus.OnError) ""
+        else it.error.errorDescription
+    }
 
     /**
      * GitHubのAPIを叩き、リポジトリ一覧を取得して[_searchResults]の値を更新する。

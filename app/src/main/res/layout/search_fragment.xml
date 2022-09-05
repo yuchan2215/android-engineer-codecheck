@@ -96,6 +96,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/error_description"
             tools:text="こんなエラーが発生しましたよ。"
+            android:text="@{viewModel.errorText}"
             app:layout_constraintTop_toBottomOf="@id/error_title"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

@@ -6,7 +6,10 @@ import jp.co.yumemi.android.code_check.network.GitHubApi
 import jp.co.yumemi.android.code_check.network.GitHubApiService
 
 object GitHubApiRepository {
-    /**GitHubのリポジトリAPI一覧を返す[GitHubApiService]を叩く。*/
+    /**
+     * GitHubのリポジトリを[GitHubApiService]を介して叩きます。
+     * 返り値の作成は[RequestStatus.Companion]にある関数に委譲しています。
+     */
     suspend fun getRepositories(query: String): RequestStatus<SearchGitRepoResponse> {
         return try {
             val response = GitHubApi.gitHubApiService.getRepositories(query)

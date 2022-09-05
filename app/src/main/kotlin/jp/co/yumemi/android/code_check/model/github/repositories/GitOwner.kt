@@ -2,6 +2,7 @@ package jp.co.yumemi.android.code_check.model.github.repositories
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.json.Json
 
 /**
  * https://api.github.com/search/repositories を叩いた時の repositories -> owner に含まれる要素。

@@ -34,7 +34,7 @@ class SearchFragment : Fragment(R.layout.search_fragment) {
 
     /**
      * 検索した際に呼び出されるリスナー。
-     * [viewModel]に値を渡し、キーボードを閉じてフォーカスを外す。
+     * [viewModel]に値を渡し、キーボードを閉じてフォーカスを外す。（横画面のフルスクリーンキーボード対策）
      */
     private val editorActionListener = TextView.OnEditorActionListener { editText, actionId, _ ->
         if (actionId != EditorInfo.IME_ACTION_SEARCH)

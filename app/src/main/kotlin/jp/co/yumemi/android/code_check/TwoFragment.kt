@@ -26,7 +26,7 @@ class TwoFragment : Fragment(R.layout.git_repository_detail_fragment) {
 
         _binding = GitRepositoryDetailFragmentBinding.bind(view)
 
-        var item = args.item
+        val item = args.item
 
         binding.ownerIconView.load(item.owner?.avatarUrl);
         binding.nameView.text = item.name;

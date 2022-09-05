@@ -3,47 +3,58 @@
  */
 package jp.co.yumemi.android.code_check
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import io.ktor.client.*
-import io.ktor.client.call.*
-import io.ktor.client.engine.android.*
-import io.ktor.client.request.*
-import io.ktor.client.statement.*
-import java.util.*
+import io.ktor.client.HttpClient
+import io.ktor.client.call.receive
+import io.ktor.client.engine.android.Android
+import io.ktor.client.request.get
+import io.ktor.client.request.header
+import io.ktor.client.request.parameter
+import io.ktor.client.statement.HttpResponse
 import jp.co.yumemi.android.code_check.TopActivity.Companion.lastSearchDate
-import kotlinx.coroutines.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withContext
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
+import java.util.Date
 
 /**
  * [SearchFragment]で利用されるViewModel。
  */
 class SearchFragmentViewModel : ViewModel() {
 
+    private val _searchResults = MutableLiveData<List<GitRepository>?>(null)
+    val searchResults: LiveData<List<GitRepository>?> = _searchResults
+
     /**
-     * GitHubのAPIを叩き、リポジトリ一覧を取得する。
+     * GitHubのAPIを叩き、リポジトリ一覧を取得して[_searchResults]の値を更新する。
      * @param inputText 検索したいテキスト。
-     * @return 検索結果のリスト。
      */
-    fun searchResults(inputText: String): List<GitRepository> = runBlocking {
-        val client = HttpClient(Android)
+    fun fetchResults(inputText: String) {
+        _searchResults.value = runBlocking {
+            val client = HttpClient(Android)
 
-        return@runBlocking withContext(Dispatchers.IO) {
-            val response: HttpResponse = client.get("https://api.github.com/search/repositories") {
-                header("Accept", "application/vnd.github.v3+json")
-                parameter("q", inputText)
-            }!!
+            return@runBlocking withContext(Dispatchers.IO) {
+                val response: HttpResponse =
+                    client.get("https://api.github.com/search/repositories") {
+                        header("Accept", "application/vnd.github.v3+json")
+                        parameter("q", inputText)
+                    }!!
 
-            val responseString = response.receive<String>()
+                val responseString = response.receive<String>()
 
-            val json = Json { ignoreUnknownKeys = true }
-            val searchResponse = json.decodeFromString<SearchGitRepoResponse>(responseString)
+                val json = Json { ignoreUnknownKeys = true }
+                val searchResponse = json.decodeFromString<SearchGitRepoResponse>(responseString)
 
-            lastSearchDate = Date()
+                lastSearchDate = Date()
 
-            return@withContext searchResponse.repositories
+                return@withContext searchResponse.repositories
+            }
         }
     }
 }

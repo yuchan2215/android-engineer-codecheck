@@ -38,14 +38,20 @@ class SearchFragment : Fragment(R.layout.search_fragment) {
             }
         }
 
+        // 結果が更新されたらリストを更新する。
+        viewModel.searchResults.observe(viewLifecycleOwner) {
+            if (it == null) return@observe
+
+            adapter.submitList(it)
+        }
+
         binding.searchInputText
             .setOnEditorActionListener { editText, action, _ ->
                 if (action != EditorInfo.IME_ACTION_SEARCH)
                     return@setOnEditorActionListener false
 
                 val text = editText.text.toString()
-                val searchResults = viewModel.searchResults(text)
-                adapter.submitList(searchResults)
+                viewModel.fetchResults(text)
 
                 return@setOnEditorActionListener true
             }

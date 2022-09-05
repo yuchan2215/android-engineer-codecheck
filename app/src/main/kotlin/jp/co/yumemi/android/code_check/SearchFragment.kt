@@ -61,22 +61,11 @@ class SearchFragment: Fragment(R.layout.search_fragment){
     }
 }
 
-val diff_util= object: DiffUtil.ItemCallback<GitRepository>(){
-    override fun areItemsTheSame(oldItem: GitRepository, newItem: GitRepository): Boolean
-    {
-        return oldItem.name== newItem.name
-    }
 
-    override fun areContentsTheSame(oldItem: GitRepository, newItem: GitRepository): Boolean
-    {
-        return oldItem== newItem
-    }
-
-}
 
 class GitRepositoryListAdapter(
     private val itemClickListener: OnItemClickListener,
-) : ListAdapter<GitRepository, GitRepositoryListAdapter.ViewHolder>(diff_util){
+) : ListAdapter<GitRepository, GitRepositoryListAdapter.ViewHolder>(DIFF_UTIL){
 
     class ViewHolder(view: View): RecyclerView.ViewHolder(view)
 
@@ -100,5 +89,19 @@ class GitRepositoryListAdapter(
     	holder.itemView.setOnClickListener{
      		itemClickListener.itemClick(item)
     	}
+    }
+
+    companion object {
+        private val DIFF_UTIL = object: DiffUtil.ItemCallback<GitRepository>(){
+            override fun areItemsTheSame(oldItem: GitRepository, newItem: GitRepository): Boolean
+            {
+                return oldItem.name== newItem.name
+            }
+
+            override fun areContentsTheSame(oldItem: GitRepository, newItem: GitRepository): Boolean
+            {
+                return oldItem== newItem
+            }
+        }
     }
 }

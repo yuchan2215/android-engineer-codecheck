@@ -14,9 +14,9 @@ object GitHubApiRepository {
     suspend fun getRepositories(query: FetchQuery): RequestStatus<SearchGitRepoResponse> {
         return try {
             val response = GitHubApi.gitHubApiService.getRepositories(query.query, query.loadPage)
-            RequestStatus.createStatusFromRetrofit(response)
+            RequestStatus.createStatusFromRetrofit(response, query)
         } catch (t: Throwable) {
-            RequestStatus.createErrorStatusFromThrowable(t)
+            RequestStatus.createErrorStatusFromThrowable(t, query)
         }
     }
 }

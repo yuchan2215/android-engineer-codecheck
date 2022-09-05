@@ -29,9 +29,6 @@ class SearchFragment: Fragment(R.layout.search_fragment){
 
         val viewModel= SearchFragmentViewModel()
 
-        val layoutManager= LinearLayoutManager(requireContext())
-        val dividerItemDecoration=
-            DividerItemDecoration(requireContext(), layoutManager.orientation)
         val adapter= GitRepositoryListAdapter(object : GitRepositoryListAdapter.OnItemClickListener{
             override fun itemClick(item: GitRepository){
                 gotoRepositoryFragment(item)
@@ -46,13 +43,19 @@ class SearchFragment: Fragment(R.layout.search_fragment){
                 val text = editText.text.toString()
                 val searchResults = viewModel.searchResults(text)
                 adapter.submitList(searchResults)
-                    
+
                 return@setOnEditorActionListener true
             }
 
         binding.recyclerView.also{
+
+            //項目を線で区切る
+            val layoutManager= LinearLayoutManager(requireContext())
+            val dividerItemDecoration=
+                DividerItemDecoration(requireContext(), layoutManager.orientation)
             it.layoutManager= layoutManager
             it.addItemDecoration(dividerItemDecoration)
+            
             it.adapter= adapter
         }
     }

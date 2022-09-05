@@ -19,6 +19,7 @@
         tools:context=".view.activity.TopActivity">
 
         <com.google.android.material.card.MaterialCardView
+            style="?attr/materialCardViewElevatedStyle"
             android:id="@+id/searchBar"
             android:layout_width="0dp"
             android:layout_height="?attr/actionBarSize"

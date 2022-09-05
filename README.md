@@ -21,6 +21,19 @@
 
 ※ ライブラリの利用はオープンソースのものに限ります。
 
+### フォーマット
+
+このリポジトリは`lint`と`ktlint`が導入されています。
+
+lintについて
+`./gradlew lint` : チェックを行います。
+
+ktlintについて
+`./gradlew ktlintCheck` : Linterがチェックします
+`./gradlew ktlintFormat` : Linterがフォーマットします
+`./gradlew addKtlintCheckGitPreCommitHook` : コミット前にフォーマットされているかチェックするようにします。
+`./gradlew addKtlintFormatGitPreCommitHook` : コミット前にフォーマットを実行します
+
 ### 動作
 
 1. 何かしらのキーワードを入力

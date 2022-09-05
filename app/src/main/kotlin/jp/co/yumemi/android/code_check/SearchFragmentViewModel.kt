@@ -4,15 +4,14 @@
 package jp.co.yumemi.android.code_check
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import io.ktor.client.*
 import io.ktor.client.call.*
 import io.ktor.client.engine.android.*
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import jp.co.yumemi.android.code_check.TopActivity.Companion.lastSearchDate
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.async
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.*
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.decodeFromString
@@ -28,7 +27,7 @@ class SearchFragmentViewModel : ViewModel() {
     fun searchResults(inputText: String): List<GitRepository> = runBlocking {
         val client = HttpClient(Android)
 
-        return@runBlocking GlobalScope.async {
+        return@runBlocking withContext(Dispatchers.IO) {
             val response: HttpResponse = client.get("https://api.github.com/search/repositories") {
                 header("Accept", "application/vnd.github.v3+json")
                 parameter("q", inputText)
@@ -41,8 +40,8 @@ class SearchFragmentViewModel : ViewModel() {
 
             lastSearchDate = Date()
 
-            return@async searchResponse.repositories
-        }.await()
+            return@withContext searchResponse.repositories
+        }
     }
 }
 

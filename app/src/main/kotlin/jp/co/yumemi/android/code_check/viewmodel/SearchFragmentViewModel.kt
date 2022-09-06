@@ -92,6 +92,9 @@ class SearchFragmentViewModel : ViewModel() {
         }
     }
 
+    val searchUser: MutableLiveData<Boolean> = MutableLiveData(true)
+    val searchOrganization: MutableLiveData<Boolean> = MutableLiveData(true)
+    val searchOwnerText: MutableLiveData<String> = MutableLiveData("")
     /**
      * 検索を実行します。
      * @param loadNext 次のページを読み込むかどうか

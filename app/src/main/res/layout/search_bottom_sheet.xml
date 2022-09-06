@@ -4,6 +4,13 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <data>
+
+        <variable
+            name="viewModel"
+            type="jp.co.yumemi.android.code_check.viewmodel.SearchFragmentViewModel" />
+    </data>
+
     <LinearLayout
         android:id="@+id/bottom_sheet"
         android:layout_width="match_parent"
@@ -54,6 +61,7 @@
                 android:layout_height="wrap_content"
                 android:inputType="text"
                 android:maxLines="1"
+                android:text="@={viewModel.searchOwnerText}" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.chip.ChipGroup
@@ -67,6 +75,7 @@
                 style="@style/Widget.Material3.Chip.Filter"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:checked="@={viewModel.searchUser}"
                 android:text="@string/git_owner_type_user" />
 
             <com.google.android.material.chip.Chip
@@ -74,6 +83,7 @@
                 style="@style/Widget.Material3.Chip.Filter"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:checked="@={viewModel.searchOrganization}"
                 android:text="@string/git_owner_type_org" />
 
         </com.google.android.material.chip.ChipGroup>

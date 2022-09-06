@@ -14,7 +14,8 @@ class SearchBottomSheet : BottomSheetDialogFragment() {
         const val TAG = "SEARCH_BOTTOM_SHEET"
     }
 
-    private val viewModel: SearchFragmentViewModel by viewModels({ requireParentFragment() })
+    private val viewModel:
+        SearchFragmentViewModel by viewModels({ requireParentFragment() })
 
     private var _binding: SearchBottomSheetBinding? = null
     private val binding get() = _binding!!
@@ -29,6 +30,8 @@ class SearchBottomSheet : BottomSheetDialogFragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        binding.lifecycleOwner = viewLifecycleOwner
+        binding.viewModel = viewModel
         binding.reSearchButton.setOnClickListener {
             viewModel.doSearch()
         }

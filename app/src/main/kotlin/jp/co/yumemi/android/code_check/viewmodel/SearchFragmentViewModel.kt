@@ -37,7 +37,24 @@ class SearchFragmentViewModel : ViewModel() {
 
     val isAdditionLoading: MutableLiveData<Boolean> = MutableLiveData(false)
 
-    val repositoryCountText = MutableLiveData("")
+    /**
+     * [requestStatus]を監視し、リポジトリのカウント文字列を生成する。
+     * [requestStatus]が[RequestStatus.OnLoading]以外の時は文字を書き換えない。
+     */
+    val repositoryCountText by lazy {
+        MediatorLiveData<String>().apply {
+            this.value = ""
+            addSource(requestStatus) {
+                if (it !is RequestStatus.OnSuccess)
+                    return@addSource
+
+                this.value = QuantityStringUtil.getString(
+                    R.plurals.repository_counts,
+                    it.body.totalCount
+                )
+            }
+        }
+    }
 
     val inputQueryText: MutableLiveData<String> = MutableLiveData()
 
@@ -162,13 +179,6 @@ class SearchFragmentViewModel : ViewModel() {
             // 状態を変更
             _requestCache.value = cache
             isAdditionLoading.value = false
-
-            if (status is RequestStatus.OnSuccess)
-                repositoryCountText.value =
-                    QuantityStringUtil.getString(
-                        R.plurals.repository_counts,
-                        status.body.totalCount
-                    )
         }
     }
 }

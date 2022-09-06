@@ -22,6 +22,7 @@ import jp.co.yumemi.android.code_check.databinding.SearchFragmentBinding
 import jp.co.yumemi.android.code_check.model.github.repositories.GitRepository
 import jp.co.yumemi.android.code_check.model.status.FetchQuery
 import jp.co.yumemi.android.code_check.view.adapter.GitRepositoryListAdapter
+import jp.co.yumemi.android.code_check.view.bottomsheet.SearchBottomSheet
 import jp.co.yumemi.android.code_check.viewmodel.SearchFragmentViewModel
 import kotlinx.coroutines.launch
 
@@ -145,6 +146,11 @@ class SearchFragment : Fragment(R.layout.search_fragment) {
 
             it.adapter = repositoryListAdapter
             it.addOnScrollListener(scrollListener)
+        }
+
+        binding.floatingButton.setOnClickListener {
+            val bottomSheet = SearchBottomSheet()
+            bottomSheet.show(this.childFragmentManager, SearchBottomSheet.TAG)
         }
     }
 

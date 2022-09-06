@@ -31,4 +31,6 @@
     </plurals>
     <string name="error_display">%s(%s): %s</string>
     <string name="search_setting_open_floating_button_description">Open Search Settings</string>
+    <string name="search_setting_title">Search Setting</string>
+    <string name="re_search">Search</string>
 </resources>

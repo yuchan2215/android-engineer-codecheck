@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <LinearLayout
         android:id="@+id/bottom_sheet"
@@ -35,6 +36,25 @@
                 android:layout_height="wrap_content"
                 android:text="@string/re_search" />
         </LinearLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/owner_name_input_layout"
+            style="?attr/textInputFilledStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:hint="@string/owner_name_input_hint"
+            app:endIconMode="clear_text"
+            app:helperText="@string/owner_name_input_helper_text"
+            app:startIconDrawable="@drawable/git_owner">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/owner_name_input_edit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="text"
+                android:maxLines="1"
+        </com.google.android.material.textfield.TextInputLayout>
 
     </LinearLayout>
 </layout>

@@ -7,6 +7,7 @@ import jp.co.yumemi.android.code_check.model.status.request.CacheAndRequestStatu
 import jp.co.yumemi.android.code_check.model.status.request.FetchQuery
 import jp.co.yumemi.android.code_check.model.status.request.RequestCache
 import jp.co.yumemi.android.code_check.model.status.request.SearchQuery
+import jp.co.yumemi.android.code_check.model.status.request.SortQuery
 import jp.co.yumemi.android.code_check.network.GitHubApi
 import jp.co.yumemi.android.code_check.network.GitHubApiService
 
@@ -18,7 +19,11 @@ object GitHubApiRepository {
     private suspend fun getRepositories(query: FetchQuery): RequestStatus<SearchGitRepoResponse> {
         return try {
             val response =
-                GitHubApi.gitHubApiService.getRepositories(query.toStringQuery(), query.loadPage)
+                GitHubApi.gitHubApiService.getRepositories(
+                    query.toStringQuery(),
+                    query.sortQuery.queryText,
+                    query.loadPage
+                )
             RequestStatus.createStatusFromRetrofit(response, query)
         } catch (t: Throwable) {
             RequestStatus.createErrorStatusFromThrowable(t, query)
@@ -35,6 +40,7 @@ object GitHubApiRepository {
      */
     suspend fun getRepositoriesWithCache(
         queryList: List<SearchQuery>,
+        sortQuery: SortQuery,
         cache: RequestCache<GitRepository>?,
         isRequestNextPage: Boolean = false
     ): CacheAndRequestStatus<GitRepository, SearchGitRepoResponse> {
@@ -47,7 +53,7 @@ object GitHubApiRepository {
          * 同じクエリであり、[isRequestNextPage]なら、
          * 次のページを読み込む[FetchQuery]を作成します。
          */
-        val isSameQuery: Boolean = lastRequestQuery?.isSameQuery(queryList) ?: false
+        val isSameQuery: Boolean = lastRequestQuery?.isSameQuery(queryList, sortQuery) ?: false
         if (lastRequestQuery != null && isSameQuery && isRequestNextPage) {
             isLoadNextPage = true
             loadPage = lastRequestQuery.loadPage + 1
@@ -55,7 +61,7 @@ object GitHubApiRepository {
             isLoadNextPage = false
             loadPage = 1
         }
-        val fetchQuery = FetchQuery(queryList, loadPage)
+        val fetchQuery = FetchQuery(queryList, sortQuery, loadPage)
 
         // APIリクエスト実行
         val requestStatus = getRepositories(fetchQuery)

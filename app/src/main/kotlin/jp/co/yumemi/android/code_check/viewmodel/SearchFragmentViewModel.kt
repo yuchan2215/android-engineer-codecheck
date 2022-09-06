@@ -18,6 +18,7 @@ import jp.co.yumemi.android.code_check.model.github.repositories.SearchGitRepoRe
 import jp.co.yumemi.android.code_check.model.status.RequestStatus
 import jp.co.yumemi.android.code_check.model.status.request.RequestCache
 import jp.co.yumemi.android.code_check.model.status.request.SearchQuery
+import jp.co.yumemi.android.code_check.model.status.request.SortQuery
 import jp.co.yumemi.android.code_check.repository.GitHubApiRepository
 import jp.co.yumemi.android.code_check.util.QuantityStringUtil
 import jp.co.yumemi.android.code_check.util.VisibilityUtil
@@ -143,6 +144,17 @@ class SearchFragmentViewModel : ViewModel() {
         return queries
     }
 
+    private fun getSortQuery(): SortQuery {
+        return when (sortType.value) {
+            R.id.sort_forks -> SortQuery.Forks
+            R.id.sort_stars -> SortQuery.Stars
+            R.id.sort_best_match_and_default -> SortQuery.Default
+            R.id.sort_updated -> SortQuery.Updated
+            R.id.sort_help_wanted_issues -> SortQuery.HelpWantedIssues
+            else -> SortQuery.Default
+        }
+    }
+
     /**
      * 検索設定のクエリを取得する。
      */
@@ -178,6 +190,7 @@ class SearchFragmentViewModel : ViewModel() {
             // キャッシュを含めたデータを取得
             val cacheAndRequestStatus = GitHubApiRepository.getRepositoriesWithCache(
                 queryList,
+                getSortQuery(),
                 requestCache.value,
                 isLoadNextPage
             )

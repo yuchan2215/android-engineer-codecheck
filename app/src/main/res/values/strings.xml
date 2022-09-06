@@ -44,4 +44,6 @@
     <string name="sort_forks">Forks</string>
     <string name="sort_help_wanted_issues">Help Wanted Issues</string>
     <string name="sort_updated">Updated</string>
+    <string name="ascending_button_text">Ascending</string>
+    <string name="descending_button_text">Descending</string>
 </resources>

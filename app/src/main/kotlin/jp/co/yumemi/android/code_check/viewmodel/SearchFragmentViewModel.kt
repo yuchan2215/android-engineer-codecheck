@@ -115,6 +115,7 @@ class SearchFragmentViewModel : ViewModel() {
     val languageText: MutableLiveData<String> = MutableLiveData("")
 
     val sortType: MutableLiveData<Int> = MutableLiveData(R.id.sort_best_match_and_default)
+    val sortOrder: MutableLiveData<Int> = MutableLiveData(R.id.order_desc)
 
     private fun getLanguageQuery(): List<SearchQuery> {
         val languageText = languageText.value ?: ""

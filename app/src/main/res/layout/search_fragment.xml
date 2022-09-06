@@ -18,6 +18,16 @@
         android:focusableInTouchMode="true"
         tools:context=".view.activity.TopActivity">
 
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/floating_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_margin="16dp"
+            android:contentDescription="@string/search_setting_open_floating_button_description"
+            android:src="@drawable/settings" />
+
         <com.google.android.material.card.MaterialCardView
             style="?attr/materialCardViewElevatedStyle"
             android:id="@+id/searchBar"

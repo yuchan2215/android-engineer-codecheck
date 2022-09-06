@@ -30,4 +30,5 @@
         <item quantity="other">%d repositories</item>
     </plurals>
     <string name="error_display">%s(%s): %s</string>
+    <string name="search_setting_open_floating_button_description">Open Search Settings</string>
 </resources>

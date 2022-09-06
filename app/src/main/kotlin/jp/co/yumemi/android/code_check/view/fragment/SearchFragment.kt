@@ -11,7 +11,6 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -20,11 +19,9 @@ import java.util.Date
 import jp.co.yumemi.android.code_check.R
 import jp.co.yumemi.android.code_check.databinding.SearchFragmentBinding
 import jp.co.yumemi.android.code_check.model.github.repositories.GitRepository
-import jp.co.yumemi.android.code_check.model.status.FetchQuery
 import jp.co.yumemi.android.code_check.view.adapter.GitRepositoryListAdapter
 import jp.co.yumemi.android.code_check.view.bottomsheet.SearchBottomSheet
 import jp.co.yumemi.android.code_check.viewmodel.SearchFragmentViewModel
-import kotlinx.coroutines.launch
 
 /**
  * GitHubリポジトリを検索するフラグメント。
@@ -45,13 +42,7 @@ class SearchFragment : Fragment(R.layout.search_fragment) {
         if (actionId != EditorInfo.IME_ACTION_SEARCH)
             return@OnEditorActionListener false
 
-        val text = editText.text.toString()
-
-        val fetchStatus = FetchQuery(
-            query = text,
-            loadPage = 1
-        )
-        viewModel.fetchResults(fetchStatus)
+        viewModel.doSearch()
 
         hideKeyboard()
         clearFocus()
@@ -103,17 +94,7 @@ class SearchFragment : Fragment(R.layout.search_fragment) {
                     return
                 }
                 lastFetch = Date()
-
-                // API 問い合わせ中は true となる。
-                viewModel.isAdditionLoading.value = true
-                lifecycleScope.launch {
-                    val lastFetch = viewModel.lastFetchQuery.value ?: run {
-                        viewModel.isAdditionLoading.value = false
-                        return@launch
-                    }
-                    val nextFetch = lastFetch.copy(loadPage = lastFetch.loadPage + 1)
-                    viewModel.fetchResults(nextFetch)
-                }
+                viewModel.doSearch(true)
             }
         }
     }

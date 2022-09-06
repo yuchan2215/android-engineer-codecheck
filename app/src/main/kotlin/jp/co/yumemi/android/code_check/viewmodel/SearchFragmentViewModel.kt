@@ -93,6 +93,26 @@ class SearchFragmentViewModel : ViewModel() {
     }
 
     /**
+     * 検索を実行します。
+     * @param loadNext 次のページを読み込むかどうか
+     */
+    fun doSearch(loadNext: Boolean = false) {
+        val page = if (loadNext && lastFetchQuery.value != null) {
+            isAdditionLoading.value = true
+            lastFetchQuery.value!!.loadPage + 1
+        } else {
+            1
+        }
+
+        val query = FetchQuery(
+            query = inputQueryText.value ?: "",
+            loadPage = page
+        )
+
+        fetchResults(query)
+    }
+
+    /**
      * GitHubのAPIを叩き、リポジトリ一覧を取得して[_requestStatus]の値を更新する。
      * 読み込むまでは[RequestStatus.OnLoading]にする。
      * @param newFetchQuery 検索クエリ

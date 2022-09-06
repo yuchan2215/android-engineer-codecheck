@@ -136,8 +136,15 @@ class SearchFragmentViewModel : ViewModel() {
             1
         }
 
+        val queryText = listOf(
+            inputQueryText.value ?: "",
+            getSearchSettingQueryText()
+        ).filter {
+            it.isNotEmpty()
+        }.joinToString(" ")
+
         val query = FetchQuery(
-            query = inputQueryText.value ?: "",
+            query = queryText,
             loadPage = page
         )
 

@@ -35,4 +35,6 @@
     <string name="re_search">Search</string>
     <string name="owner_name_input_hint">Owner Name</string>
     <string name="owner_name_input_helper_text">GitHub User Name or GitHub Organization Name</string>
+    <string name="git_owner_type_user">User</string>
+    <string name="git_owner_type_org">Organization</string>
 </resources>

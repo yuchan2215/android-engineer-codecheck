@@ -56,5 +56,27 @@
                 android:maxLines="1"
         </com.google.android.material.textfield.TextInputLayout>
 
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/owner_type_chip_group"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="8dp">
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/git_owner_type_user"
+                style="@style/Widget.Material3.Chip.Filter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/git_owner_type_user" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/git_owner_type_org"
+                style="@style/Widget.Material3.Chip.Filter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/git_owner_type_org" />
+
+        </com.google.android.material.chip.ChipGroup>
+
     </LinearLayout>
 </layout>

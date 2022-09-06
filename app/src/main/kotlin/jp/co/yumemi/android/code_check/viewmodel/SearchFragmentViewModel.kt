@@ -16,6 +16,7 @@ import jp.co.yumemi.android.code_check.R
 import jp.co.yumemi.android.code_check.model.github.repositories.GitRepository
 import jp.co.yumemi.android.code_check.model.github.repositories.SearchGitRepoResponse
 import jp.co.yumemi.android.code_check.model.status.RequestStatus
+import jp.co.yumemi.android.code_check.model.status.request.OrderQuery
 import jp.co.yumemi.android.code_check.model.status.request.RequestCache
 import jp.co.yumemi.android.code_check.model.status.request.SearchQuery
 import jp.co.yumemi.android.code_check.model.status.request.SortQuery
@@ -156,6 +157,14 @@ class SearchFragmentViewModel : ViewModel() {
         }
     }
 
+    private fun getOrderQuery(): OrderQuery {
+        return when (sortOrder.value) {
+            R.id.order_desc -> OrderQuery.DESC
+            R.id.order_asc -> OrderQuery.ASC
+            else -> OrderQuery.DESC
+        }
+    }
+
     /**
      * 検索設定のクエリを取得する。
      */
@@ -192,6 +201,7 @@ class SearchFragmentViewModel : ViewModel() {
             val cacheAndRequestStatus = GitHubApiRepository.getRepositoriesWithCache(
                 queryList,
                 getSortQuery(),
+                getOrderQuery(),
                 requestCache.value,
                 isLoadNextPage
             )

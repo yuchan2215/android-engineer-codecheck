@@ -11,6 +11,7 @@ interface GitHubApiService {
     suspend fun getRepositories(
         @Query("q") query: String,
         @Query("sort") sortQuery: String?,
+        @Query("order") orderQuery: String?,
         /**ページ数を指定できる。10001件目以降を取得しようとすると[VALIDATION_FAILED]が帰ってくるため注意*/
         @Query("page") pageNumber: Int = 1,
         @Query("per_page") perPage: Int = 100

@@ -6,6 +6,7 @@ package jp.co.yumemi.android.code_check.model.status.request
 data class FetchQuery(
     val queries: List<SearchQuery>,
     val sortQuery: SortQuery,
+    val orderQuery: OrderQuery,
     val loadPage: Int
 ) {
     fun toStringQuery(): String {
@@ -19,7 +20,13 @@ data class FetchQuery(
     /**
      * 引数で渡されたクエリが同じものかどうか
      */
-    fun isSameQuery(queries: List<SearchQuery>, sortQuery: SortQuery): Boolean {
-        return this.queries == queries && this.sortQuery == sortQuery
+    fun isSameQuery(
+        queries: List<SearchQuery>,
+        sortQuery: SortQuery,
+        orderQuery: OrderQuery
+    ): Boolean {
+        return this.queries == queries &&
+            this.sortQuery == sortQuery &&
+            this.orderQuery == orderQuery
     }
 }

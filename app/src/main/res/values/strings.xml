@@ -38,4 +38,10 @@
     <string name="git_owner_type_user">User</string>
     <string name="git_owner_type_org">Organization</string>
     <string name="repository_language_input_hint">Repository language</string>
+    <string name="sort_setting_title">Sort Setting</string>
+    <string name="sort_best_match_and_default">Best Match(Default)</string>
+    <string name="sort_stars">Stars</string>
+    <string name="sort_forks">Forks</string>
+    <string name="sort_help_wanted_issues">Help Wanted Issues</string>
+    <string name="sort_updated">Updated</string>
 </resources>

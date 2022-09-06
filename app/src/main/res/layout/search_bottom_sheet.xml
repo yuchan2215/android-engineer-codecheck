@@ -112,6 +112,80 @@
                     android:text="@={viewModel.languageText}" />
             </com.google.android.material.textfield.TextInputLayout>
 
+            <TextView
+                android:id="@+id/sort_setting_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:text="@string/sort_setting_title"
+                android:textAppearance="?attr/textAppearanceHeadlineLarge" />
+
+            <HorizontalScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <!--スペーサー-->
+                    <View
+                        android:layout_width="8dp"
+                        android:layout_height="1dp" />
+
+                    <com.google.android.material.chip.ChipGroup
+                        defaultId="@{@id/sort_best_match_and_default}"
+                        onlySelectedChip="@={viewModel.sortType}"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:singleLine="true">
+
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/sort_best_match_and_default"
+                            style="@style/Widget.Material3.Chip.Filter"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/sort_best_match_and_default" />
+
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/sort_stars"
+                            style="@style/Widget.Material3.Chip.Filter"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/sort_stars" />
+
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/sort_forks"
+                            style="@style/Widget.Material3.Chip.Filter"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/sort_forks" />
+
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/sort_updated"
+                            style="@style/Widget.Material3.Chip.Filter"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/sort_updated" />
+
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/sort_help_wanted_issues"
+                            style="@style/Widget.Material3.Chip.Filter"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/sort_help_wanted_issues" />
+
+
+                    </com.google.android.material.chip.ChipGroup>
+
+                    <!--スペーサー-->
+                    <View
+                        android:layout_width="8dp"
+                        android:layout_height="1dp" />
+                </LinearLayout>
+            </HorizontalScrollView>
+
+
         </LinearLayout>
     </ScrollView>
 

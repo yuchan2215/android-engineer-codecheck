@@ -23,4 +23,9 @@ sealed interface SearchQuery {
         override val filterQueryText = organizationName
         override val filterType = "user"
     }
+
+    class LanguageQuery(languageName: String) : FilterQuery {
+        override val filterQueryText: String = languageName
+        override val filterType: String = "language"
+    }
 }

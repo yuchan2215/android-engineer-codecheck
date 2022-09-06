@@ -37,4 +37,5 @@
     <string name="owner_name_input_helper_text">GitHub User Name or GitHub Organization Name</string>
     <string name="git_owner_type_user">User</string>
     <string name="git_owner_type_org">Organization</string>
+    <string name="repository_language_input_hint">Repository language</string>
 </resources>

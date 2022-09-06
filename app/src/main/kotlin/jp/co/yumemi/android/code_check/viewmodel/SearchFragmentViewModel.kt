@@ -111,6 +111,17 @@ class SearchFragmentViewModel : ViewModel() {
     val searchOrganization: MutableLiveData<Boolean> = MutableLiveData(true)
     val searchOwnerText: MutableLiveData<String> = MutableLiveData("")
 
+    val languageText: MutableLiveData<String> = MutableLiveData("")
+
+    private fun getLanguageQuery(): List<SearchQuery> {
+        val languageText = languageText.value ?: ""
+        if (languageText.isEmpty()) return listOf()
+
+        return listOf(
+            SearchQuery.LanguageQuery(languageText)
+        )
+    }
+
     private fun getOwnerSearchQuery(): List<SearchQuery> {
         val ownerText = searchOwnerText.value ?: ""
         if (ownerText.isEmpty()) return listOf()
@@ -135,7 +146,9 @@ class SearchFragmentViewModel : ViewModel() {
      */
     private fun getSearchSettingQueryObjects(): List<SearchQuery> {
         val queries = listOf(
-            getOwnerSearchQuery()
+            // クエリを増やす時はここ！
+            getOwnerSearchQuery(),
+            getLanguageQuery()
         )
         return mutableListOf<SearchQuery>().apply {
             queries.forEach {

@@ -88,5 +88,24 @@
 
         </com.google.android.material.chip.ChipGroup>
 
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/language_input_layout"
+            style="?attr/textInputFilledStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:hint="@string/repository_language_input_hint"
+            app:endIconMode="clear_text"
+            app:startIconDrawable="@drawable/git_language">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/language_name_input_edit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="text"
+                android:maxLines="1"
+                android:text="@={viewModel.languageText}" />
+        </com.google.android.material.textfield.TextInputLayout>
+
     </LinearLayout>
 </layout>

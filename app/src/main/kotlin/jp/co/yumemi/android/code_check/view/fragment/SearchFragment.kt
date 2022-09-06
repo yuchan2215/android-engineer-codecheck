@@ -11,15 +11,19 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import java.util.Date
 import jp.co.yumemi.android.code_check.R
 import jp.co.yumemi.android.code_check.databinding.SearchFragmentBinding
 import jp.co.yumemi.android.code_check.model.github.repositories.GitRepository
-import jp.co.yumemi.android.code_check.model.status.RequestStatus
+import jp.co.yumemi.android.code_check.model.status.FetchQuery
 import jp.co.yumemi.android.code_check.view.adapter.GitRepositoryListAdapter
 import jp.co.yumemi.android.code_check.viewmodel.SearchFragmentViewModel
+import kotlinx.coroutines.launch
 
 /**
  * GitHubリポジトリを検索するフラグメント。
@@ -41,7 +45,12 @@ class SearchFragment : Fragment(R.layout.search_fragment) {
             return@OnEditorActionListener false
 
         val text = editText.text.toString()
-        viewModel.fetchResults(text)
+
+        val fetchStatus = FetchQuery(
+            query = text,
+            loadPage = 1
+        )
+        viewModel.fetchResults(fetchStatus)
 
         hideKeyboard()
         clearFocus()
@@ -59,15 +68,64 @@ class SearchFragment : Fragment(R.layout.search_fragment) {
         }
     }
 
+    /**
+     * 一番下までスクロールした際に、追加で読み込む。
+     * 上方向のスクロール・１秒(1000ms)未満の際読み込みは行わない。
+     * 参考： https://qiita.com/u-dai/items/0b1661e8329adf41830a
+     */
+    private val scrollListener = object : RecyclerView.OnScrollListener() {
+        var lastFetch = Date()
+        override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+            // アダプターが保持しているアイテムの合計
+            val itemCount = repositoryListAdapter.itemCount
+            // 画面に表示されているアイテム数
+            val childCount = recyclerView.childCount
+            val manager = recyclerView.layoutManager as LinearLayoutManager
+            // 画面に表示されている一番上のアイテムの位置
+            val firstPosition = manager.findFirstVisibleItemPosition()
+
+            // 何度もリクエストしないようにロード中は何もしない。
+            if (viewModel.isAdditionLoading.value == true) {
+                return
+            }
+            // 上方向のスクロールは処理しない。
+            if (dy < 0) {
+                return
+            }
+
+            // 以下の条件に当てはまれば一番下までスクロールされたと判断できる。
+            if (itemCount == childCount + firstPosition) {
+
+                // 最後に読み込んでから1秒以内は再読み込みしない。(重複対策)
+                val diff = Date().time - lastFetch.time
+                if (diff < 1000) {
+                    return
+                }
+                lastFetch = Date()
+
+                // API 問い合わせ中は true となる。
+                viewModel.isAdditionLoading.value = true
+                lifecycleScope.launch {
+                    val lastFetch = viewModel.lastFetchQuery.value ?: run {
+                        viewModel.isAdditionLoading.value = false
+                        return@launch
+                    }
+                    val nextFetch = lastFetch.copy(loadPage = lastFetch.loadPage + 1)
+                    viewModel.fetchResults(nextFetch)
+                }
+            }
+        }
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         _binding = SearchFragmentBinding.bind(view)
 
         // 結果が更新されたらリストを更新する。
-        viewModel.requestStatus.observe(viewLifecycleOwner) {
-            if (it !is RequestStatus.OnSuccess) return@observe
-            repositoryListAdapter.submitList(it.body.repositories)
+        viewModel.repositoryList.observe(viewLifecycleOwner) {
+            if (it == null) return@observe
+            repositoryListAdapter.submitList(it)
         }
 
         binding.viewModel = viewModel
@@ -86,6 +144,7 @@ class SearchFragment : Fragment(R.layout.search_fragment) {
             it.addItemDecoration(dividerItemDecoration)
 
             it.adapter = repositoryListAdapter
+            it.addOnScrollListener(scrollListener)
         }
     }
 

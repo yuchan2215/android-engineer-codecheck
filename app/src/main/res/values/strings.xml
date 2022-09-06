@@ -25,4 +25,9 @@
     <string name="service_unavailable_error_description">The service is not provided by GitHub.</string>
     <string name="not_modified_error_description">It has not been updated since the previous one.</string>
     <string name="response_code_prefix">Response Code: </string>
+    <plurals name="repository_counts">
+        <item quantity="one">%d repository</item>
+        <item quantity="other">%d repositories</item>
+    </plurals>
+    <string name="error_display">%s(%s): %s</string>
 </resources>

@@ -11,13 +11,13 @@
     </data>
 
     <ScrollView
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:id="@+id/scrollView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/scrollView">
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -42,12 +42,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                tools:text="JetBrains/kotlin"
                 android:text="@{viewModel.repository.name}"
                 android:textAppearance="?attr/textAppearanceTitleLarge"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/ownerIconView" />
+                app:layout_constraintTop_toBottomOf="@id/ownerIconView"
+                tools:text="JetBrains/kotlin" />
 
             <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/centerGuid"
@@ -62,11 +62,11 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="16dp"
                 android:layout_marginTop="8dp"
-                tools:text="Written in Kotlin"
                 android:text="@{viewModel.repository.language}"
                 android:textAppearance="?attr/textAppearanceBodyMedium"
                 app:layout_constraintTop_toBottomOf="@id/nameView"
-                tools:ignore="MissingConstraints" />
+                tools:ignore="MissingConstraints"
+                tools:text="Written in Kotlin" />
 
             <TextView
                 android:id="@+id/starsView"
@@ -74,13 +74,13 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="16dp"
                 android:layout_marginTop="8dp"
-                tools:text="38530 stars"
                 android:text="@{viewModel.starsText}"
                 android:textAlignment="textEnd"
                 android:textAppearance="?attr/textAppearanceBodyMedium"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="@id/centerGuid"
-                app:layout_constraintTop_toBottomOf="@id/nameView" />
+                app:layout_constraintTop_toBottomOf="@id/nameView"
+                tools:text="38530 stars" />
 
             <TextView
                 android:id="@+id/watchersView"
@@ -88,13 +88,13 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="16dp"
                 android:layout_marginTop="8dp"
-                tools:text="38530 watchers"
                 android:text="@{viewModel.watchersText}"
                 android:textAlignment="textEnd"
                 android:textAppearance="?attr/textAppearanceBodyMedium"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="@id/centerGuid"
-                app:layout_constraintTop_toBottomOf="@id/starsView" />
+                app:layout_constraintTop_toBottomOf="@id/starsView"
+                tools:text="38530 watchers" />
 
             <TextView
                 android:id="@+id/forksView"
@@ -102,13 +102,13 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="16dp"
                 android:layout_marginTop="8dp"
-                tools:text="4675 forks"
                 android:text="@{viewModel.forksText}"
                 android:textAlignment="textEnd"
                 android:textAppearance="?attr/textAppearanceBodyMedium"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintLeft_toLeftOf="@id/centerGuid"
-                app:layout_constraintTop_toBottomOf="@id/watchersView" />
+                app:layout_constraintTop_toBottomOf="@id/watchersView"
+                tools:text="4675 forks" />
 
             <TextView
                 android:id="@+id/openIssuesView"
@@ -116,13 +116,13 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="16dp"
                 android:layout_marginTop="8dp"
-                tools:text="131 open issues"
                 android:text="@{viewModel.issuesText}"
                 android:textAlignment="textEnd"
                 android:textAppearance="?attr/textAppearanceBodyMedium"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="@id/centerGuid"
-                app:layout_constraintTop_toBottomOf="@id/forksView" />
+                app:layout_constraintTop_toBottomOf="@id/forksView"
+                tools:text="131 open issues" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>

@@ -19,8 +19,8 @@
         tools:context=".view.activity.TopActivity">
 
         <com.google.android.material.card.MaterialCardView
-            style="?attr/materialCardViewElevatedStyle"
             android:id="@+id/searchBar"
+            style="?attr/materialCardViewElevatedStyle"
             android:layout_width="0dp"
             android:layout_height="?attr/actionBarSize"
             android:layout_margin="12dp"
@@ -72,33 +72,33 @@
             android:id="@+id/count_view"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:visibility="@{viewModel.isShowRepositoryCount}"
-            tools:text="3件"
-            android:text="@{viewModel.repositoryCountText}"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginHorizontal="8dp"
-            app:layout_constraintTop_toBottomOf="@id/search_barrier" />
+            android:text="@{viewModel.repositoryCountText}"
+            android:visibility="@{viewModel.isShowRepositoryCount}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/search_barrier"
+            tools:text="3件" />
 
         <TextView
+            android:id="@+id/error_text"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="@{viewModel.errorText}"
-            android:visibility="@{viewModel.isShowError}"
-            tools:text="@string/error_display"
-            android:textColor="?attr/colorError"
-            android:id="@+id/error_text"
             android:layout_marginHorizontal="8dp"
-            app:layout_constraintTop_toBottomOf="@id/count_view"
+            android:text="@{viewModel.errorText}"
+            android:textColor="?attr/colorError"
+            android:visibility="@{viewModel.isShowError}"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            app:layout_constraintTop_toBottomOf="@id/count_view"
+            tools:text="@string/error_display" />
 
         <androidx.constraintlayout.widget.Barrier
+            android:id="@+id/info_barrier"
             android:layout_width="0dp"
             android:layout_height="0dp"
             app:barrierDirection="bottom"
-            app:constraint_referenced_ids="count_view, error_text"
-            android:id="@+id/info_barrier" />
+            app:constraint_referenced_ids="count_view, error_text" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView"
@@ -110,13 +110,13 @@
             app:layout_constraintTop_toBottomOf="@id/info_barrier" />
 
         <com.google.android.material.progressindicator.LinearProgressIndicator
+            android:id="@+id/linear_progress"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:indeterminate="true"
-            animateVisibility="@{viewModel.isShowLoading()}"
+            app:animateVisibility="@{viewModel.isShowLoading()}"
             app:layout_constraintTop_toTopOf="@id/info_barrier"
-            tools:visibility="visible"
-            android:id="@+id/linear_progress" />
+            tools:visibility="visible" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

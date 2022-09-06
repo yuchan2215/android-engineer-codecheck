@@ -95,6 +95,22 @@ class SearchFragmentViewModel : ViewModel() {
     val searchUser: MutableLiveData<Boolean> = MutableLiveData(true)
     val searchOrganization: MutableLiveData<Boolean> = MutableLiveData(true)
     val searchOwnerText: MutableLiveData<String> = MutableLiveData("")
+
+    private fun getOwnerSearchQuery(): String {
+        val ownerText = searchOwnerText.value ?: ""
+        if (ownerText.isEmpty()) return ""
+
+        val queries: MutableList<String> = mutableListOf()
+
+        if (searchUser.value == true)
+            queries.add("user:$ownerText")
+
+        if (searchOrganization.value == true)
+            queries.add("org:$ownerText")
+
+        return queries.joinToString(" ")
+    }
+
     /**
      * 検索を実行します。
      * @param loadNext 次のページを読み込むかどうか

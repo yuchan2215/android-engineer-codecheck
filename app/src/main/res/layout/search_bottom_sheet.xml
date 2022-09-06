@@ -11,101 +11,108 @@
             type="jp.co.yumemi.android.code_check.viewmodel.SearchFragmentViewModel" />
     </data>
 
-    <LinearLayout
-        android:id="@+id/bottom_sheet"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
+
 
         <LinearLayout
-            android:id="@+id/search_setting_top_layout"
+            android:id="@+id/bottom_sheet"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            android:gravity="center"
-            android:orientation="horizontal">
+            android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/search_setting_title"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:id="@+id/search_setting_top_layout"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/search_setting_title"
-                android:textAppearance="?attr/textAppearanceHeadlineLarge" />
+                android:layout_margin="8dp"
+                android:gravity="center"
+                android:orientation="horizontal">
 
-            <View
-                android:layout_width="0dp"
-                android:layout_height="1dp"
-                android:layout_weight="1" />
+                <TextView
+                    android:id="@+id/search_setting_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/search_setting_title"
+                    android:textAppearance="?attr/textAppearanceHeadlineLarge" />
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/re_search_button"
-                android:layout_width="wrap_content"
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:layout_weight="1" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/re_search_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/re_search" />
+            </LinearLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/owner_name_input_layout"
+                style="?attr/textInputFilledStyle"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/re_search" />
+                android:layout_margin="8dp"
+                android:hint="@string/owner_name_input_hint"
+                app:endIconMode="clear_text"
+                app:helperText="@string/owner_name_input_helper_text"
+                app:startIconDrawable="@drawable/git_owner">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/owner_name_input_edit"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="text"
+                    android:maxLines="1"
+                    android:text="@={viewModel.searchOwnerText}" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.chip.ChipGroup
+                android:id="@+id/owner_type_chip_group"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="8dp">
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/git_owner_type_user"
+                    style="@style/Widget.Material3.Chip.Filter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checked="@={viewModel.searchUser}"
+                    android:text="@string/git_owner_type_user" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/git_owner_type_org"
+                    style="@style/Widget.Material3.Chip.Filter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checked="@={viewModel.searchOrganization}"
+                    android:text="@string/git_owner_type_org" />
+
+            </com.google.android.material.chip.ChipGroup>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/language_input_layout"
+                style="?attr/textInputFilledStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:hint="@string/repository_language_input_hint"
+                app:endIconMode="clear_text"
+                app:startIconDrawable="@drawable/git_language">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/language_name_input_edit"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="text"
+                    android:maxLines="1"
+                    android:text="@={viewModel.languageText}" />
+            </com.google.android.material.textfield.TextInputLayout>
+
         </LinearLayout>
+    </ScrollView>
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/owner_name_input_layout"
-            style="?attr/textInputFilledStyle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            android:hint="@string/owner_name_input_hint"
-            app:endIconMode="clear_text"
-            app:helperText="@string/owner_name_input_helper_text"
-            app:startIconDrawable="@drawable/git_owner">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/owner_name_input_edit"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="text"
-                android:maxLines="1"
-                android:text="@={viewModel.searchOwnerText}" />
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.chip.ChipGroup
-            android:id="@+id/owner_type_chip_group"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="8dp">
-
-            <com.google.android.material.chip.Chip
-                android:id="@+id/git_owner_type_user"
-                style="@style/Widget.Material3.Chip.Filter"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:checked="@={viewModel.searchUser}"
-                android:text="@string/git_owner_type_user" />
-
-            <com.google.android.material.chip.Chip
-                android:id="@+id/git_owner_type_org"
-                style="@style/Widget.Material3.Chip.Filter"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:checked="@={viewModel.searchOrganization}"
-                android:text="@string/git_owner_type_org" />
-
-        </com.google.android.material.chip.ChipGroup>
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/language_input_layout"
-            style="?attr/textInputFilledStyle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            android:hint="@string/repository_language_input_hint"
-            app:endIconMode="clear_text"
-            app:startIconDrawable="@drawable/git_language">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/language_name_input_edit"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="text"
-                android:maxLines="1"
-                android:text="@={viewModel.languageText}" />
-        </com.google.android.material.textfield.TextInputLayout>
-
-    </LinearLayout>
 </layout>

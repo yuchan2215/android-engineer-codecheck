@@ -15,8 +15,9 @@ import jp.co.yumemi.android.code_check.CodeCheckApplication
 import jp.co.yumemi.android.code_check.R
 import jp.co.yumemi.android.code_check.model.github.repositories.GitRepository
 import jp.co.yumemi.android.code_check.model.github.repositories.SearchGitRepoResponse
-import jp.co.yumemi.android.code_check.model.status.FetchQuery
 import jp.co.yumemi.android.code_check.model.status.RequestStatus
+import jp.co.yumemi.android.code_check.model.status.request.RequestCache
+import jp.co.yumemi.android.code_check.model.status.request.SearchQuery
 import jp.co.yumemi.android.code_check.repository.GitHubApiRepository
 import jp.co.yumemi.android.code_check.util.QuantityStringUtil
 import jp.co.yumemi.android.code_check.util.VisibilityUtil
@@ -29,18 +30,32 @@ import kotlinx.coroutines.launch
  */
 class SearchFragmentViewModel : ViewModel() {
 
+    private val _requestCache: MutableLiveData<RequestCache<GitRepository>?> = MutableLiveData(null)
+    val requestCache: LiveData<RequestCache<GitRepository>?> = _requestCache
+
     private val requestStatus: MutableLiveData<RequestStatus<SearchGitRepoResponse>> =
         MutableLiveData(RequestStatus.Nothing())
 
-    private val _repositoryList: MutableLiveData<List<GitRepository>> = MutableLiveData(null)
-    val repositoryList: LiveData<List<GitRepository>> = _repositoryList
-
     val isAdditionLoading: MutableLiveData<Boolean> = MutableLiveData(false)
 
-    val repositoryCountText = MutableLiveData("")
+    /**
+     * [requestStatus]を監視し、リポジトリのカウント文字列を生成する。
+     * [requestStatus]が[RequestStatus.OnLoading]以外の時は文字を書き換えない。
+     */
+    val repositoryCountText by lazy {
+        MediatorLiveData<String>().apply {
+            this.value = ""
+            addSource(requestStatus) {
+                if (it !is RequestStatus.OnSuccess)
+                    return@addSource
 
-    private val _lastFetchQuery: MutableLiveData<FetchQuery?> = MutableLiveData(null)
-    val lastFetchQuery: LiveData<FetchQuery?> = _lastFetchQuery
+                this.value = QuantityStringUtil.getString(
+                    R.plurals.repository_counts,
+                    it.body.totalCount
+                )
+            }
+        }
+    }
 
     val inputQueryText: MutableLiveData<String> = MutableLiveData()
 
@@ -79,7 +94,7 @@ class SearchFragmentViewModel : ViewModel() {
     val errorText: LiveData<String> = requestStatus.map {
         if (it !is RequestStatus.OnError) ""
         else {
-            val repositoryName = it.fetchQuery.query
+            val repositoryName = it.fetchQuery.toStringQuery()
             val errorTitle = CodeCheckApplication.instance.getString(R.string.error_title)
             val errorDescription = it.error.errorDescription
 
@@ -96,107 +111,70 @@ class SearchFragmentViewModel : ViewModel() {
     val searchOrganization: MutableLiveData<Boolean> = MutableLiveData(true)
     val searchOwnerText: MutableLiveData<String> = MutableLiveData("")
 
-    private fun getOwnerSearchQuery(): String {
+    private fun getOwnerSearchQuery(): List<SearchQuery> {
         val ownerText = searchOwnerText.value ?: ""
-        if (ownerText.isEmpty()) return ""
+        if (ownerText.isEmpty()) return listOf()
 
-        val queries: MutableList<String> = mutableListOf()
+        val queries: MutableList<SearchQuery> = mutableListOf()
 
         if (searchUser.value == true)
-            queries.add("user:$ownerText")
+            queries.add(
+                SearchQuery.UserQuery(ownerText)
+            )
 
         if (searchOrganization.value == true)
-            queries.add("org:$ownerText")
+            queries.add(
+                SearchQuery.OrganizationQuery(ownerText)
+            )
 
-        return queries.joinToString(" ")
+        return queries
     }
 
     /**
      * 検索設定のクエリを取得する。
      */
-    private fun getSearchSettingQueryText(): String {
-        val queryItems = listOf(
-            // もしクエリアイテムが増える時はここに追加する。
+    private fun getSearchSettingQueryObjects(): List<SearchQuery> {
+        val queries = listOf(
             getOwnerSearchQuery()
-        ).filter {
-            it.isNotEmpty()
-        }
-        return queryItems.joinToString(" ")
-    }
-
-    /**
-     * 検索を実行します。
-     * @param loadNext 次のページを読み込むかどうか
-     */
-    fun doSearch(loadNext: Boolean = false) {
-        val page = if (loadNext && lastFetchQuery.value != null) {
-            isAdditionLoading.value = true
-            lastFetchQuery.value!!.loadPage + 1
-        } else {
-            1
-        }
-
-        val queryText = listOf(
-            inputQueryText.value ?: "",
-            getSearchSettingQueryText()
-        ).filter {
-            it.isNotEmpty()
-        }.joinToString(" ")
-
-        val query = FetchQuery(
-            query = queryText,
-            loadPage = page
         )
-
-        fetchResults(query)
+        return mutableListOf<SearchQuery>().apply {
+            queries.forEach {
+                this.addAll(it)
+            }
+        }
     }
 
     /**
-     * GitHubのAPIを叩き、リポジトリ一覧を取得して[_requestStatus]の値を更新する。
+     * GitHubのAPIを叩き、リポジトリ一覧を取得して[requestStatus]の値を更新する。
      * 読み込むまでは[RequestStatus.OnLoading]にする。
-     * @param newFetchQuery 検索クエリ
      */
-    fun fetchResults(newFetchQuery: FetchQuery) {
+    fun fetchResults(isLoadNextPage: Boolean = false) {
         requestStatus.value = RequestStatus.OnLoading()
         viewModelScope.launch {
             TopActivity.lastSearchDate = Date()
 
-            // 最後のクエリ
-            val lastQuery = lastFetchQuery.value
-            // 次のページを読み込むか？
-            val isLoadNextPage = lastQuery != null && lastQuery.isNextFetch(newFetchQuery)
+            val searchBarQuery = SearchQuery.SearchBarQuery(inputQueryText.value ?: "")
+            val queryList = mutableListOf<SearchQuery>(
+                searchBarQuery
+            ).apply {
+                addAll(getSearchSettingQueryObjects())
+            }
+
+            // キャッシュを含めたデータを取得
+            val cacheAndRequestStatus = GitHubApiRepository.getRepositoriesWithCache(
+                queryList,
+                requestCache.value,
+                isLoadNextPage
+            )
+            val cache = cacheAndRequestStatus.cache
+            val status = cacheAndRequestStatus.status
+
             // ステータスを更新
-            requestStatus.value = GitHubApiRepository.getRepositories(newFetchQuery)
+            requestStatus.value = status
 
-            // 失敗したなら早期リターン
-            if (requestStatus.value !is RequestStatus.OnSuccess) {
-                isAdditionLoading.value = false
-                return@launch
-            }
-
-            val successResult = requestStatus.value as RequestStatus.OnSuccess
-
-            /**
-             * もし次のページを読み込むなら、既存のリストに追加する。
-             * そうでないなら、読み込んだ値はそのまま代入する。
-             */
-            if (isLoadNextPage) {
-                val oldList = _repositoryList.value ?: listOf()
-                val newList = oldList.toMutableList().apply {
-                    addAll(successResult.body.repositories)
-                }
-                _repositoryList.value = newList
-            } else {
-                _repositoryList.value = successResult.body.repositories
-            }
             // 状態を変更
-            _lastFetchQuery.value = newFetchQuery
+            _requestCache.value = cache
             isAdditionLoading.value = false
-            repositoryCountText.value =
-                QuantityStringUtil.getString(
-                    R.plurals.repository_counts,
-                    successResult.body.totalCount
-                )
         }
     }
 }

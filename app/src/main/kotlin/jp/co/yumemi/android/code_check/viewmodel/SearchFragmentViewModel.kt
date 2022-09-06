@@ -15,8 +15,8 @@ import jp.co.yumemi.android.code_check.CodeCheckApplication
 import jp.co.yumemi.android.code_check.R
 import jp.co.yumemi.android.code_check.model.github.repositories.GitRepository
 import jp.co.yumemi.android.code_check.model.github.repositories.SearchGitRepoResponse
-import jp.co.yumemi.android.code_check.model.status.FetchQuery
 import jp.co.yumemi.android.code_check.model.status.RequestStatus
+import jp.co.yumemi.android.code_check.model.status.request.RequestCache
 import jp.co.yumemi.android.code_check.repository.GitHubApiRepository
 import jp.co.yumemi.android.code_check.util.QuantityStringUtil
 import jp.co.yumemi.android.code_check.util.VisibilityUtil
@@ -29,18 +29,15 @@ import kotlinx.coroutines.launch
  */
 class SearchFragmentViewModel : ViewModel() {
 
+    private val _requestCache: MutableLiveData<RequestCache<GitRepository>?> = MutableLiveData(null)
+    val requestCache: LiveData<RequestCache<GitRepository>?> = _requestCache
+
     private val requestStatus: MutableLiveData<RequestStatus<SearchGitRepoResponse>> =
         MutableLiveData(RequestStatus.Nothing())
-
-    private val _repositoryList: MutableLiveData<List<GitRepository>> = MutableLiveData(null)
-    val repositoryList: LiveData<List<GitRepository>> = _repositoryList
 
     val isAdditionLoading: MutableLiveData<Boolean> = MutableLiveData(false)
 
     val repositoryCountText = MutableLiveData("")
-
-    private val _lastFetchQuery: MutableLiveData<FetchQuery?> = MutableLiveData(null)
-    val lastFetchQuery: LiveData<FetchQuery?> = _lastFetchQuery
 
     val inputQueryText: MutableLiveData<String> = MutableLiveData()
 
@@ -129,12 +126,6 @@ class SearchFragmentViewModel : ViewModel() {
      * @param loadNext 次のページを読み込むかどうか
      */
     fun doSearch(loadNext: Boolean = false) {
-        val page = if (loadNext && lastFetchQuery.value != null) {
-            isAdditionLoading.value = true
-            lastFetchQuery.value!!.loadPage + 1
-        } else {
-            1
-        }
 
         val queryText = listOf(
             inputQueryText.value ?: "",
@@ -143,12 +134,7 @@ class SearchFragmentViewModel : ViewModel() {
             it.isNotEmpty()
         }.joinToString(" ")
 
-        val query = FetchQuery(
-            query = queryText,
-            loadPage = page
-        )
-
-        fetchResults(query)
+        fetchResults(queryText, loadNext)
     }
 
     /**
@@ -156,47 +142,33 @@ class SearchFragmentViewModel : ViewModel() {
      * 読み込むまでは[RequestStatus.OnLoading]にする。
      * @param newFetchQuery 検索クエリ
      */
-    fun fetchResults(newFetchQuery: FetchQuery) {
+    private fun fetchResults(query: String, isLoadNextPage: Boolean = false) {
         requestStatus.value = RequestStatus.OnLoading()
         viewModelScope.launch {
             TopActivity.lastSearchDate = Date()
 
-            // 最後のクエリ
-            val lastQuery = lastFetchQuery.value
-            // 次のページを読み込むか？
-            val isLoadNextPage = lastQuery != null && lastQuery.isNextFetch(newFetchQuery)
+            // キャッシュを含めたデータを取得
+            val cacheAndRequestStatus = GitHubApiRepository.getRepositoriesWithCache(
+                query,
+                requestCache.value,
+                isLoadNextPage
+            )
+            val cache = cacheAndRequestStatus.cache
+            val status = cacheAndRequestStatus.status
+
             // ステータスを更新
-            requestStatus.value = GitHubApiRepository.getRepositories(newFetchQuery)
+            requestStatus.value = status
 
-            // 失敗したなら早期リターン
-            if (requestStatus.value !is RequestStatus.OnSuccess) {
-                isAdditionLoading.value = false
-                return@launch
-            }
-
-            val successResult = requestStatus.value as RequestStatus.OnSuccess
-
-            /**
-             * もし次のページを読み込むなら、既存のリストに追加する。
-             * そうでないなら、読み込んだ値はそのまま代入する。
-             */
-            if (isLoadNextPage) {
-                val oldList = _repositoryList.value ?: listOf()
-                val newList = oldList.toMutableList().apply {
-                    addAll(successResult.body.repositories)
-                }
-                _repositoryList.value = newList
-            } else {
-                _repositoryList.value = successResult.body.repositories
-            }
             // 状態を変更
-            _lastFetchQuery.value = newFetchQuery
+            _requestCache.value = cache
             isAdditionLoading.value = false
-            repositoryCountText.value =
-                QuantityStringUtil.getString(
-                    R.plurals.repository_counts,
-                    successResult.body.totalCount
-                )
+
+            if (status is RequestStatus.OnSuccess)
+                repositoryCountText.value =
+                    QuantityStringUtil.getString(
+                        R.plurals.repository_counts,
+                        status.body.totalCount
+                    )
         }
     }
 }

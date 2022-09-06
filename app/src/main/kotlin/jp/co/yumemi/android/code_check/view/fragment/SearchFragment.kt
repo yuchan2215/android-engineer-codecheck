@@ -105,9 +105,9 @@ class SearchFragment : Fragment(R.layout.search_fragment) {
         _binding = SearchFragmentBinding.bind(view)
 
         // 結果が更新されたらリストを更新する。
-        viewModel.repositoryList.observe(viewLifecycleOwner) {
+        viewModel.requestCache.observe(viewLifecycleOwner) {
             if (it == null) return@observe
-            repositoryListAdapter.submitList(it)
+            repositoryListAdapter.submitList(it.allData)
         }
 
         binding.viewModel = viewModel

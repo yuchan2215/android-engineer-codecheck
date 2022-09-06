@@ -17,6 +17,7 @@ import jp.co.yumemi.android.code_check.model.github.repositories.GitRepository
 import jp.co.yumemi.android.code_check.model.github.repositories.SearchGitRepoResponse
 import jp.co.yumemi.android.code_check.model.status.RequestStatus
 import jp.co.yumemi.android.code_check.model.status.request.RequestCache
+import jp.co.yumemi.android.code_check.model.status.request.SearchQuery
 import jp.co.yumemi.android.code_check.repository.GitHubApiRepository
 import jp.co.yumemi.android.code_check.util.QuantityStringUtil
 import jp.co.yumemi.android.code_check.util.VisibilityUtil
@@ -93,7 +94,7 @@ class SearchFragmentViewModel : ViewModel() {
     val errorText: LiveData<String> = requestStatus.map {
         if (it !is RequestStatus.OnError) ""
         else {
-            val repositoryName = it.fetchQuery.query
+            val repositoryName = it.fetchQuery.toStringQuery()
             val errorTitle = CodeCheckApplication.instance.getString(R.string.error_title)
             val errorDescription = it.error.errorDescription
 
@@ -110,63 +111,58 @@ class SearchFragmentViewModel : ViewModel() {
     val searchOrganization: MutableLiveData<Boolean> = MutableLiveData(true)
     val searchOwnerText: MutableLiveData<String> = MutableLiveData("")
 
-    private fun getOwnerSearchQuery(): String {
+    private fun getOwnerSearchQuery(): List<SearchQuery> {
         val ownerText = searchOwnerText.value ?: ""
-        if (ownerText.isEmpty()) return ""
+        if (ownerText.isEmpty()) return listOf()
 
-        val queries: MutableList<String> = mutableListOf()
+        val queries: MutableList<SearchQuery> = mutableListOf()
 
         if (searchUser.value == true)
-            queries.add("user:$ownerText")
+            queries.add(
+                SearchQuery.UserQuery(ownerText)
+            )
 
         if (searchOrganization.value == true)
-            queries.add("org:$ownerText")
+            queries.add(
+                SearchQuery.OrganizationQuery(ownerText)
+            )
 
-        return queries.joinToString(" ")
+        return queries
     }
 
     /**
      * 検索設定のクエリを取得する。
      */
-    private fun getSearchSettingQueryText(): String {
-        val queryItems = listOf(
-            // もしクエリアイテムが増える時はここに追加する。
+    private fun getSearchSettingQueryObjects(): List<SearchQuery> {
+        val queries = listOf(
             getOwnerSearchQuery()
-        ).filter {
-            it.isNotEmpty()
+        )
+        return mutableListOf<SearchQuery>().apply {
+            queries.forEach {
+                this.addAll(it)
+            }
         }
-        return queryItems.joinToString(" ")
     }
 
     /**
-     * 検索を実行します。
-     * @param loadNext 次のページを読み込むかどうか
-     */
-    fun doSearch(loadNext: Boolean = false) {
-
-        val queryText = listOf(
-            inputQueryText.value ?: "",
-            getSearchSettingQueryText()
-        ).filter {
-            it.isNotEmpty()
-        }.joinToString(" ")
-
-        fetchResults(queryText, loadNext)
-    }
-
-    /**
-     * GitHubのAPIを叩き、リポジトリ一覧を取得して[_requestStatus]の値を更新する。
+     * GitHubのAPIを叩き、リポジトリ一覧を取得して[requestStatus]の値を更新する。
      * 読み込むまでは[RequestStatus.OnLoading]にする。
-     * @param newFetchQuery 検索クエリ
      */
-    private fun fetchResults(query: String, isLoadNextPage: Boolean = false) {
+    fun fetchResults(isLoadNextPage: Boolean = false) {
         requestStatus.value = RequestStatus.OnLoading()
         viewModelScope.launch {
             TopActivity.lastSearchDate = Date()
 
+            val searchBarQuery = SearchQuery.SearchBarQuery(inputQueryText.value ?: "")
+            val queryList = mutableListOf<SearchQuery>(
+                searchBarQuery
+            ).apply {
+                addAll(getSearchSettingQueryObjects())
+            }
+
             // キャッシュを含めたデータを取得
             val cacheAndRequestStatus = GitHubApiRepository.getRepositoriesWithCache(
-                query,
+                queryList,
                 requestCache.value,
                 isLoadNextPage
             )

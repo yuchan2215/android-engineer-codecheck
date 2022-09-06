@@ -6,6 +6,7 @@ import jp.co.yumemi.android.code_check.model.status.RequestStatus
 import jp.co.yumemi.android.code_check.model.status.request.CacheAndRequestStatus
 import jp.co.yumemi.android.code_check.model.status.request.FetchQuery
 import jp.co.yumemi.android.code_check.model.status.request.RequestCache
+import jp.co.yumemi.android.code_check.model.status.request.SearchQuery
 import jp.co.yumemi.android.code_check.network.GitHubApi
 import jp.co.yumemi.android.code_check.network.GitHubApiService
 
@@ -16,7 +17,8 @@ object GitHubApiRepository {
      */
     private suspend fun getRepositories(query: FetchQuery): RequestStatus<SearchGitRepoResponse> {
         return try {
-            val response = GitHubApi.gitHubApiService.getRepositories(query.query, query.loadPage)
+            val response =
+                GitHubApi.gitHubApiService.getRepositories(query.toStringQuery(), query.loadPage)
             RequestStatus.createStatusFromRetrofit(response, query)
         } catch (t: Throwable) {
             RequestStatus.createErrorStatusFromThrowable(t, query)
@@ -27,12 +29,12 @@ object GitHubApiRepository {
      * GitHubのリポジトリ一覧を[getRepositories]を叩いて取得し、そのデータを含む[RequestStatus]を作成します。
      * リクエスト内容や読み取ったデータを含む[RequestCache]として作成します。
      * @return [RequestStatus]と[RequestCache]を持った[CacheAndRequestStatus]
-     * @param query 検索クエリ
+     * @param queryList 検索クエリ
      * @param cache 前回検索時のキャッシュです。次のページを読み込んで良いのか、ページとページを繋げたデータを作成するために利用します。
      * @param isRequestNextPage 次のページを読み込むことを希望しているかを示します。
      */
     suspend fun getRepositoriesWithCache(
-        query: String,
+        queryList: List<SearchQuery>,
         cache: RequestCache<GitRepository>?,
         isRequestNextPage: Boolean = false
     ): CacheAndRequestStatus<GitRepository, SearchGitRepoResponse> {
@@ -45,7 +47,7 @@ object GitHubApiRepository {
          * 同じクエリであり、[isRequestNextPage]なら、
          * 次のページを読み込む[FetchQuery]を作成します。
          */
-        val isSameQuery: Boolean = lastRequestQuery?.isSameFetch(query) ?: false
+        val isSameQuery: Boolean = lastRequestQuery?.isSameQuery(queryList) ?: false
         if (lastRequestQuery != null && isSameQuery && isRequestNextPage) {
             isLoadNextPage = true
             loadPage = lastRequestQuery.loadPage + 1
@@ -53,7 +55,7 @@ object GitHubApiRepository {
             isLoadNextPage = false
             loadPage = 1
         }
-        val fetchQuery = FetchQuery(query, loadPage)
+        val fetchQuery = FetchQuery(queryList, loadPage)
 
         // APIリクエスト実行
         val requestStatus = getRepositories(fetchQuery)

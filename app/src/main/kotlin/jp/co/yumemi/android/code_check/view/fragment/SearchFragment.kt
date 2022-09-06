@@ -42,7 +42,7 @@ class SearchFragment : Fragment(R.layout.search_fragment) {
         if (actionId != EditorInfo.IME_ACTION_SEARCH)
             return@OnEditorActionListener false
 
-        viewModel.doSearch()
+        viewModel.fetchResults(false)
 
         hideKeyboard()
         clearFocus()
@@ -94,7 +94,7 @@ class SearchFragment : Fragment(R.layout.search_fragment) {
                     return
                 }
                 lastFetch = Date()
-                viewModel.doSearch(true)
+                viewModel.fetchResults(true)
             }
         }
     }

@@ -33,7 +33,7 @@ class SearchBottomSheet : BottomSheetDialogFragment() {
         binding.lifecycleOwner = viewLifecycleOwner
         binding.viewModel = viewModel
         binding.reSearchButton.setOnClickListener {
-            viewModel.doSearch()
+            viewModel.fetchResults(false)
         }
     }
 

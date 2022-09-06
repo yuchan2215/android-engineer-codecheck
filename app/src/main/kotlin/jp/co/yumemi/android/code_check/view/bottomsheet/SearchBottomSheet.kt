@@ -28,6 +28,12 @@ class SearchBottomSheet : BottomSheetDialogFragment() {
         return binding.root
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        binding.reSearchButton.setOnClickListener {
+            viewModel.doSearch()
+        }
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null

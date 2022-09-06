@@ -42,6 +42,8 @@ class SearchFragmentViewModel : ViewModel() {
     private val _lastFetchQuery: MutableLiveData<FetchQuery?> = MutableLiveData(null)
     val lastFetchQuery: LiveData<FetchQuery?> = _lastFetchQuery
 
+    val inputQueryText: MutableLiveData<String> = MutableLiveData()
+
     val isShowRepositoryCount by lazy {
         MediatorLiveData<Int>().apply {
             val observer = Observer<Any?> {

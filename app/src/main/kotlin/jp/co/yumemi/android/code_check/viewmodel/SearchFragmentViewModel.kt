@@ -112,6 +112,19 @@ class SearchFragmentViewModel : ViewModel() {
     }
 
     /**
+     * 検索設定のクエリを取得する。
+     */
+    private fun getSearchSettingQueryText(): String {
+        val queryItems = listOf(
+            // もしクエリアイテムが増える時はここに追加する。
+            getOwnerSearchQuery()
+        ).filter {
+            it.isNotEmpty()
+        }
+        return queryItems.joinToString(" ")
+    }
+
+    /**
      * 検索を実行します。
      * @param loadNext 次のページを読み込むかどうか
      */

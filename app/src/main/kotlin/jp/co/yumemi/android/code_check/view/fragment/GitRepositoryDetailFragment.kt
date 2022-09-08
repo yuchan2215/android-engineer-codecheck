@@ -3,6 +3,7 @@
  */
 package jp.co.yumemi.android.code_check.view.fragment
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -39,7 +40,12 @@ class GitRepositoryDetailFragment : Fragment(R.layout.git_repository_detail_frag
                 // TODO
             }
             R.id.share -> {
-                // TODO
+                val intent = Intent().apply {
+                    action = Intent.ACTION_SEND
+                    type = "text/plain"
+                    putExtra(Intent.EXTRA_TEXT, repositoryUrl)
+                }
+                startActivity(intent)
             }
             else -> return@OnMenuItemClickListener false
         }

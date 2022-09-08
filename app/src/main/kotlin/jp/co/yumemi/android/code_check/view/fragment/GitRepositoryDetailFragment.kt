@@ -8,7 +8,10 @@ import android.util.Log
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.setupWithNavController
 import jp.co.yumemi.android.code_check.R
 import jp.co.yumemi.android.code_check.databinding.GitRepositoryDetailFragmentBinding
 import jp.co.yumemi.android.code_check.view.activity.TopActivity.Companion.lastSearchDate
@@ -30,9 +33,14 @@ class GitRepositoryDetailFragment : Fragment(R.layout.git_repository_detail_frag
 
         Log.d("検索した日時", lastSearchDate.toString())
 
+        val navController = findNavController()
+        val appBarConfiguration = AppBarConfiguration(navController.graph)
+
         GitRepositoryDetailFragmentBinding.bind(view).apply {
             this.viewModel = this@GitRepositoryDetailFragment.viewModel
             lifecycleOwner = viewLifecycleOwner
+
+            toolBar.setupWithNavController(navController, appBarConfiguration)
         }
     }
 }

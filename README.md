@@ -33,3 +33,5 @@ ktlintについて
 3. GitHub API（`search/repositories`）でリポジトリを検索し、結果一覧を概要（リポジトリ名）で表示
 4. 特定の結果を選択したら、該当リポジトリの詳細（リポジトリ名、オーナーアイコン、プロジェクト言語、Star 数、Watcher 数、Fork 数、Issue 数）を表示
 
+# 振り返り
+[こちらのMarkdownに書きました。](FURIKAERI.md)

@@ -100,6 +100,72 @@
 
                 </com.google.android.material.card.MaterialCardView>
 
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/repository_details_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/owner_card">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="8dp"
+                        android:orientation="vertical">
+
+                        <TextView
+                            style="@style/RepositoryDetailItemTextView"
+                            isFitDrawable="@{true}"
+                            isMatchDrawableColor="@{true}"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:drawablePadding="8dp"
+                            android:text="@{viewModel.starsText}"
+                            app:drawableStartCompat="@drawable/git_star"
+                            tools:text="3 stars" />
+
+                        <TextView
+                            style="@style/RepositoryDetailItemTextView"
+                            isFitDrawable="@{true}"
+                            isMatchDrawableColor="@{true}"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:drawablePadding="8dp"
+                            android:text="@{viewModel.forksText}"
+                            app:drawableStartCompat="@drawable/git_fork"
+                            tools:text="3231 forks" />
+
+                        <TextView
+                            style="@style/RepositoryDetailItemTextView"
+                            isFitDrawable="@{true}"
+                            isMatchDrawableColor="@{true}"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:drawablePadding="8dp"
+                            android:text="@{viewModel.issuesText}"
+                            app:drawableStartCompat="@drawable/git_issue"
+                            tools:text="3 issues" />
+
+                        <TextView
+                            style="@style/RepositoryDetailItemTextView"
+                            isFitDrawable="@{true}"
+                            isGoneWhenNull="@{true}"
+                            isMatchDrawableColor="@{true}"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:drawablePadding="8dp"
+                            android:text="@{viewModel.repository.language}"
+                            app:drawableStartCompat="@drawable/git_language"
+                            tools:text="Kotlin" />
+
+                    </LinearLayout>
+
+                </com.google.android.material.card.MaterialCardView>
+
             </androidx.constraintlayout.widget.ConstraintLayout>
 
 

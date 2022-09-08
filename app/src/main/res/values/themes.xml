@@ -7,6 +7,10 @@
         <item name="boxBackgroundMode">none</item>
     </style>
 
+    <style name="RepositoryDetailItemTextView" parent="TextAppearance.Material3.LabelLarge">
+        <item name="android:gravity">center</item>
+    </style>
+
     <!--Generate by https://m3.material.io/theme-builder#/custom -->
     <style name="Theme.AndroidEngineerCodeCheck" parent="Theme.Material3.Light.NoActionBar">
         <item name="colorPrimary">@color/md_theme_light_primary</item>

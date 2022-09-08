@@ -14,6 +14,7 @@ object ImageViewBindingAdapter {
     fun ImageView.loadImage(imageUrl: String) {
         this.load(imageUrl) {
             placeholder(R.drawable.loading)
+            error(R.drawable.git_issue)
         }
     }
 }

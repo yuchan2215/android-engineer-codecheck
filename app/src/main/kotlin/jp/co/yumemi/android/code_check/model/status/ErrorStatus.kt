@@ -1,7 +1,11 @@
 package jp.co.yumemi.android.code_check.model.status
 
+import android.text.format.DateFormat
 import androidx.annotation.StringRes
 import java.net.UnknownHostException
+import java.util.Calendar
+import java.util.Date
+import java.util.TimeZone
 import jp.co.yumemi.android.code_check.CodeCheckApplication
 import jp.co.yumemi.android.code_check.R
 import jp.co.yumemi.android.code_check.constant.HTTPResponseCode
@@ -28,8 +32,20 @@ sealed class ErrorStatus(val errorDescription: String) {
     /**
      * APIのレート制限等に達するとこのエラーになる。
      */
-    object ForbiddenError : ErrorStatus(
-        getString(R.string.forbidden_error_description)
+    data class ForbiddenError(private val resetDate: Date?) : ErrorStatus(
+        if (resetDate == null)
+            getString(R.string.forbidden_error_description)
+        else {
+            val jpCal = Calendar.getInstance()
+            jpCal.time = resetDate
+            jpCal.timeZone = TimeZone.getTimeZone("Asia/Tokyo")
+            val formattedLocaledDateTime =
+                DateFormat.format("MM/dd HH:mm:ss", jpCal)
+            CodeCheckApplication.instance.getString(
+                R.string.forbidden_error_description_with_time,
+                formattedLocaledDateTime.toString()
+            )
+        }
     )
 
     /**
@@ -70,7 +86,13 @@ sealed class ErrorStatus(val errorDescription: String) {
         fun <T> fromRetrofitResponse(response: Response<T>): ErrorStatus {
             return when (val errorCode = response.code()) {
                 HTTPResponseCode.OK -> throw IllegalStateException("通常は到達しないレスポンスコード")
-                HTTPResponseCode.FORBIDDEN -> ForbiddenError
+                HTTPResponseCode.FORBIDDEN -> {
+                    val unixString = response.headers()["x-ratelimit-reset"]
+                    val date = unixString?.toLongOrNull()?.let {
+                        Date(it * 1000L)
+                    }
+                    ForbiddenError(date)
+                }
                 HTTPResponseCode.NOT_MODIFIED -> NotModifiedError
                 HTTPResponseCode.VALIDATION_FAILED -> ValidationError
                 HTTPResponseCode.SERVICE_UNAVAILABLE -> ServiceUnavailableError

@@ -6,6 +6,7 @@ package jp.co.yumemi.android.code_check.view.fragment
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -28,6 +29,19 @@ class GitRepositoryDetailFragment : Fragment(R.layout.git_repository_detail_frag
         GitRepositoryDetailFragmentViewModel.Companion.Factory(args.repository)
     }
 
+    private val listener = Toolbar.OnMenuItemClickListener { menuItem ->
+        when (menuItem.itemId) {
+            R.id.open_browser -> {
+                // TODO
+            }
+            R.id.share -> {
+                // TODO
+            }
+            else -> return@OnMenuItemClickListener false
+        }
+        return@OnMenuItemClickListener true
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -41,6 +55,7 @@ class GitRepositoryDetailFragment : Fragment(R.layout.git_repository_detail_frag
             lifecycleOwner = viewLifecycleOwner
 
             toolBar.setupWithNavController(navController, appBarConfiguration)
+            toolBar.setOnMenuItemClickListener(listener)
         }
     }
 }

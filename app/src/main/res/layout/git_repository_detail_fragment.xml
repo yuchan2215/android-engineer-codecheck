@@ -42,6 +42,15 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp">
 
+                <TextView
+                    android:id="@+id/repository_name_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@{viewModel.name}"
+                    android:textAppearance="?attr/textAppearanceHeadlineLarge"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="RepositoryName" />
+
             </androidx.constraintlayout.widget.ConstraintLayout>
 
 

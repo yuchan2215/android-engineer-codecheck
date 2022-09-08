@@ -36,13 +36,13 @@ object ChipRadioAdapter {
     fun ChipGroup.bindListeners(valueAttrChanged: InverseBindingListener?) {
         setOnCheckedStateChangeListener { group, _ ->
             // １回目はチェックを外す処理なのでなにもしない
-            if (getTag(IN_PROGRESS_TAG) as Boolean) {
+            if ((getTag(IN_PROGRESS_TAG) ?: false) as Boolean) {
                 setTag(IN_PROGRESS_TAG, false)
                 return@setOnCheckedStateChangeListener
             }
             // チェックが外されたなら、デフォルト値にチェックを入れる
             if (group.checkedChipIds.isEmpty()) {
-                val defaultId = getTag(DEFAULT_ID_TAG) as Int
+                val defaultId = (getTag(DEFAULT_ID_TAG) ?: -1) as Int
                 fixedCheck(defaultId)
             }
             valueAttrChanged?.onChange()

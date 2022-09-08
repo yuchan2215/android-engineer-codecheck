@@ -1,4 +1,4 @@
-package jp.co.yumemi.android.code_check.view.bottomsheet
+package jp.co.yumemi.android.code_check.view.fragment.bottomsheet
 
 import android.os.Bundle
 import android.view.LayoutInflater

@@ -1,4 +1,4 @@
-package jp.co.yumemi.android.code_check.view.adapter
+package jp.co.yumemi.android.code_check.view.bindingadapter
 
 import android.view.View
 import android.widget.TextView

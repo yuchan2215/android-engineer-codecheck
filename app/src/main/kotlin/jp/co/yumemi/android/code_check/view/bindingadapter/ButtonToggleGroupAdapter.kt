@@ -1,4 +1,4 @@
-package jp.co.yumemi.android.code_check.view.adapter
+package jp.co.yumemi.android.code_check.view.bindingadapter
 
 import androidx.annotation.IdRes
 import androidx.databinding.BindingAdapter

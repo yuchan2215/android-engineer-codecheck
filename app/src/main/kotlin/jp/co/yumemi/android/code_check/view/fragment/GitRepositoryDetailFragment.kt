@@ -29,6 +29,10 @@ class GitRepositoryDetailFragment : Fragment(R.layout.git_repository_detail_frag
         GitRepositoryDetailFragmentViewModel.Companion.Factory(args.repository)
     }
 
+    private val repositoryUrl: String by lazy {
+        viewModel.repository.htmlUrl
+    }
+
     private val listener = Toolbar.OnMenuItemClickListener { menuItem ->
         when (menuItem.itemId) {
             R.id.open_browser -> {

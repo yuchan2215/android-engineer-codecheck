@@ -1,5 +1,6 @@
 package jp.co.yumemi.android.code_check.view.adapter
 
+import android.view.View
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
 
@@ -18,5 +19,14 @@ object TextViewAdapter {
             }
         }
         this.setCompoundDrawables(drawables[0], drawables[1], drawables[2], drawables[3])
+    }
+
+    @BindingAdapter("isGoneWhenNull")
+    @JvmStatic
+    fun TextView.setVisibilityOption(isGoneWhenNull: Boolean) {
+        if (!isGoneWhenNull) return
+        if (this.text.isEmpty()) {
+            this.visibility = View.GONE
+        }
     }
 }

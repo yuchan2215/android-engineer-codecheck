@@ -26,9 +26,9 @@ object GitHubApiRepository {
                     query.orderQuery.queryText,
                     query.loadPage
                 )
-            RequestStatus.createStatusFromRetrofit(response, query)
+            RequestStatus.createStatusFromRetrofit(response)
         } catch (t: Throwable) {
-            RequestStatus.createErrorStatusFromThrowable(t, query)
+            RequestStatus.createErrorStatusFromThrowable(t)
         }
     }
 

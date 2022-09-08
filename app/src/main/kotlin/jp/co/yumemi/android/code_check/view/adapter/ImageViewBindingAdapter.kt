@@ -3,6 +3,7 @@ package jp.co.yumemi.android.code_check.view.adapter
 import android.widget.ImageView
 import androidx.databinding.BindingAdapter
 import coil.load
+import jp.co.yumemi.android.code_check.R
 
 object ImageViewBindingAdapter {
     @BindingAdapter("imageUrl")
@@ -11,6 +12,8 @@ object ImageViewBindingAdapter {
      * 画像をxmlから読み込む際に利用する。
      */
     fun ImageView.loadImage(imageUrl: String) {
-        this.load(imageUrl)
+        this.load(imageUrl) {
+            placeholder(R.drawable.loading)
+        }
     }
 }

@@ -18,5 +18,6 @@ data class GitRepository(
     @SerialName("watchers_count") val watchersCount: Int,
     @SerialName("forks_count") val forksCount: Int,
     @SerialName("open_issues_count") val openIssuesCount: Int,
+    @SerialName("html_url") val htmlUrl: String,
     @SerialName("description") val description: String? = null
 ) : java.io.Serializable // ナビゲーションの引数のSerializable

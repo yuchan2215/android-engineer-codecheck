@@ -4,6 +4,7 @@
 package jp.co.yumemi.android.code_check.view.fragment
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -37,7 +38,8 @@ class GitRepositoryDetailFragment : Fragment(R.layout.git_repository_detail_frag
     private val listener = Toolbar.OnMenuItemClickListener { menuItem ->
         when (menuItem.itemId) {
             R.id.open_browser -> {
-                // TODO
+                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(repositoryUrl))
+                startActivity(intent)
             }
             R.id.share -> {
                 val intent = Intent().apply {

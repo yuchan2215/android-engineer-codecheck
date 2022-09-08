@@ -131,19 +131,10 @@
                     app:drawableStartCompat="@drawable/git_issue"
                     tools:text="12" />
 
-                <TextView
-                    android:id="@+id/watcher_text"
-                    isFitDrawable="@{true}"
-                    isMatchDrawableColor="@{true}"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_weight="1"
-                    android:drawablePadding="8dp"
-                    android:textAlignment="viewStart"
-                    android:textAppearance="?attr/textAppearanceLabelMedium"
-                    app:drawableStartCompat="@drawable/git_watcher"
-                    tools:text="12" />
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="1dp"
+                    android:layout_weight="1" />
             </LinearLayout>
 
         </LinearLayout>

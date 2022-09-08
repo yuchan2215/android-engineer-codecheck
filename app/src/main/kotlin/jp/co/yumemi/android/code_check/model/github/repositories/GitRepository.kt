@@ -11,10 +11,12 @@ import kotlinx.serialization.json.Json
  */
 @Serializable // Kotlinx SerializationのSerializable
 data class GitRepository(
+    @SerialName("id") val id: Int,
     @SerialName("name") val name: String,
     @SerialName("owner") val owner: GitOwner?,
     @SerialName("language") val language: String?,
     @SerialName("stargazers_count") val stargazersCount: Int,
+    @Deprecated("GitHubから正しいレスポンスが返ってこないため")
     @SerialName("watchers_count") val watchersCount: Int,
     @SerialName("forks_count") val forksCount: Int,
     @SerialName("open_issues_count") val openIssuesCount: Int,

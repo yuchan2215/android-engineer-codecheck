@@ -1,6 +1,5 @@
 package jp.co.yumemi.android.code_check.model.status
 
-import jp.co.yumemi.android.code_check.model.status.request.FetchQuery
 import retrofit2.Response
 
 sealed interface RequestStatus<T> {
@@ -8,7 +7,7 @@ sealed interface RequestStatus<T> {
     data class OnSuccess<T>(val body: T) : RequestStatus<T>
 
     /**失敗していて[ErrorStatus]がある時に使用する。*/
-    data class OnError<T>(val error: ErrorStatus, val fetchQuery: FetchQuery) : RequestStatus<T>
+    data class OnError<T>(val error: ErrorStatus) : RequestStatus<T>
 
     /**読み込み中の時に利用する。*/
     class OnLoading<T> : RequestStatus<T>
@@ -19,25 +18,23 @@ sealed interface RequestStatus<T> {
     companion object {
         /**Retrofitの[Response]から[RequestStatus]を作成する*/
         fun <T> createStatusFromRetrofit(
-            response: Response<T>,
-            fetchQuery: FetchQuery
+            response: Response<T>
         ): RequestStatus<T> {
             val responseBody = response.body()
             return if (response.isSuccessful && responseBody != null) {
                 OnSuccess(responseBody)
             } else {
                 val errorStatus = ErrorStatus.fromRetrofitResponse(response)
-                OnError(errorStatus, fetchQuery)
+                OnError(errorStatus)
             }
         }
 
         /**[Throwable]から[OnError]を作成する*/
         fun <T> createErrorStatusFromThrowable(
-            throwable: Throwable,
-            fetchQuery: FetchQuery
+            throwable: Throwable
         ): OnError<T> {
             val errorStatus = ErrorStatus.fromThrowable(throwable)
-            return OnError(errorStatus, fetchQuery)
+            return OnError(errorStatus)
         }
     }
 }

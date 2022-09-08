@@ -96,7 +96,7 @@ class SearchFragmentViewModel : ViewModel() {
     val errorText: LiveData<String> = requestStatus.map {
         if (it !is RequestStatus.OnError) ""
         else {
-            val repositoryName = it.fetchQuery.toStringQuery()
+            val repositoryName = requestCache.value?.lastRequest?.toStringQuery()
             val errorTitle = CodeCheckApplication.instance.getString(R.string.error_title)
             val errorDescription = it.error.errorDescription
 

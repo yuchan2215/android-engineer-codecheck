@@ -1,4 +1,4 @@
-package jp.co.yumemi.android.code_check.view.adapter
+package jp.co.yumemi.android.code_check.view.listadapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -32,7 +32,6 @@ abstract class GitRepositoryListAdapter :
             binding.starText.text = repository.stargazersCount.toString()
             binding.forkText.text = repository.forksCount.toString()
             binding.issueText.text = repository.openIssuesCount.toString()
-            binding.watcherText.text = repository.watchersCount.toString()
 
             repository.description?.let {
                 binding.repositoryDescriptionView.text = it
@@ -62,7 +61,7 @@ abstract class GitRepositoryListAdapter :
     companion object {
         private val DIFF_UTIL = object : DiffUtil.ItemCallback<GitRepository>() {
             override fun areItemsTheSame(oldItem: GitRepository, newItem: GitRepository): Boolean {
-                return oldItem.name == newItem.name
+                return oldItem.id == newItem.id
             }
 
             override fun areContentsTheSame(

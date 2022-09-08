@@ -19,8 +19,8 @@ import java.util.Date
 import jp.co.yumemi.android.code_check.R
 import jp.co.yumemi.android.code_check.databinding.SearchFragmentBinding
 import jp.co.yumemi.android.code_check.model.github.repositories.GitRepository
-import jp.co.yumemi.android.code_check.view.adapter.GitRepositoryListAdapter
-import jp.co.yumemi.android.code_check.view.bottomsheet.SearchBottomSheet
+import jp.co.yumemi.android.code_check.view.fragment.bottomsheet.SearchBottomSheet
+import jp.co.yumemi.android.code_check.view.listadapter.GitRepositoryListAdapter
 import jp.co.yumemi.android.code_check.viewmodel.SearchFragmentViewModel
 
 /**

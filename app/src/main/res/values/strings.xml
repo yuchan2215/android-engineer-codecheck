@@ -46,4 +46,6 @@
     <string name="sort_updated">Updated</string>
     <string name="ascending_button_text">Ascending</string>
     <string name="descending_button_text">Descending</string>
+    <string name="open_in_browser_title">Open in Browser</string>
+    <string name="share_title">Share</string>
 </resources>

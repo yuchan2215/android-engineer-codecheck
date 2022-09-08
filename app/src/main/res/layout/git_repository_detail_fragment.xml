@@ -21,6 +21,7 @@
                 android:id="@+id/tool_bar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
+                app:menu="@menu/git_repository_detail_menu"
                 app:title="@{viewModel.name}"
                 app:titleCentered="true" />
         </com.google.android.material.appbar.AppBarLayout>

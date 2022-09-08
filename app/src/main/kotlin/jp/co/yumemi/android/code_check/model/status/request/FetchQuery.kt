@@ -10,11 +10,7 @@ data class FetchQuery(
     val loadPage: Int
 ) {
     fun toStringQuery(): String {
-        return queries.map {
-            it.getText
-        }.filter {
-            it.isNotEmpty()
-        }.joinToString(" ")
+        return queries.toStringQuery()
     }
 
     /**
@@ -25,8 +21,16 @@ data class FetchQuery(
         sortQuery: SortQuery,
         orderQuery: OrderQuery
     ): Boolean {
-        return this.queries == queries &&
+        return this.queries.toStringQuery() == queries.toStringQuery() &&
             this.sortQuery == sortQuery &&
             this.orderQuery == orderQuery
+    }
+
+    private fun List<SearchQuery>.toStringQuery(): String {
+        return this.map {
+            it.getText
+        }.filter {
+            it.isNotEmpty()
+        }.joinToString(" ")
     }
 }

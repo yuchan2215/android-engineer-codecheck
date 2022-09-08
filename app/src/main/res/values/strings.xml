@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">Android Engineer CodeCheck</string>
     <string name="searchInputText_hint">GitHub のリポジトリを検索できるよー</string>
     <string name="github_repository_image_description">GitHub Repository Owner Image</string>
@@ -42,7 +42,7 @@
     <string name="sort_best_match_and_default">Best Match(Default)</string>
     <string name="sort_stars">Stars</string>
     <string name="sort_forks">Forks</string>
-    <string name="sort_help_wanted_issues">Help Wanted Issues</string>
+    <string name="sort_help_wanted_issues" tools:ignore="UnusedResources">Help Wanted Issues</string>
     <string name="sort_updated">Updated</string>
     <string name="ascending_button_text">Ascending</string>
     <string name="descending_button_text">Descending</string>

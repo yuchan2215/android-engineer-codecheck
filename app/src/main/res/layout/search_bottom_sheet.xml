@@ -158,12 +158,14 @@
                     android:layout_height="wrap_content"
                     android:text="@string/sort_updated" />
 
+                <!--Deprecated
                 <com.google.android.material.chip.Chip
                     android:id="@+id/sort_help_wanted_issues"
                     style="@style/Widget.Material3.Chip.Filter"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/sort_help_wanted_issues" />
+                    -->
 
 
             </com.google.android.material.chip.ChipGroup>

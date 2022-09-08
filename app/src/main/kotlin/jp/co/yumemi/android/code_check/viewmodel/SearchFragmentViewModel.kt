@@ -152,7 +152,7 @@ class SearchFragmentViewModel : ViewModel() {
             R.id.sort_stars -> SortQuery.Stars
             R.id.sort_best_match_and_default -> SortQuery.Default
             R.id.sort_updated -> SortQuery.Updated
-            R.id.sort_help_wanted_issues -> SortQuery.HelpWantedIssues
+            // Deprecated R.id.sort_help_wanted_issues -> SortQuery.HelpWantedIssues
             else -> SortQuery.Default
         }
     }

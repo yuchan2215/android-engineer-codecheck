@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -14,11 +15,139 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="16dp"
             android:layout_marginVertical="8dp"
-            android:textAppearance="?attr/textAppearanceBodyMedium"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:textAppearance="?attr/textAppearanceTitleMedium"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="リポジトリ名" />
+
+        <TextView
+            android:id="@+id/repository_description_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
+            android:textAppearance="?attr/textAppearanceBodyMedium"
+            android:visibility="gone"
+            app:layout_constraintTop_toBottomOf="@id/repositoryNameView"
+            tools:text="リポジトリ説明"
+            tools:visibility="visible" />
+
+        <TextView
+            android:id="@+id/owner_text"
+            isFitDrawable="@{true}"
+            isMatchDrawableColor="@{true}"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:drawablePadding="8dp"
+            android:gravity="center"
+            android:textAppearance="?attr/textAppearanceLabelMedium"
+            android:visibility="gone"
+            app:drawableStartCompat="@drawable/git_owner"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/repository_description_view"
+            tools:text="リポジトリのオーナー名"
+            tools:visibility="visible" />
+
+        <TextView
+            android:id="@+id/lang_text"
+            isFitDrawable="@{true}"
+            isMatchDrawableColor="@{true}"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:drawablePadding="8dp"
+            android:gravity="center"
+            android:textAppearance="?attr/textAppearanceLabelMedium"
+            android:visibility="gone"
+            app:drawableStartCompat="@drawable/git_language"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/owner_text"
+            tools:text="リポジトリの言語"
+            tools:visibility="visible" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/lang_text">
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/star_text"
+                    isFitDrawable="@{true}"
+                    isMatchDrawableColor="@{true}"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_weight="1"
+                    android:drawablePadding="8dp"
+                    android:minWidth="100dp"
+                    android:textAlignment="viewStart"
+                    android:textAppearance="?attr/textAppearanceLabelMedium"
+                    app:drawableStartCompat="@drawable/git_star"
+                    tools:text="12" />
+
+                <TextView
+                    android:id="@+id/fork_text"
+                    isFitDrawable="@{true}"
+                    isMatchDrawableColor="@{true}"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_weight="1"
+                    android:drawablePadding="8dp"
+                    android:textAlignment="viewStart"
+                    android:textAppearance="?attr/textAppearanceLabelMedium"
+                    app:drawableStartCompat="@drawable/git_fork"
+                    tools:text="12" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+
+                <TextView
+                    android:id="@+id/issue_text"
+                    isFitDrawable="@{true}"
+                    isMatchDrawableColor="@{true}"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_weight="1"
+                    android:drawablePadding="8dp"
+                    android:textAlignment="viewStart"
+                    android:textAppearance="?attr/textAppearanceLabelMedium"
+                    app:drawableStartCompat="@drawable/git_issue"
+                    tools:text="12" />
+
+                <TextView
+                    android:id="@+id/watcher_text"
+                    isFitDrawable="@{true}"
+                    isMatchDrawableColor="@{true}"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_weight="1"
+                    android:drawablePadding="8dp"
+                    android:textAlignment="viewStart"
+                    android:textAppearance="?attr/textAppearanceLabelMedium"
+                    app:drawableStartCompat="@drawable/git_watcher"
+                    tools:text="12" />
+            </LinearLayout>
+
+        </LinearLayout>
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

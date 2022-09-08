@@ -1,5 +1,6 @@
 package jp.co.yumemi.android.code_check.model.status
 
+import jp.co.yumemi.android.code_check.model.status.request.FetchQuery
 import retrofit2.Response
 
 sealed interface RequestStatus<T> {

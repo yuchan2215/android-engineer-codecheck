@@ -11,5 +11,6 @@ import kotlinx.serialization.json.Json
  */
 @Serializable
 data class GitOwner(
-    @SerialName("avatar_url") val avatarUrl: String
+    @SerialName("avatar_url") val avatarUrl: String,
+    @SerialName("login") val name: String
 )

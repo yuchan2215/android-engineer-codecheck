@@ -2,6 +2,7 @@ package jp.co.yumemi.android.code_check.view.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -19,6 +20,24 @@ abstract class GitRepositoryListAdapter :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(repository: GitRepository) {
             binding.repositoryNameView.text = repository.name
+            repository.owner?.name?.let {
+                binding.ownerText.text = it
+                binding.ownerText.isVisible = true
+            }
+
+            repository.language?.let {
+                binding.langText.text = it
+                binding.langText.isVisible = true
+            }
+            binding.starText.text = repository.stargazersCount.toString()
+            binding.forkText.text = repository.forksCount.toString()
+            binding.issueText.text = repository.openIssuesCount.toString()
+            binding.watcherText.text = repository.watchersCount.toString()
+
+            repository.description?.let {
+                binding.repositoryDescriptionView.text = it
+                binding.repositoryDescriptionView.isVisible = true
+            }
         }
     }
 

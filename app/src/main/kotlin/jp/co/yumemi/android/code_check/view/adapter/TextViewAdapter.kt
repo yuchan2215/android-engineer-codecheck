@@ -5,13 +5,16 @@ import androidx.databinding.BindingAdapter
 
 object TextViewAdapter {
 
-    @BindingAdapter("isFitDrawable")
+    @BindingAdapter("isFitDrawable", "isMatchDrawableColor")
     @JvmStatic
-    fun TextView.setFitDrawable(isFitDrawable: Boolean) {
-        if (!isFitDrawable) return
+    fun TextView.setDrawableOptions(isFitDrawable: Boolean?, isMatchDrawableColor: Boolean?) {
         val drawables = this.compoundDrawablesRelative.map {
             it?.apply {
-                setBounds(0, 0, textSize.toInt(), textSize.toInt())
+                if (isFitDrawable == true)
+                    setBounds(0, 0, textSize.toInt(), textSize.toInt())
+
+                if (isMatchDrawableColor == true)
+                    setTint(currentTextColor)
             }
         }
         this.setCompoundDrawables(drawables[0], drawables[1], drawables[2], drawables[3])

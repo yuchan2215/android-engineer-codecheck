@@ -17,5 +17,6 @@ data class GitRepository(
     @SerialName("stargazers_count") val stargazersCount: Int,
     @SerialName("watchers_count") val watchersCount: Int,
     @SerialName("forks_count") val forksCount: Int,
-    @SerialName("open_issues_count") val openIssuesCount: Int
+    @SerialName("open_issues_count") val openIssuesCount: Int,
+    @SerialName("description") val description: String? = null
 ) : java.io.Serializable // ナビゲーションの引数のSerializable

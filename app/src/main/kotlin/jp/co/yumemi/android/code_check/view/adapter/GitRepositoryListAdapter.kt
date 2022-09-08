@@ -62,7 +62,7 @@ abstract class GitRepositoryListAdapter :
     companion object {
         private val DIFF_UTIL = object : DiffUtil.ItemCallback<GitRepository>() {
             override fun areItemsTheSame(oldItem: GitRepository, newItem: GitRepository): Boolean {
-                return oldItem.name == newItem.name
+                return oldItem.id == newItem.id
             }
 
             override fun areContentsTheSame(

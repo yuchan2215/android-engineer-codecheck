@@ -6,6 +6,9 @@ import androidx.databinding.BindingAdapter
 
 object TextViewAdapter {
 
+    /**
+     * [TextView]に設定されているDrawableの大きさと色を、[TextView]の高さに合わせるためのアダプター
+     */
     @BindingAdapter("isFitDrawable", "isMatchDrawableColor")
     @JvmStatic
     fun TextView.setDrawableOptions(isFitDrawable: Boolean?, isMatchDrawableColor: Boolean?) {
@@ -21,6 +24,9 @@ object TextViewAdapter {
         this.setCompoundDrawables(drawables[0], drawables[1], drawables[2], drawables[3])
     }
 
+    /**
+     * もしTextがNullの時に、[TextView]を[View.GONE]にする。
+     */
     @BindingAdapter("isGoneWhenNull")
     @JvmStatic
     fun TextView.setVisibilityOption(isGoneWhenNull: Boolean) {

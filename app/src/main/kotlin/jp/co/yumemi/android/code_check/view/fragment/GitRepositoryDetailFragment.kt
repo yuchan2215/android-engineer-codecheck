@@ -35,6 +35,10 @@ class GitRepositoryDetailFragment : Fragment(R.layout.git_repository_detail_frag
         viewModel.repository.htmlUrl
     }
 
+    /**
+     * メニューのリスナー。
+     * ブラウザで開くボタンとシェアボタンが用意されている。
+     */
     private val listener = Toolbar.OnMenuItemClickListener { menuItem ->
         when (menuItem.itemId) {
             R.id.open_browser -> {

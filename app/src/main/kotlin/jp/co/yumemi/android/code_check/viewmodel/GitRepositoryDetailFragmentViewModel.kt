@@ -16,11 +16,6 @@ class GitRepositoryDetailFragmentViewModel(val repository: GitRepository) : View
         repository.stargazersCount
     )
 
-    val watchersText = QuantityStringUtil.getString(
-        R.plurals.github_watchers,
-        repository.watchersCount
-    )
-
     val issuesText = QuantityStringUtil.getString(
         R.plurals.github_open_issues,
         repository.openIssuesCount

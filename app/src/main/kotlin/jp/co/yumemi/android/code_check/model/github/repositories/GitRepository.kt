@@ -16,6 +16,7 @@ data class GitRepository(
     @SerialName("owner") val owner: GitOwner?,
     @SerialName("language") val language: String?,
     @SerialName("stargazers_count") val stargazersCount: Int,
+    @Deprecated("GitHubから正しいレスポンスが返ってこないため")
     @SerialName("watchers_count") val watchersCount: Int,
     @SerialName("forks_count") val forksCount: Int,
     @SerialName("open_issues_count") val openIssuesCount: Int,

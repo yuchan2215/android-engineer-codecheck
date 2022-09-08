@@ -32,7 +32,6 @@ abstract class GitRepositoryListAdapter :
             binding.starText.text = repository.stargazersCount.toString()
             binding.forkText.text = repository.forksCount.toString()
             binding.issueText.text = repository.openIssuesCount.toString()
-            binding.watcherText.text = repository.watchersCount.toString()
 
             repository.description?.let {
                 binding.repositoryDescriptionView.text = it

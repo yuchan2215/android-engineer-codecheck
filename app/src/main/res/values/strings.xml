@@ -1,20 +1,20 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">Android Engineer CodeCheck</string>
-    <string name="searchInputText_hint">GitHub のリポジトリを検索できるよー</string>
+    <string name="searchInputText_hint">Search Query</string>
     <string name="github_repository_image_description">GitHub Repository Owner Image</string>
-    <plurals name="github_stars">
+    <plurals name="github_stars" translatable="false">
         <item quantity="one">%d star</item>
         <item quantity="other">%d stars</item>
     </plurals>
-    <plurals name="github_watchers">
+    <plurals name="github_watchers" translatable="false">
         <item quantity="one">%d watcher</item>
         <item quantity="other">%d watchers</item>
     </plurals>
-    <plurals name="github_forks">
+    <plurals name="github_forks" translatable="false">
         <item quantity="one">%d fork</item>
         <item quantity="other">%d forks</item>
     </plurals>
-    <plurals name="github_open_issues">
+    <plurals name="github_open_issues" translatable="false">
         <item quantity="one">%d open issue</item>
         <item quantity="other">%d open issues</item>
     </plurals>
@@ -30,7 +30,7 @@
         <item quantity="one">%d repository</item>
         <item quantity="other">%d repositories</item>
     </plurals>
-    <string name="error_display">%s(%s): %s</string>
+    <string name="error_display" translatable="false">%s(%s): %s</string>
     <string name="search_setting_open_floating_button_description">Open Search Settings</string>
     <string name="search_setting_title">Search Setting</string>
     <string name="re_search">Search</string>

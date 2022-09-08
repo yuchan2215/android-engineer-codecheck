@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Android Engineer CodeCheck</string>
+    <string name="searchInputText_hint">検索クエリ</string>
+    <string name="github_repository_image_description">GitHubリポジトリのオーナー画像</string>
+    <string name="error_title">エラーが発生しました</string>
+    <string name="forbidden_error_description">アクセスが拒否されました。\nしばらく経ってから再度試してください。</string>
+    <string name="validation_error_description">検索文が正しくありません。\n確認してください</string>
+    <string name="service_unavailable_error_description">サービスがGitHubから提供されていません。</string>
+    <string name="not_modified_error_description">先程のアクセスからアップデートされていません。</string>
+    <string name="response_code_prefix">レスポンスコード：</string>
+    <string name="search_setting_open_floating_button_description">検索設定を開く</string>
+    <string name="search_setting_title">検索設定</string>
+    <string name="re_search">検索</string>
+    <string name="owner_name_input_hint">オーナー名</string>
+    <string name="owner_name_input_helper_text">GitHubのユーザー名又は組織名</string>
+    <string name="git_owner_type_user">ユーザー</string>
+    <string name="git_owner_type_org">組織</string>
+    <string name="repository_language_input_hint">リポジトリ言語</string>
+    <string name="sort_setting_title">並び替え設定</string>
+    <string name="sort_best_match_and_default">最も一致(デフォルト)</string>
+    <string name="sort_stars">Stars</string>
+    <string name="sort_forks">Forks</string>
+    <string name="sort_help_wanted_issues">助けを求めるIssues</string>
+    <string name="sort_updated">最終更新</string>
+    <string name="ascending_button_text">昇順</string>
+    <string name="descending_button_text">降順</string>
+    <string name="open_in_browser_title">ブラウザで開く</string>
+    <string name="share_title">シェア</string>
+    <string name="forbidden_error_description_with_time">アクセスが拒否されました。\nしばらく経ってから再度試してください。\n次の時間まで拒否されています。\n%s</string>
+    <string name="unknown_host_exception_error_description">ホスト解決が失敗しました。インターネット接続を確認してください。</string>
+    <plurals name="repository_counts">
+        <item quantity="other">%d リポジトリ</item>
+    </plurals>
+</resources>

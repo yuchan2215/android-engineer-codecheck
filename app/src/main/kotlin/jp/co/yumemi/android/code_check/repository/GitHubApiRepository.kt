@@ -11,21 +11,29 @@ import jp.co.yumemi.android.code_check.model.status.request.SearchQuery
 import jp.co.yumemi.android.code_check.model.status.request.SortQuery
 import jp.co.yumemi.android.code_check.network.GitHubApi
 import jp.co.yumemi.android.code_check.network.GitHubApiService
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 object GitHubApiRepository {
+    private suspend fun getGitHubApiService(): GitHubApiService {
+        return withContext(Dispatchers.IO) {
+            val token = TokenRepository.getToken()
+            return@withContext GitHubApi.getGitHubApiService(token)
+        }
+    }
+
     /**
      * GitHubのリポジトリを[GitHubApiService]を介して叩きます。
      * 返り値の作成は[RequestStatus.Companion]にある関数に委譲しています。
      */
     private suspend fun getRepositories(query: FetchQuery): RequestStatus<SearchGitRepoResponse> {
         return try {
-            val response =
-                GitHubApi.gitHubApiService.getRepositories(
-                    query.toStringQuery(),
-                    query.sortQuery.queryText,
-                    query.orderQuery.queryText,
-                    query.loadPage
-                )
+            val response = getGitHubApiService().getRepositories(
+                query.toStringQuery(),
+                query.sortQuery.queryText,
+                query.orderQuery.queryText,
+                query.loadPage
+            )
             RequestStatus.createStatusFromRetrofit(response)
         } catch (t: Throwable) {
             RequestStatus.createErrorStatusFromThrowable(t)

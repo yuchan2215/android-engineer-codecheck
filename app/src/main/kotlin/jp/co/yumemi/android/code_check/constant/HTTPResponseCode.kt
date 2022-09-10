@@ -6,4 +6,5 @@ object HTTPResponseCode {
     const val VALIDATION_FAILED = 422
     const val SERVICE_UNAVAILABLE = 503
     const val FORBIDDEN = 403
+    const val UNAUTHORIZED = 401
 }

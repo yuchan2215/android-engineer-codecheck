@@ -25,6 +25,8 @@
     <string name="validation_error_description">The search text is incorrect. Please review.</string>
     <string name="service_unavailable_error_description">The service is not provided by GitHub.</string>
     <string name="not_modified_error_description">It has not been updated since the previous one.</string>
+    <string name="un_authorized_error_description">Authentication failed. Please check the token settings and expiration date.</string>
+
     <string name="response_code_prefix">Response Code: </string>
     <plurals name="repository_counts">
         <item quantity="one">%d repository</item>
@@ -49,4 +51,15 @@
     <string name="descending_button_text">Descending</string>
     <string name="open_in_browser_title">Open in Browser</string>
     <string name="share_title">Share</string>
+    <string name="authentication_title">Authentication</string>
+    <string name="github_personal_access_token_hint" translatable="false">GitHub Personal Access Token</string>
+    <string name="token_note">Authentication tokens can be obtained by pressing the following button.\nPlease note that since this application is created by a novice, security is not guaranteed.</string>
+    <string name="token_input_helper">Adding token raises the API limit.</string>
+    <string name="open_token_setting_text">Open the token acquisition page</string>
+    <string name="save_button_text">Save</string>
+    <string name="token_status_text">Status: %s</string>
+    <string name="token_status_not_configured">Not Configured</string>
+    <string name="token_status_configured">Configured</string>
+    <string name="open_token_setting_title">Open Token Setting</string>
+
 </resources>

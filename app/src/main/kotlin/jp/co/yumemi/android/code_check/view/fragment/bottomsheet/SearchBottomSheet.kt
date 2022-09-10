@@ -5,10 +5,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import jp.co.yumemi.android.code_check.databinding.SearchBottomSheetBinding
+import jp.co.yumemi.android.code_check.view.fragment.SearchFragmentDirections
 import jp.co.yumemi.android.code_check.viewmodel.SearchFragmentViewModel
 
 class SearchBottomSheet : BottomSheetDialogFragment() {
@@ -37,7 +39,11 @@ class SearchBottomSheet : BottomSheetDialogFragment() {
         binding.reSearchButton.setOnClickListener {
             viewModel.fetchResults(false)
         }
-
+        binding.openAuthButton.setOnClickListener {
+            requireParentFragment().findNavController().navigate(
+                SearchFragmentDirections.openTokenSetting()
+            )
+        }
         val bottomSheetBehavior = (dialog as BottomSheetDialog).behavior
         // 全て展開する
         bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED

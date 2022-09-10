@@ -10,15 +10,13 @@ import jp.co.yumemi.android.code_check.repository.TokenRepository
 import kotlinx.coroutines.launch
 
 class TokenSettingViewModel : ViewModel() {
-    fun onOpenBottomSheet() {
-        fetchTokenStatus()
-    }
+
     val tokenInputText: MutableLiveData<String> = MutableLiveData()
 
     private val _tokenStatusText: MutableLiveData<String> = MutableLiveData()
     val tokenStatueText: LiveData<String> get() = _tokenStatusText
 
-    private fun fetchTokenStatus() {
+    fun fetchTokenStatus() {
         viewModelScope.launch {
             val tokenIsExist = !TokenRepository.getToken().isNullOrEmpty()
             setTokenStatusText(tokenIsExist)

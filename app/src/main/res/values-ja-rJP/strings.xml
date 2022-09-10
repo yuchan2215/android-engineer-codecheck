@@ -42,4 +42,7 @@
     <string name="token_status_configured">設定済</string>
     <string name="un_authorized_error_description">認証に失敗しました。トークンの設定と有効期限を確認してください。</string>
     <string name="open_token_setting_title">トークン設定を開く</string>
+    <string name="user_label">ユーザー</string>
+    <string name="organization_label">組織</string>
+    <string name="unknown_label">不明</string>
 </resources>

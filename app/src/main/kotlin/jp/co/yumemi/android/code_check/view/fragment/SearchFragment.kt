@@ -77,22 +77,17 @@ class SearchFragment : Fragment(R.layout.search_fragment) {
             val firstPosition = manager.findFirstVisibleItemPosition()
 
             // 何度もリクエストしないようにロード中は何もしない。
-            if (viewModel.isAdditionLoading.value == true) {
+            if (viewModel.isAdditionLoading.value == true)
                 return
-            }
             // 上方向のスクロールは処理しない。
-            if (dy < 0) {
-                return
-            }
+            if (dy < 0) return
 
             // 以下の条件に当てはまれば一番下までスクロールされたと判断できる。
             if (itemCount == childCount + firstPosition) {
-
                 // 最後に読み込んでから1秒以内は再読み込みしない。(重複対策)
                 val diff = Date().time - lastFetch.time
-                if (diff < 1000) {
-                    return
-                }
+                if (diff < 1000) return
+
                 lastFetch = Date()
                 viewModel.fetchResults(true)
             }
@@ -147,7 +142,7 @@ class SearchFragment : Fragment(R.layout.search_fragment) {
         }
     }
 
-    fun gotoRepositoryFragment(item: GitRepository) {
+    private fun gotoRepositoryFragment(item: GitRepository) {
         val action = SearchFragmentDirections
             .openRepositoryDetail(repository = item)
         findNavController().navigate(action)

@@ -26,10 +26,21 @@
         <argument
             android:name="repository"
             app:argType="jp.co.yumemi.android.code_check.model.github.repositories.GitRepository" />
+        <action
+            android:id="@+id/openUserDetail"
+            app:destination="@id/gitUserDetailFragment" />
     </fragment>
     <fragment
         android:id="@+id/tokenSettingFragment"
         android:name="jp.co.yumemi.android.code_check.view.fragment.TokenSettingFragment"
         android:label="@string/authentication_title" />
+    <fragment
+        android:id="@+id/gitUserDetailFragment"
+        android:name="jp.co.yumemi.android.code_check.view.fragment.GitUserDetailFragment"
+        android:label="GitUserDetailFragment">
+        <argument
+            android:name="userName"
+            app:argType="string" />
+    </fragment>
 
 </navigation>

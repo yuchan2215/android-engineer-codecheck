@@ -72,6 +72,13 @@ class GitRepositoryDetailFragment : Fragment(R.layout.git_repository_detail_frag
 
             toolBar.setupWithNavController(navController, appBarConfiguration)
             toolBar.setOnMenuItemClickListener(listener)
+
+            ownerCard.setOnClickListener {
+                val name = viewModel?.repository?.owner?.name ?: return@setOnClickListener
+                findNavController().navigate(
+                    GitRepositoryDetailFragmentDirections.openUserDetail(name)
+                )
+            }
         }
     }
 }

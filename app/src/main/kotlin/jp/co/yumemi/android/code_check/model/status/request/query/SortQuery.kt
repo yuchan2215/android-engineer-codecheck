@@ -1,4 +1,4 @@
-package jp.co.yumemi.android.code_check.model.status.request
+package jp.co.yumemi.android.code_check.model.status.request.query
 
 enum class SortQuery(val queryText: String? = null) {
     Stars("stars"),

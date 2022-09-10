@@ -19,21 +19,21 @@ class TokenSettingFragment : Fragment(R.layout.token_setting_fragment) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val binding = TokenSettingFragmentBinding.bind(view)
-
-        binding.viewModel = viewModel
-        binding.lifecycleOwner = viewLifecycleOwner
-        binding.openTokenSettingPage.setOnClickListener {
-            val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/settings/tokens"))
-            startActivity(intent)
-        }
 
         val navController = findNavController()
         val appBarConfiguration = AppBarConfiguration(navController.graph)
-        binding.apply {
+
+        TokenSettingFragmentBinding.bind(view).apply {
+            this.viewModel = this@TokenSettingFragment.viewModel
+            lifecycleOwner = viewLifecycleOwner
+            openTokenSettingPage.setOnClickListener {
+                val intent =
+                    Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/settings/tokens"))
+                startActivity(intent)
+            }
             toolBar.setupWithNavController(navController, appBarConfiguration)
         }
 
-        viewModel.onOpenBottomSheet()
+        viewModel.fetchTokenStatus()
     }
 }

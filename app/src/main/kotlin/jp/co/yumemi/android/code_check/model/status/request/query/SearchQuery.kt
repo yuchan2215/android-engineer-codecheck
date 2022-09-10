@@ -1,4 +1,4 @@
-package jp.co.yumemi.android.code_check.model.status.request
+package jp.co.yumemi.android.code_check.model.status.request.query
 
 sealed interface SearchQuery {
     val getText: String

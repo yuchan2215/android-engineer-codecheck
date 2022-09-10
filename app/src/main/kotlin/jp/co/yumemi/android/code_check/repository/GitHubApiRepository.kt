@@ -5,11 +5,11 @@ import jp.co.yumemi.android.code_check.model.github.repositories.SearchGitRepoRe
 import jp.co.yumemi.android.code_check.model.github.users.GitUser
 import jp.co.yumemi.android.code_check.model.status.RequestStatus
 import jp.co.yumemi.android.code_check.model.status.request.CacheAndRequestStatus
-import jp.co.yumemi.android.code_check.model.status.request.FetchQuery
-import jp.co.yumemi.android.code_check.model.status.request.OrderQuery
 import jp.co.yumemi.android.code_check.model.status.request.RequestCache
-import jp.co.yumemi.android.code_check.model.status.request.SearchQuery
-import jp.co.yumemi.android.code_check.model.status.request.SortQuery
+import jp.co.yumemi.android.code_check.model.status.request.query.FetchQuery
+import jp.co.yumemi.android.code_check.model.status.request.query.OrderQuery
+import jp.co.yumemi.android.code_check.model.status.request.query.SearchQuery
+import jp.co.yumemi.android.code_check.model.status.request.query.SortQuery
 import jp.co.yumemi.android.code_check.network.GitHubApi
 import jp.co.yumemi.android.code_check.network.GitHubApiService
 import kotlinx.coroutines.Dispatchers

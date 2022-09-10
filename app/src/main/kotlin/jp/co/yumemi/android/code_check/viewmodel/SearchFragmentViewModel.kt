@@ -6,7 +6,6 @@ package jp.co.yumemi.android.code_check.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.map
 import androidx.lifecycle.viewModelScope
@@ -16,11 +15,12 @@ import jp.co.yumemi.android.code_check.R
 import jp.co.yumemi.android.code_check.model.github.repositories.GitRepository
 import jp.co.yumemi.android.code_check.model.github.repositories.SearchGitRepoResponse
 import jp.co.yumemi.android.code_check.model.status.RequestStatus
-import jp.co.yumemi.android.code_check.model.status.request.OrderQuery
 import jp.co.yumemi.android.code_check.model.status.request.RequestCache
-import jp.co.yumemi.android.code_check.model.status.request.SearchQuery
-import jp.co.yumemi.android.code_check.model.status.request.SortQuery
+import jp.co.yumemi.android.code_check.model.status.request.query.OrderQuery
+import jp.co.yumemi.android.code_check.model.status.request.query.SearchQuery
+import jp.co.yumemi.android.code_check.model.status.request.query.SortQuery
 import jp.co.yumemi.android.code_check.repository.GitHubApiRepository
+import jp.co.yumemi.android.code_check.util.EnchantedMediatorLiveData
 import jp.co.yumemi.android.code_check.util.QuantityStringUtil
 import jp.co.yumemi.android.code_check.util.VisibilityUtil
 import jp.co.yumemi.android.code_check.view.activity.TopActivity
@@ -61,32 +61,21 @@ class SearchFragmentViewModel : ViewModel() {
 
     val inputQueryText: MutableLiveData<String> = MutableLiveData()
 
+    // 追加読み込み中　又は　リクエストが成功している時に、リポジトリカウントを表示する。
     val isShowRepositoryCount by lazy {
-        MediatorLiveData<Int>().apply {
-            val observer = Observer<Any?> {
+        object : EnchantedMediatorLiveData<Int>(isAdditionLoading, requestStatus) {
+            override fun getData(): Int {
                 val additionLoading = isAdditionLoading.value ?: false
                 val statusSuccess = requestStatus.value is RequestStatus.OnSuccess
                 val isShow = additionLoading || statusSuccess
-                this.value = VisibilityUtil.booleanToVisibility(isShow)
+                return VisibilityUtil.booleanToVisibility(isShow)
             }
-            observer.onChanged(null)
-            addSource(isAdditionLoading, observer)
-            addSource(requestStatus, observer)
         }
     }
 
-    val isShowLoading by lazy {
-        MediatorLiveData<Int>().apply {
-            val observer = Observer<Any?> {
-                val additionLoading = isAdditionLoading.value ?: false
-                val statusLoading = requestStatus.value is RequestStatus.OnLoading
-                val isShow = additionLoading || statusLoading
-                this.value = VisibilityUtil.booleanToVisibility(isShow)
-            }
-            observer.onChanged(null)
-            addSource(isAdditionLoading, observer)
-            addSource(requestStatus, observer)
-        }
+    val isShowLoading = requestStatus.map {
+        val isShow = it is RequestStatus.OnLoading
+        return@map VisibilityUtil.booleanToVisibility(isShow)
     }
 
     val isShowError = requestStatus.map {
@@ -169,15 +158,22 @@ class SearchFragmentViewModel : ViewModel() {
      * 検索設定のクエリを取得する。
      */
     private fun getSearchSettingQueryObjects(): List<SearchQuery> {
-        val queries = listOf(
+        return listOf(
             // クエリを増やす時はここ！
             getOwnerSearchQuery(),
             getLanguageQuery()
-        )
-        return mutableListOf<SearchQuery>().apply {
-            queries.forEach {
-                this.addAll(it)
-            }
+        ).flatten()
+    }
+
+    /**
+     * 全てのサーチクエリをまとめたリストを作成する。（サーチバーと各種設定）
+     */
+    private fun getAllSearchQuery(): List<SearchQuery> {
+        val searchBarQuery = SearchQuery.SearchBarQuery(inputQueryText.value ?: "")
+        return mutableListOf<SearchQuery>(
+            searchBarQuery
+        ).apply {
+            addAll(getSearchSettingQueryObjects())
         }
     }
 
@@ -190,29 +186,19 @@ class SearchFragmentViewModel : ViewModel() {
         viewModelScope.launch {
             TopActivity.lastSearchDate = Date()
 
-            val searchBarQuery = SearchQuery.SearchBarQuery(inputQueryText.value ?: "")
-            val queryList = mutableListOf<SearchQuery>(
-                searchBarQuery
-            ).apply {
-                addAll(getSearchSettingQueryObjects())
-            }
-
             // キャッシュを含めたデータを取得
             val cacheAndRequestStatus = GitHubApiRepository.getRepositoriesWithCache(
-                queryList,
+                getAllSearchQuery(),
                 getSortQuery(),
                 getOrderQuery(),
                 requestCache.value,
                 isLoadNextPage
             )
-            val cache = cacheAndRequestStatus.cache
-            val status = cacheAndRequestStatus.status
-
             // ステータスを更新
-            requestStatus.value = status
+            requestStatus.value = cacheAndRequestStatus.status
+            _requestCache.value = cacheAndRequestStatus.cache
 
             // 状態を変更
-            _requestCache.value = cache
             isAdditionLoading.value = false
         }
     }

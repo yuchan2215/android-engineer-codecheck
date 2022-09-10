@@ -163,16 +163,11 @@ class SearchFragmentViewModel : ViewModel() {
      * 検索設定のクエリを取得する。
      */
     private fun getSearchSettingQueryObjects(): List<SearchQuery> {
-        val queries = listOf(
+        return listOf(
             // クエリを増やす時はここ！
             getOwnerSearchQuery(),
             getLanguageQuery()
-        )
-        return mutableListOf<SearchQuery>().apply {
-            queries.forEach {
-                this.addAll(it)
-            }
-        }
+        ).flatten()
     }
 
     /**

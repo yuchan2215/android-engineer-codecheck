@@ -2,6 +2,7 @@ package jp.co.yumemi.android.code_check.repository
 
 import jp.co.yumemi.android.code_check.model.github.repositories.GitRepository
 import jp.co.yumemi.android.code_check.model.github.repositories.SearchGitRepoResponse
+import jp.co.yumemi.android.code_check.model.github.users.GitUser
 import jp.co.yumemi.android.code_check.model.status.RequestStatus
 import jp.co.yumemi.android.code_check.model.status.request.CacheAndRequestStatus
 import jp.co.yumemi.android.code_check.model.status.request.FetchQuery
@@ -19,6 +20,21 @@ object GitHubApiRepository {
         return withContext(Dispatchers.IO) {
             val token = TokenRepository.getToken()
             return@withContext GitHubApi.getGitHubApiService(token)
+        }
+    }
+
+    /**
+     * GitHubのユーザーを[GitHubApiService]を介して叩きます。
+     * 返り値の作成は[RequestStatus.Companion]にある関数に委譲しています。
+     */
+    suspend fun getUser(userName: String): RequestStatus<GitUser> {
+        return try {
+            val response = getGitHubApiService().getUser(
+                userName
+            )
+            RequestStatus.createStatusFromRetrofit(response)
+        } catch (t: Throwable) {
+            RequestStatus.createErrorStatusFromThrowable(t)
         }
     }
 

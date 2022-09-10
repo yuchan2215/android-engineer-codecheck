@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="jp.co.yumemi.android.code_check.viewmodel.UserDetailViewModel" />
+    </data>
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.google.android.material.appbar.AppBarLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <com.google.android.material.appbar.MaterialToolbar
+                android:id="@+id/tool_bar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                app:menu="@menu/git_repository_detail_menu"
+                app:title="@{viewModel.loadedUser.name}"
+                app:titleCentered="true" />
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/scrollView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <ImageView
+                    imageUrl="@{viewModel.loadedUser.avatarUrl}"
+                    android:layout_width="128dp"
+                    android:layout_height="128dp"
+                    android:layout_gravity="center"
+                    android:contentDescription="@string/github_user_icon_description"
+                    tools:src="@drawable/jetbrains"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@{viewModel.loadedUser.name}"
+                    android:textAlignment="center"
+                    android:textAppearance="?attr/textAppearanceHeadlineLarge"
+                    tools:text="Jet Brains"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="16dp"
+                    android:text="@{viewModel.loadedUser.bio}"
+                    android:textAppearance="?attr/textAppearanceBodyMedium"
+                    tools:text="Hello. Hello."/>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginHorizontal="16dp"
+                    android:layout_marginTop="8dp"
+                    android:orientation="horizontal"
+                    android:visibility="@{viewModel.isShowFollowObject}">
+                    <TextView
+                        isFitDrawable="@{true}"
+                        isMatchDrawableColor="@{true}"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.5"
+                        android:drawablePadding="8dp"
+                        android:text="@{viewModel.followText}"
+                        android:textAppearance="?attr/textAppearanceLabelLarge"
+                        app:drawableStartCompat="@drawable/people"
+                        tools:text="1 Follows" />
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_weight="0.5"
+                        android:text="@{viewModel.followerText}"
+                        android:textAppearance="?attr/textAppearanceLabelLarge"
+                        tools:text="1 Follows"/>
+                </LinearLayout>
+
+                <TextView
+                    isFitDrawable="@{true}"
+                    isGoneWhenNull="@{true}"
+                    isMatchDrawableColor="@{true}"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="16dp"
+                    android:drawablePadding="8dp"
+                    android:text="@{viewModel.loadedUser.company}"
+                    android:textAppearance="?attr/textAppearanceLabelLarge"
+                    app:drawableStartCompat="@drawable/company"
+                    tools:text="Hoge Inc" />
+
+                <TextView
+                    isFitDrawable="@{true}"
+                    isGoneWhenNull="@{true}"
+                    isMatchDrawableColor="@{true}"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="16dp"
+                    android:drawablePadding="8dp"
+                    android:text="@{viewModel.loadedUser.location}"
+                    android:textAppearance="?attr/textAppearanceLabelLarge"
+                    app:drawableStartCompat="@drawable/location"
+                    tools:text="Tokyo" />
+
+                <TextView
+                    isFitDrawable="@{true}"
+                    isGoneWhenNull="@{true}"
+                    isMatchDrawableColor="@{true}"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="16dp"
+                    android:drawablePadding="8dp"
+                    android:text="@{viewModel.getString(viewModel.loadedUser.type.stringResId)}"
+                    android:textAppearance="?attr/textAppearanceLabelLarge"
+                    app:drawableStartCompat="@drawable/category"
+                    tools:text="User" />
+
+            </LinearLayout>
+
+        </androidx.core.widget.NestedScrollView>
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+</layout>
+

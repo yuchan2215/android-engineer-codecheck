@@ -19,23 +19,25 @@ abstract class GitRepositoryListAdapter :
     class ViewHolder(private val binding: GitRepositoryListItemLayoutBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(repository: GitRepository) {
-            binding.repositoryNameView.text = repository.name
-            repository.owner?.name?.let {
-                binding.ownerText.text = it
-                binding.ownerText.isVisible = true
-            }
+            binding.apply {
+                repositoryNameView.text = repository.name
+                repository.owner?.name?.let {
+                    ownerText.text = it
+                    ownerText.isVisible = true
+                }
 
-            repository.language?.let {
-                binding.langText.text = it
-                binding.langText.isVisible = true
-            }
-            binding.starText.text = repository.stargazersCount.toString()
-            binding.forkText.text = repository.forksCount.toString()
-            binding.issueText.text = repository.openIssuesCount.toString()
+                repository.language?.let {
+                    langText.text = it
+                    langText.isVisible = true
+                }
+                starText.text = repository.stargazersCount.toString()
+                forkText.text = repository.forksCount.toString()
+                issueText.text = repository.openIssuesCount.toString()
 
-            repository.description?.let {
-                binding.repositoryDescriptionView.text = it
-                binding.repositoryDescriptionView.isVisible = true
+                repository.description?.let {
+                    repositoryDescriptionView.text = it
+                    repositoryDescriptionView.isVisible = true
+                }
             }
         }
     }

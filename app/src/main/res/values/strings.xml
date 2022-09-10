@@ -64,7 +64,7 @@
     <string name="user_label">User</string>
     <string name="organization_label">Organization</string>
     <string name="unknown_label">Unknown</string>
-    <string name="github_user_icon_description">GitHub User Icon</string>
+    <string name="github_user_icon_description" translatable="false">GitHub User Icon</string>
     <plurals name="follows">
         <item quantity="one">%d follow</item>
         <item quantity="other">%d follows</item>

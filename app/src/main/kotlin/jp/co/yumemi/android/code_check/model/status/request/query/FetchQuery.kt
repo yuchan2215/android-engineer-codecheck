@@ -1,4 +1,4 @@
-package jp.co.yumemi.android.code_check.model.status.request
+package jp.co.yumemi.android.code_check.model.status.request.query
 
 /**
  * APIのフェッチ状況。前回と続けた内容を取得しているか確認するために使用する。

@@ -15,10 +15,10 @@ import jp.co.yumemi.android.code_check.R
 import jp.co.yumemi.android.code_check.model.github.repositories.GitRepository
 import jp.co.yumemi.android.code_check.model.github.repositories.SearchGitRepoResponse
 import jp.co.yumemi.android.code_check.model.status.RequestStatus
-import jp.co.yumemi.android.code_check.model.status.request.OrderQuery
 import jp.co.yumemi.android.code_check.model.status.request.RequestCache
-import jp.co.yumemi.android.code_check.model.status.request.SearchQuery
-import jp.co.yumemi.android.code_check.model.status.request.SortQuery
+import jp.co.yumemi.android.code_check.model.status.request.query.OrderQuery
+import jp.co.yumemi.android.code_check.model.status.request.query.SearchQuery
+import jp.co.yumemi.android.code_check.model.status.request.query.SortQuery
 import jp.co.yumemi.android.code_check.repository.GitHubApiRepository
 import jp.co.yumemi.android.code_check.util.EnchantedMediatorLiveData
 import jp.co.yumemi.android.code_check.util.QuantityStringUtil

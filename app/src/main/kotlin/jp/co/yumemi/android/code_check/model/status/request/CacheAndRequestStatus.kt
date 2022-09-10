@@ -1,6 +1,7 @@
 package jp.co.yumemi.android.code_check.model.status.request
 
 import jp.co.yumemi.android.code_check.model.status.RequestStatus
+import jp.co.yumemi.android.code_check.model.status.request.query.FetchQuery
 
 data class CacheAndRequestStatus<L, T>(
     val cache: RequestCache<L>,

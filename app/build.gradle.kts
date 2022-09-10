@@ -85,6 +85,9 @@ dependencies {
 
     // Retrofit Kotlin Serialization Converter
     implementation("com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:0.8.0")
+
+    // EncryptedSharedPreferences
+    implementation("androidx.security:security-crypto-ktx:1.1.0-alpha03")
 }
 
 ktlint {

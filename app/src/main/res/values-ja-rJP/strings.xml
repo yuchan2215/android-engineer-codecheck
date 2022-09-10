@@ -33,5 +33,13 @@
         <item quantity="other">%d リポジトリ</item>
     </plurals>
     <string name="authentication_title">認証</string>
+    <string name="token_note">認証トークンは次のボタンから取得できます。\nなお、このアプリケーションは初心者が作成しているため、セキュリティは保証されていません。</string>
+    <string name="token_input_helper">トークンを追加すると、API制限が緩和されます。</string>
+    <string name="open_token_setting_text">APIキー取得ページを開く</string>
+    <string name="save_button_text">保存</string>
+    <string name="token_status_text">状態: %s</string>
+    <string name="token_status_not_configured">未設定</string>
+    <string name="token_status_configured">設定済</string>
+    <string name="un_authorized_error_description">認証に失敗しました。トークンの設定と有効期限を確認してください。</string>
     <string name="open_token_setting_title">トークン設定を開く</string>
 </resources>

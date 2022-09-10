@@ -30,10 +30,6 @@ class UserDetailViewModel(private val inputName: String) : ViewModel() {
         val isVisible = it is RequestStatus.OnLoading
         VisibilityUtil.booleanToVisibility(isVisible)
     }
-    val isShowResult = _requestStatus.map {
-        val isVisible = it is RequestStatus.OnSuccess
-        VisibilityUtil.booleanToVisibility(isVisible)
-    }
 
     val isShowError = _requestStatus.map {
         val isVisible = it is RequestStatus.OnError

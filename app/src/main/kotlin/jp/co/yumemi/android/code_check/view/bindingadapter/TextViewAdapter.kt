@@ -2,6 +2,7 @@ package jp.co.yumemi.android.code_check.view.bindingadapter
 
 import android.view.View
 import android.widget.TextView
+import androidx.core.widget.addTextChangedListener
 import androidx.databinding.BindingAdapter
 
 object TextViewAdapter {
@@ -31,8 +32,17 @@ object TextViewAdapter {
     @JvmStatic
     fun TextView.setVisibilityOption(isGoneWhenNull: Boolean) {
         if (!isGoneWhenNull) return
-        if (this.text.isEmpty()) {
-            this.visibility = View.GONE
+        // テキストが変更された時の処理
+        fun onTextChanged(text: String) {
+            if (text.isEmpty()) {
+                this.visibility = View.GONE
+            } else {
+                this.visibility = View.VISIBLE
+            }
+        }
+        onTextChanged(this.text.toString())
+        this.addTextChangedListener {
+            onTextChanged(it.toString())
         }
     }
 }

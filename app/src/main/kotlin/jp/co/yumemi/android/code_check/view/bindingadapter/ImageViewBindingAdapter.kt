@@ -11,7 +11,8 @@ object ImageViewBindingAdapter {
     /**
      * 画像をxmlから読み込む際に利用する。
      */
-    fun ImageView.loadImage(imageUrl: String) {
+    fun ImageView.loadImage(imageUrl: String?) {
+        if (imageUrl == null) return
         this.load(imageUrl) {
             placeholder(R.drawable.loading)
             error(R.drawable.git_issue)

@@ -32,4 +32,6 @@
     <plurals name="repository_counts">
         <item quantity="other">%d リポジトリ</item>
     </plurals>
+    <string name="authentication_title">認証</string>
+    <string name="open_token_setting_title">トークン設定を開く</string>
 </resources>

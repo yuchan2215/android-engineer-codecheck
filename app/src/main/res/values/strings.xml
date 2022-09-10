@@ -49,4 +49,6 @@
     <string name="descending_button_text">Descending</string>
     <string name="open_in_browser_title">Open in Browser</string>
     <string name="share_title">Share</string>
+    <string name="authentication_title">Authentication</string>
+    <string name="open_token_setting_title">Open Token Setting</string>
 </resources>

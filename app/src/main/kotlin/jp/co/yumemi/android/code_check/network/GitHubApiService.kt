@@ -2,8 +2,10 @@ package jp.co.yumemi.android.code_check.network
 
 import jp.co.yumemi.android.code_check.constant.HTTPResponseCode.VALIDATION_FAILED
 import jp.co.yumemi.android.code_check.model.github.repositories.SearchGitRepoResponse
+import jp.co.yumemi.android.code_check.model.github.users.GitUser
 import retrofit2.Response
 import retrofit2.http.GET
+import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface GitHubApiService {
@@ -16,4 +18,9 @@ interface GitHubApiService {
         @Query("page") pageNumber: Int = 1,
         @Query("per_page") perPage: Int = 100
     ): Response<SearchGitRepoResponse>
+
+    @GET("users/{user}")
+    suspend fun getUser(
+        @Path("user") userName: String
+    ): Response<GitUser>
 }

@@ -61,6 +61,7 @@ class SearchFragmentViewModel : ViewModel() {
 
     val inputQueryText: MutableLiveData<String> = MutableLiveData()
 
+    // 追加読み込み中　又は　リクエストが成功している時に、リポジトリカウントを表示する。
     val isShowRepositoryCount by lazy {
         object : EnchantedMediatorLiveData<Int>(isAdditionLoading, requestStatus) {
             override fun getData(): Int {

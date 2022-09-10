@@ -176,6 +176,18 @@ class SearchFragmentViewModel : ViewModel() {
     }
 
     /**
+     * 全てのサーチクエリをまとめたリストを作成する。（サーチバーと各種設定）
+     */
+    private fun getAllSearchQuery(): List<SearchQuery> {
+        val searchBarQuery = SearchQuery.SearchBarQuery(inputQueryText.value ?: "")
+        return mutableListOf<SearchQuery>(
+            searchBarQuery
+        ).apply {
+            addAll(getSearchSettingQueryObjects())
+        }
+    }
+
+    /**
      * GitHubのAPIを叩き、リポジトリ一覧を取得して[requestStatus]の値を更新する。
      * 読み込むまでは[RequestStatus.OnLoading]にする。
      */
@@ -184,29 +196,19 @@ class SearchFragmentViewModel : ViewModel() {
         viewModelScope.launch {
             TopActivity.lastSearchDate = Date()
 
-            val searchBarQuery = SearchQuery.SearchBarQuery(inputQueryText.value ?: "")
-            val queryList = mutableListOf<SearchQuery>(
-                searchBarQuery
-            ).apply {
-                addAll(getSearchSettingQueryObjects())
-            }
-
             // キャッシュを含めたデータを取得
             val cacheAndRequestStatus = GitHubApiRepository.getRepositoriesWithCache(
-                queryList,
+                getAllSearchQuery(),
                 getSortQuery(),
                 getOrderQuery(),
                 requestCache.value,
                 isLoadNextPage
             )
-            val cache = cacheAndRequestStatus.cache
-            val status = cacheAndRequestStatus.status
-
             // ステータスを更新
-            requestStatus.value = status
+            requestStatus.value = cacheAndRequestStatus.status
+            _requestCache.value = cacheAndRequestStatus.cache
 
             // 状態を変更
-            _requestCache.value = cache
             isAdditionLoading.value = false
         }
     }

@@ -30,6 +30,6 @@
     <fragment
         android:id="@+id/tokenSettingFragment"
         android:name="jp.co.yumemi.android.code_check.view.fragment.TokenSettingFragment"
-        android:label="TokenSettingFragment" />
+        android:label="@string/authentication_title" />
 
 </navigation>

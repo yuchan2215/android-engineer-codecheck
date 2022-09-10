@@ -6,6 +6,9 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.setupWithNavController
 import jp.co.yumemi.android.code_check.R
 import jp.co.yumemi.android.code_check.databinding.TokenSettingFragmentBinding
 import jp.co.yumemi.android.code_check.viewmodel.TokenSettingViewModel
@@ -23,6 +26,12 @@ class TokenSettingFragment : Fragment(R.layout.token_setting_fragment) {
         binding.openTokenSettingPage.setOnClickListener {
             val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/settings/tokens"))
             startActivity(intent)
+        }
+
+        val navController = findNavController()
+        val appBarConfiguration = AppBarConfiguration(navController.graph)
+        binding.apply {
+            toolBar.setupWithNavController(navController, appBarConfiguration)
         }
 
         viewModel.onOpenBottomSheet()

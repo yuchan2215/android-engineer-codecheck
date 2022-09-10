@@ -71,6 +71,14 @@ sealed class ErrorStatus(val errorDescription: String) {
     )
 
     /**
+     * 認証できなかったエラー。
+     * トークンが間違っている場合などに出る。
+     */
+    object UnAuthorizedError : ErrorStatus(
+        getString(R.string.un_authorized_error_description)
+    )
+
+    /**
      * その他のエラー。
      * [HTTPResponseCode]にて定義されていないエラーの時に利用される。
      */
@@ -96,6 +104,7 @@ sealed class ErrorStatus(val errorDescription: String) {
                 HTTPResponseCode.NOT_MODIFIED -> NotModifiedError
                 HTTPResponseCode.VALIDATION_FAILED -> ValidationError
                 HTTPResponseCode.SERVICE_UNAVAILABLE -> ServiceUnavailableError
+                HTTPResponseCode.UNAUTHORIZED -> UnAuthorizedError
                 else -> OtherResponseError(response.errorBody(), errorCode)
             }
         }

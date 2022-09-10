@@ -72,15 +72,9 @@ class SearchFragmentViewModel : ViewModel() {
         }
     }
 
-    val isShowLoading by lazy {
-        object : EnchantedMediatorLiveData<Int>(isAdditionLoading, requestStatus) {
-            override fun getData(): Int {
-                val additionLoading = isAdditionLoading.value ?: false
-                val statusLoading = requestStatus.value is RequestStatus.OnLoading
-                val isShow = additionLoading || statusLoading
-                return VisibilityUtil.booleanToVisibility(isShow)
-            }
-        }
+    val isShowLoading = requestStatus.map {
+        val isShow = it is RequestStatus.OnLoading
+        return@map VisibilityUtil.booleanToVisibility(isShow)
     }
 
     val isShowError = requestStatus.map {

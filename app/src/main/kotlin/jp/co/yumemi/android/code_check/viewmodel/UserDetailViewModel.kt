@@ -26,8 +26,14 @@ class UserDetailViewModel(private val inputName: String) : ViewModel() {
         }
     }
 
-    val isShowLoading = _requestStatus.map { it is RequestStatus.OnLoading }
-    val isShowResult = _requestStatus.map { it is RequestStatus.OnSuccess }
+    val isShowLoading = _requestStatus.map {
+        val isVisible = it is RequestStatus.OnLoading
+        VisibilityUtil.booleanToVisibility(isVisible)
+    }
+    val isShowResult = _requestStatus.map {
+        val isVisible = it is RequestStatus.OnSuccess
+        VisibilityUtil.booleanToVisibility(isVisible)
+    }
 
     val isShowFollowObject = loadedUser.map {
         val isVisible = it?.type == GitUser.Companion.UserType.USER
